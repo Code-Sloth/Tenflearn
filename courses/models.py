@@ -47,37 +47,3 @@ class Course(models.Model):
     def save(self,*args, **kargs):
         self.discounted_price = self.calculate_discount_price()
         super().save(*args, **kargs)
-    
-class Review(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='reviews')
-    content = models.TextField()
-    star = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    @property
-    def created_time(self):
-        time = datetime.now(tz=timezone.utc) - self.created_at
-
-        if time < timedelta(minutes=1):
-            return '방금 전'
-        elif time < timedelta(hours=1):
-            return str(int(time.seconds / 60)) + '분 전'
-        elif time < timedelta(days=1):
-            return str(int(time.seconds / 3600)) + '시간 전'
-        elif time < timedelta(days=7):
-            time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
-            return str(time.days) + '일 전'
-        else:
-            return self.strftime('%Y-%m-%d')
-
-    def save(self, *args, **kwargs):                  
-        self.course.star = (self.course.star * self.course.reviews.count() + self.star) / (self.course.reviews.count() + 1)
-        self.course.save()
-        super(Review, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kargs):
-        self.course.star = (self.course.star * self.course.reviews.count() - self.star) / (self.course.reviews.count() - 1)
-        self.course.save()
-        super(Review, self).delete(*args, **kargs)
-
