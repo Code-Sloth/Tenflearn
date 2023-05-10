@@ -134,15 +134,14 @@ def review(request):
 
 
 def review_create(request):
-    course_pk = request.GET.get('course_pk', 0)
+    course_pk = request.GET.get('course_pk')
 
     if request.method == 'POST':
         review_form = ReviewForm(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
-            if course_pk != 0:
-                course = Course.objects.get(pk=course_pk)
-                review.course = course
+            course = Course.objects.get(pk=course_pk)
+            review.course = course
             review.user = request.user
             review.save()
 
