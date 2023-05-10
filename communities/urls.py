@@ -23,4 +23,4 @@ urlpatterns = [
 
 ]
 
-# 리뷰 crd 댓글 crud, 대댓글 crd
+

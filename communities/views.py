@@ -23,15 +23,13 @@ def comment_detail(request, comment_pk):
     return render(request, 'communities/comment_detail.html', context)
 
 def comment_create(request):
-    course_pk = request.GET.get('course_pk', '0')
+    course_pk = request.GET.get('course_pk', 0)
     
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            if course_pk == '0':
-                pass
-            else:
+            if course_pk != 0:
                 course = Course.objects.get(pk=course_pk)
                 comment.course = course
             comment.user = request.user
@@ -136,10 +134,15 @@ def review(request):
 
 
 def review_create(request):
+    course_pk = request.GET.get('course_pk', 0)
+
     if request.method == 'POST':
         review_form = ReviewForm(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
+            if course_pk != 0:
+                course = Course.objects.get(pk=course_pk)
+                review.course = course
             review.user = request.user
             review.save()
 
@@ -154,11 +157,9 @@ def review_create(request):
     return render(request, 'communities/comment_create.html', context)
 
 
-
 def review_delete(request, review_pk):
     review = Review.objects.get(pk=review_pk)
+    course_pk = request.GET.get('course_pk', 0)
     if request.user == review.user and request.method == 'POST':
         review.delete()
-        return redirect('#')
-    
-
+        return redirect('courses:detail', course_pk)
