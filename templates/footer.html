@@ -1,0 +1,107 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/css/footer.css' %}">
+
+<div class='footer'>
+  <div class='footer-container'>
+
+    <div class='footer-left'>
+      <div class='footer-logo'>
+        <img src="{% static 'base/image/logo.svg' %}" alt="logo">
+      </div>
+
+      <div class='footer-teamname'>
+        Team10 TENFLEARN
+      </div>
+
+      <div class='footer-section'>
+        <div class='footer-name'>
+          조장 - 이민욱
+          <a href="https://github.com/Code-Sloth">[GitHub]</a>
+        </div>
+
+        <div class='footer-name'>
+          조원 - 소현섭
+          <a href="https://github.com/sotthang">[GitHub]</a>
+        </div>
+
+        <div class='footer-name ms-little'>
+          안정환
+          <a href="https://github.com/skysky44">[GitHub]</a>
+        </div>
+
+        <div class='footer-name ms-little'>
+          김민선
+          <a href="https://github.com/menduck">[GitHub]</a>
+        </div>
+
+        <div class='footer-name ms-little'>
+          방한영
+          <a href="https://github.com/hany0829">[GitHub]</a>
+        </div>
+      </div>
+    </div>
+
+    <div class='footer-right'>
+      <a class='footer-right-git' href="https://github.com/Code-Sloth/Tenflearn">
+        <img class='w-100' src="{% static 'base/image/github.svg' %}" alt="github">
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<div class='footerbar'>
+  <a class='footerbar-item' href="">
+    <div>
+      <i class="fas fa-list"></i>
+    </div>
+
+    <p>강의</p>
+  </a>
+
+  <a class='footerbar-item' href="">
+    <div>
+      <i class="fas fa-comments"></i>
+    </div>
+
+    <p>커뮤니티</p>
+  </a>
+
+  <a class='footerbar-item' href="{% url 'courses:index' %}">
+    <div>
+      <i class="fas fa-house"></i>
+    </div>
+
+    <p>홈</p>
+  </a>
+
+  <a class='footerbar-item' href="">
+    <div>
+      <i class="fas fa-star"></i>
+    </div>
+
+    <p>인프런</p>
+  </a>
+
+  {% if request.user.authenticated %}
+  
+    <a class='footerbar-item' href="">
+      <div>
+        <i class="fas fa-user"></i>
+      </div>
+
+      <p>마이페이지</p>
+    </a>
+
+  {% else %}
+
+    <a class='footerbar-item' href="">
+      <div>
+        <i class="fas fa-right-to-bracket"></i>
+      </div>
+
+      <p>로그인</p>
+    </a>
+
+  {% endif %}
+</div>
