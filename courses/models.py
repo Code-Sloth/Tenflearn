@@ -13,9 +13,7 @@ class Course(models.Model):
     enrolment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='enrolment_courses')
     title = models.CharField(max_length=100)
     content = models.TextField()
-
     star = models.DecimalField(default=0, max_digits=5, decimal_places=1)
-
     price = models.IntegerField(default=0)
     discount_rate = models.IntegerField(default=0)
     discounted_price = models.IntegerField()
@@ -33,12 +31,9 @@ class Course(models.Model):
     )
 
     expired_date = models.DateField()
-
     level_Choices = (('level1','입문'),('level2','초급'),('level3','중급이상'))
     level = models.CharField(max_length=20, choices=level_Choices)
-
     certificates = models.BooleanField()
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def calculate_discount_price(self):
