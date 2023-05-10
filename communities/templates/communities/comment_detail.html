@@ -15,7 +15,7 @@
   카테고리: {{ comment.get_category_display }}
 </div>
 <div>
-  내용: {{ comment.content }}
+  내용: {{ comment.content|safe }}
 </div>
 <div>
   조회수: {{ comment.views }}
