@@ -6,4 +6,33 @@
 
 {% block content %}
 
+<a href="{% url 'communities:comment_create' %}">create</a>
+
+
+<div>
+  <a href="{% url 'communities:comment_index' %}">전체</a>
+  <a href="{% url 'communities:comment_index' %}?category=qna">질문&답변</a>
+  <a href="{% url 'communities:comment_index' %}?category=worry">고민있어요</a>
+  <a href="{% url 'communities:comment_index' %}?category=study">스터디</a>
+  <a href="{% url 'communities:comment_index' %}?category=etc">기타</a>
+</div>
+
+{% if category %}
+  <h2>카테고리: {{ category }}</h2>
+{% else %}
+  <h2>전체</h2>
+{% endif %}
+
+{% for comment in comments %}
+<a href="{% url 'communities:comment_detail' comment.pk %}"><div>
+  {{ comment.title }}
+</div></a>
+
+<div>
+  {{ comment.content }}
+</div>
+{% endfor %}
+
+
+
 {% endblock content %}
