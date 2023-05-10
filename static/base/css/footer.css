@@ -1,0 +1,106 @@
+.footer {
+  font-family: 'SpoqaHanSansNeo-Regular';
+  width: 100%;
+  height: 250px;
+  background-color: rgb(48 55 64);
+  border: 0;
+}
+
+.footer-container {
+  display: flex;
+  width: 1152px;
+  padding: 31px 20px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  margin-top: 10px;
+}
+
+.footer-teamname {
+  margin-top: 30px;
+  color: rgb(220 220 220);
+}
+
+.footer-name {
+  color: rgb(189 189 189);
+  font-size: 13px;
+  font-weight: lighter;
+}
+
+.footer-name a {
+  color: rgb(170 170 170);
+  text-decoration: none;
+}
+
+.footer-name a:hover {
+  text-decoration: underline;
+}
+
+.ms-little {
+  margin-left: 35px;
+}
+
+.footer-right {
+  display: flex;
+  flex-grow: 1;
+  flex-flow: row-reverse;
+}
+
+.footer-right-git {
+  display: block;
+  margin: 0;
+  width: 40px;
+  opacity: 0.8;
+}
+
+.footer-right-git:hover {
+  opacity: 1;
+}
+
+/* 푸터 바 */
+
+.footerbar {
+  display: none;
+  position: sticky;
+  justify-content: space-around;
+  background-color: white;
+  bottom: 0;
+  width: 100%;
+  height: 66px;
+  box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.1);
+}
+
+.footerbar-item {
+  display: block;
+  font-size: 11px;
+  width: 72px;
+  height: 100%;
+  padding: 5px;
+  text-align: center;
+  color: rgb(100 100 100);
+  text-decoration: none;
+}
+
+.footerbar-item:hover {
+  color: rgb(29 192 120);
+  font-weight: bold;
+}
+
+.footerbar-item div {
+  height: 30px;
+  font-size: 20px;
+}
+
+@media(max-width: 1200px) {
+  .footer-container {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media(max-width: 1024px) {
+  .footerbar {
+    display: flex;
+  }
+}

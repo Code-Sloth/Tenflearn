@@ -1,0 +1,139 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/css/navbar.css' %}">
+
+<div class='nav-bar'>
+  <div class='nav-bar-container'>
+
+    <div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span>
+          <img src="{% static 'base/image/offcanvas.svg' %}" alt="offcanvas">
+        </span>
+      </button>
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+
+        <div class='off-search'>
+
+          <form action="">
+            <input name='q' type="search" placeholder="강의/강사명을 입력해주세요">
+          </form>
+
+          <div class='off-search-icon'>
+            <i class='fas fa-search'></i>
+          </div>
+
+        </div>
+
+        <div class='off-list'>
+          <div class='off-left'>
+            <a class='off-item off-course-a' href="">
+              강의
+            </a>
+    
+            <a class='off-item off-community-a' href="">
+              커뮤니티
+            </a>
+    
+            <a class='off-item' href="">
+              인프런
+            </a>
+          </div>
+
+          <div class='off-right'>
+            <a class="off-item off-course d-none" href="">
+              전체
+            </a>
+
+            <a class="off-item off-course d-none" href="">
+              웹 개발
+            </a>
+
+            <a class="off-item off-course d-none" href="">
+              프론트엔드
+            </a>
+
+            <a class="off-item off-course d-none" href="">
+              백엔드
+            </a>
+
+            <a class="off-item off-course d-none" href="">
+              풀스택
+            </a>
+
+            <a class="off-item off-community d-none" href="">
+              전체
+            </a>
+
+            <a class="off-item off-community d-none" href="">
+              질문 & 답변
+            </a>
+
+            <a class="off-item off-community d-none" href="">
+              고민있어요
+            </a>
+
+            <a class="off-item off-community d-none" href="">
+              스터디
+            </a>
+
+            <a class="off-item off-community d-none" href="">
+              기타
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class='nav-bar-logo'>
+      <a href="{% url 'courses:index' %}">
+        <img src="{% static 'base/image/logo.svg' %}" alt="logo">
+      </a>
+    </div>
+
+    <div class='nav-bar-left'>
+      <a class="nav-bar-left-item ms-2" href="">
+        강의
+      </a>
+  
+      <a class="nav-bar-left-item" href="">
+        커뮤니티
+      </a>
+  
+      <a class="nav-bar-left-item" href="">
+        인프런
+      </a>
+
+    </div>
+
+    <div class='nav-bar-right'>
+      <div class='nav-bar-right-items'>
+
+        <div class='nav-bar-right-search'>
+
+          <form action="">
+            <input name='q' type="search">
+          </form>
+
+          <div class='right-search-icon'>
+            <i class='fas fa-search'></i>
+          </div>
+
+        </div>
+
+        <a class='nav-bar-right-item' href="">
+          <i class='bi bi-cart3'></i>
+        </a>
+
+        <a class='nav-bar-right-item right-fs' href="">
+          <i class="bi bi-person"></i>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'base/js/navbar.js' %}"></script>
