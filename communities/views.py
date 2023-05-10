@@ -5,19 +5,32 @@ from courses.models import Course
 # Create your views here.
 
 def comment(request):
-    reviews = Comment.objects.all()
+    comments = Comment.objects.order_by('-id')
+    category = request.GET.get('category', None)
+
+
+    if category:
+        comments = comments.filter(category=category)
 
     context = {
-        'reviews': reviews,
+        'comments': comments,
+        'category': category,
     }
 
     return render(request, 'communities/comment_index.html', context)
 
 def comment_detail(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
-
+    recomments = Recomment.objects.filter(comment=comment_pk)
+    print(recomments)
+    recomment_form = RecommentForm()
+    # like_users_count = comment.like_users.count()
     context = {
         'comment': comment,
+        'recomments': recomments,
+        'recomment_form': recomment_form,
+        # 'like_users_count': like_users_count,
+
     }
 
     return render(request, 'communities/comment_detail.html', context)
@@ -74,17 +87,6 @@ def comment_delete(request, comment_pk):
 
 ## 대댓글
 
-def recomment(request, comment_pk):
-    comment = Comment.objects.get(pk=comment_pk)
-    recomments = comment.recomment_set.all()
-
-    context = {
-        'comment': comment,
-        'recomments': recomments,
-    }
-
-    return render(request, 'communities/comment_detail.html', context)
-
 def recomment_create(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
 
@@ -96,7 +98,7 @@ def recomment_create(request, comment_pk):
             recomment.user = request.user
             recomment.save()
 
-            return redirect('communities:recomment', comment_pk=comment_pk)
+            return redirect('communities:comment_detail', comment_pk)
 
     else:
         recomment_form = RecommentForm()
@@ -124,7 +126,7 @@ def recomment_delete(request, comment_pk, recomment_pk):
 ## 리뷰
 
 def review(request):
-    reviews = Review.objects.all()
+    reviews = Review.objects.order_by('-id')
 
     context = {
         'reviews': reviews,

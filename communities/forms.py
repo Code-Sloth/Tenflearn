@@ -1,8 +1,11 @@
 from django import forms
 from .models import Review, Comment, Recomment
+from ckeditor.widgets import CKEditorWidget
 
 class CommentForm(forms.ModelForm):
-
+    content = forms.CharField(
+        widget=CKEditorWidget()
+        )
     class Meta:
         model = Comment
         fields = (
@@ -15,8 +18,8 @@ class RecommentForm(forms.ModelForm):
 
     class Meta:
         model = Recomment
-        field = (
-            'content'
+        fields = (
+            'content',
         )
 
 

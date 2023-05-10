@@ -5,5 +5,37 @@
 {% endblock title %}
 
 {% block content %}
+<div>
+  작성자: {{ comment.user }}
+</div>
+<div>
+  제목: {{ comment.title }}
+</div>
+<div>
+  카테고리: {{ comment.get_category_display }}
+</div>
+<div>
+  내용: {{ comment.content }}
+</div>
+<div>
+  조회수: {{ comment.views }}
+</div>
+
+<a href="{% url 'communities:comment_update' comment.pk %}">update</a>
+
+<hr>
+<h2>댓글</h2>
+<form action="{% url 'communities:recomment_create' comment.pk %}" method="POST">
+  {% csrf_token %}
+  {{ recomment_form.as_p }}
+  <input type="submit">
+</form>
+
+{% for recomment in recomments %}
+<div>
+  {{ recomment.user }}
+  {{ recomment.content|linebreaksbr }}</div>
+<hr>
+{% endfor %}
 
 {% endblock content %}
