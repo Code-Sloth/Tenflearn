@@ -28,12 +28,19 @@ def detail(request, course_pk):
         other_courses = []
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(pk=course.pk)
     similar_course = random.choice(similar_courses) if similar_courses else None
+    star_percentage = []
+    if reviews:
+        for x in range(1, 6):
+            star_percentage.append(round(reviews.filter(star=x).count()*100/reviews.count(), 1))
+    else:
+        star_percentage = [0, 0, 0, 0, 0]
     context = {
         'course': course,
         'reviews': reviews,
         'review_form': review_form,
         'other_courses': other_courses,
         'similar_course': similar_course,
+        'star_percentage': star_percentage,
     }
     return render(request, 'courses/course_detail.html', context)
 
@@ -109,3 +116,7 @@ def review_delete(request, course_pk, review_pk):
         review.delete()
         return redirect('courses:detail', course_pk)
     
+
+def video(request, course_pk):
+    return render(request, 'courses/course_video.html')
+
