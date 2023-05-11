@@ -24,7 +24,7 @@ class Course(models.Model):
 
     image = ProcessedImageField(
         upload_to=course_image_path,
-        processors=[ResizeToFill(100,100)],
+        processors=[ResizeToFill(473,308)],
         format='JPEG',
         options={'quality' : 100},
         blank=True,
@@ -37,6 +37,9 @@ class Course(models.Model):
     certificates = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     tags = TaggableManager()
+
+    def star_multiple(self):
+        return self.star*20
 
     def calculate_discount_price(self):
         return round((self.price * (1 - self.discount_rate / 100)) / 10) * 10

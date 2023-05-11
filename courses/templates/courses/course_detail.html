@@ -6,14 +6,132 @@
 {% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_detail.css' %}">
+
+<div class='course-detail'>
+
+  {% comment %} 디테일 배너 {% endcomment %}
+  <div class='detail-banner'>
+    <div class='banner-container'>
+      <div class='banner-container-left'>
+        {% if course.image %}
+          <img class='w-100' src="{{ course.image.url }}" alt="{{ course.title }}">
+        {% endif %}
+      </div>
+
+      <div class='banner-container-right'>
+        <h1 class='banner-container-right-title'>
+          {{ course.title }}
+        </h1>
+
+        <div class='banner-container-right-star'>
+          <div class='banner-section1'>
+            <div class='banner-star-box'>
+              <div class='banner-star-gray'>
+                <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+              </div>
+  
+              <div class='banner-star-yellow' style='width: {{ course.star_multiple }}%;'>
+                <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+              </div>
+  
+            </div>
+            <div class='banner-star-text'>
+              <span class='ms-1 me-2'>({{ course.star }})</span>
+              <a class='banner-star-text-a' href="">{{ course.reviews.count }}개의 수강평</a> ∙ <span>{{ course.enrolment_users.count }}명</span>의 수강생
+            </div>
+          </div>
+
+        </div>
+
+        <div class='banner-container-right-user'>
+          <div>
+            <img src="{% static 'courses/image/user.svg' %}" alt="user">
+          </div>
+          <div class='right-user-name'>
+            {{ course.user.last_name }}{{ course.user.first_name }}
+          </div>
+          <div>
+            <img src="{% static 'courses/image/king.svg' %}" alt="king">
+          </div>
+        </div>
+
+        <div class='banner-container-tagbox'>
+
+          <div>
+            <img src="{% static 'courses/image/tag.svg' %}" alt="tag">
+          </div>
+
+          {% for tag in course.tags.all %}
+          <a class='banner-container-tag' href=''>
+            {{ tag.name }}
+          </a>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {% comment %} 디테일 사이드바 max-width: 1024px; {% endcomment %}
+  <div class='left-sidebar d-none'>
+    <div>
+
+    </div>
+  </div>
+  
+  {% comment %} 디테일 섹션 헤더 {% endcomment %}
+  <div class='section-header'>
+
+    <div class='section-container d-flex'>
+
+      <a class='section-header-a' href="">
+        강의소개
+      </a>
+
+      <a class='section-header-a' href="">
+        수강평<span>{{ course.reviews.count }}</span>
+      </a>
+
+      <a class='section-header-a' href="">
+        커뮤니티
+      </a>
+    </div>
+
+  </div>
+
+  {% comment %} 디테일 섹션 {% endcomment %}
+  <div class='section-container d-flex'>
+    <div class='section-left'>
+      <p class='section-left-content'>
+        {{ course.content|linebreaks }}
+      </p>
+
+      <div>
+
+      </div>
+
+    </div>
+
+    <div class='right-sidebar'>
+      hi
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
 <div>
-  <h2>강의 정보</h2>
-  <p>{{ course.title }}</p>
-  <p>{{ course.star }}</p>
   <p>{{ course.price }}</p>
   <p>{{ course.discount_rate }}</p>
   <p>{{ course.discounted_price }}</p>
-  <p><img src={% if course.image %}"{{ course.image.url }}"{% else %}"{% static '/courses/image/noimage.jpeg' %}"{% endif %} alt="{{ course.image.url }}"></p>
   <p>{{ course.expired_date }}</p>
   <p>{{ course.level }}</p>
   <p>{{ course.certificates }}</p>
