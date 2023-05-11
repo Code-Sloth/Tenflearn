@@ -1,17 +1,66 @@
-{% for review in reviews %}
-  <div>
-    <p>{{  review.content }}</p>
-    <p>{{  review.star }}</p>
-    <form action="{% url 'courses:review_delete' course.pk review.pk %}">
-      <input type="submit" value="댓글 삭제">
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_detail_review.css' %}">
+<section>
+  <div class="review-header">
+    <span class="review-reviewname">수강평</span>
+  </div>
+  <div class="review-description">
+    수강생 분들이 직접 작성하신 수강평입니다.
+  </div>
+  <div class="review-dashboard">
+    <div class="review-dashboard-star">
+      <div class="review-dashboard-star-num"><h2>{{ course.star }}</h2></div>
+      <div class="review-dashboard-star-star">별</div>
+      <div class="review-dashboard-star-count">{{ reviews.count }}개의 수강평</div>
+    </div>
+    <div class="review-dashbboard-graph">
+      <p>graph</p>
+    </div>
+  </div>
+  <div class="review-add">
+    <form action="{% url 'courses:review_create' course.pk %}" method="post">
+      {% csrf_token %}
+      <div class="review-add-star">
+        <div class="starpoint_wrap">
+          <div class="starpoint_box">
+            <label for="starpoint_1" class="label_star" title="1"><span class="blind">1</span></label>
+            <label for="starpoint_2" class="label_star" title="2"><span class="blind">2</span></label>
+            <label for="starpoint_3" class="label_star" title="3"><span class="blind">3</span></label>
+            <label for="starpoint_4" class="label_star" title="4"><span class="blind">4</span></label>
+            <label for="starpoint_5" class="label_star" title="5"><span class="blind">5</span></label>
+            <input type="radio" name="starpoint" id="starpoint_1" value="1" class="star_radio">
+            <input type="radio" name="starpoint" id="starpoint_2" value="2" class="star_radio">
+            <input type="radio" name="starpoint" id="starpoint_3" value="3" class="star_radio">
+            <input type="radio" name="starpoint" id="starpoint_4" value="4" class="star_radio">
+            <input type="radio" name="starpoint" id="starpoint_5" value="5" class="star_radio">
+            <span class="starpoint_bg"></span>
+          </div>
+        </div>
+      </div>
+      <div class="review-add-comment">
+        <div class="review-add-comment-write">{{ review_form.content }}</div>
+        <div class="review-add-comment-btn"><input type="submit" class="comment-btn" value="등록"></div>
+        <div hidden>{{ review_form.star }}</div>
+      </div> 
     </form>
   </div>
-{% endfor %}
 
-<form action="{% url 'courses:review_create' course.pk %}" method="post">
-  {% csrf_token %}
   <div>
-    댓글 작성 : {{ review_form.as_p }}
+    {% for review in reviews reversed%}
+      <div>
+        <p>{{  review.user }}</p>
+        <p>{{  review.content }}</p>
+        <p>{{  review.created_at }}</p>
+        <p>{{  review.star }}</p>
+        {% if request.user == review.user %}
+        <form action="{% url 'courses:review_delete' course.pk review.pk %}">
+          <input type="submit" value="댓글 삭제">
+        </form>
+        {% endif %}
+      </div>
+    {% endfor %}
   </div>
-  <input type="submit" value="댓글 작성">    
-</form>
+</section>
+
+<script src="{% static 'courses/js/course_detail_review.js' %}"></script>
