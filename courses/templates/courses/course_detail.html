@@ -24,24 +24,10 @@
 </div>
 
 <hr>
+{% block review %}
 
-{% for review in reviews %}
-  <div>
-    <p>{{  review.content }}</p>
-    <p>{{  review.star }}</p>
-    <form action="{% url 'courses:review_delete' course.pk review.pk %}">
-      <input type="submit" value="댓글 삭제">
-    </form>
-  </div>
-{% endfor %}
+{% endblock review %}
 
-<form action="{% url 'courses:review_create' course.pk %}" method="post">
-  {% csrf_token %}
-  <div>
-    댓글 작성 : {{ review_form.as_p }}
-  </div>
-  <input type="submit" value="댓글 작성">    
-</form>
 <hr>
 
 <div>
