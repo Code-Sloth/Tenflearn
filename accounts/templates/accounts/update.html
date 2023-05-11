@@ -5,5 +5,11 @@
 {% endblock title %}
 
 {% block content %}
-
+{% if request.user.is_authenticated %}
+<form action="{% url 'accounts:update' %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_p}}
+  <input type="submit">
+</form>
+{% endif %}
 {% endblock content %}
