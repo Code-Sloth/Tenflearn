@@ -54,12 +54,12 @@ a{
 .hash-slide {
   margin: auto 0;
   position: absolute;
-  top: 50%;
+  top: 50;
 }
 
 .hash-curation-img {
-  width: 3em;
-  height: 3em;
+  width: 2em;
+  height: 2em;
   margin: 0 auto;
   margin-bottom: 0.4em;
 }
@@ -71,8 +71,8 @@ a{
 
 .swiper-button-next,
 .swiper-button-prev {
-  width: 2.75em !important;
-  height: 2.75em !important;
+  width: 2.5em !important;
+  height: 2.5em !important;
   background-color: hsla(0, 0%, 100%, 0.85);
   color: #333 !important;
   border-radius: 50%;
@@ -94,7 +94,6 @@ a{
 }
 
 /* 강의  */
-
 .course-container {
   height: 27em;
   padding: 1.5em 0em;
@@ -119,11 +118,21 @@ a{
 }
 
 /* 강의 카드 */
+.course-slide {
+  height: 18em;
+  min-width: 220px;
+  position: relative;
+
+}
 .course-card-img {
-  height: 9em;
+  width: 100%;
+  height: 8em;
   margin-bottom: 0.5em;
 }
 
+.course-card-img img{
+  width: 100%;
+}
 
 .course-card-content-title{
   text-align: left;
@@ -152,6 +161,18 @@ a{
   color: #175cbe;
 }
 
+.course-card-content-price-sub{
+  text-align: left;
+}
+.course-card-content-price-underline{
+  text-decoration: line-through;
+  color: #595959;
+  font-weight: 500;
+  font-size: .9rem;
+  opacity: .75;
+  margin-right: .3rem;
+}
+
 .course-card-content-bottom{
   text-align: left;
 }
@@ -163,3 +184,52 @@ a{
   font-size: .625rem;
   padding: 0.5em 0.75em;
 }
+/* star */
+
+.banner-star-box {
+  position: relative;
+  width: 72px;
+}
+
+.banner-star-box img {
+  width: 72px;
+}
+
+.banner-star-yellow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+/* 강의 카드 호버 */
+.course-slide-hover{
+  position: absolute;
+  width: 100%;
+  height: 15em;
+  background-color: rgba(0, 0, 0, 0.785);
+  z-index: 5;
+}
+
+.course-slide-hover-title{
+  text-align: left;
+  color: white;
+  font-weight: 500;
+  margin: 1rem 1rem;
+}
+
+.course-slide-hover-bottom{
+  text-align: left;
+  font-size: .8rem;
+  margin: .5rem 1rem;
+  color:hsl(182,75%,94%);
+}
+
+.course-slide-hover-bottom p{
+  margin: 0
+}
+
+.course-slide-hover-hidden{
+  display: none;
+}
+
