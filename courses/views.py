@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Course, Review
-from .forms import ReviewForm
+from .forms import CoursesForm, ReviewForm
+from django.contrib.auth.decorators import login_required
 from taggit.models import Tag, TaggedItem
 from communities.models import Comment
 from django.core.paginator import Paginator
@@ -21,7 +22,10 @@ def detail(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
-    other_courses = random.sample(list(Course.objects.all()), 3)
+    if Course.objects.count() >= 3:
+        other_courses = random.sample(list(Course.objects.all().exclude(pk=course.pk)), 3)
+    else:
+        other_courses = []
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(pk=course.pk)
     similar_course = random.choice(similar_courses) if similar_courses else None
     context = {
@@ -32,6 +36,24 @@ def detail(request, course_pk):
         'similar_course': similar_course,
     }
     return render(request, 'courses/course_detail.html', context)
+
+
+@login_required
+def create(request):
+    if request.method == 'POST':
+        form = CoursesForm(request.POST, request.FILES)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.user = request.user
+            course.save()
+            form.save_m2m()
+            return redirect('courses:detail', course.pk)
+    else:
+        form = CoursesForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'courses/course_create.html', context)
 
 
 def comment(request, course_pk):
