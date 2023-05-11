@@ -3,6 +3,7 @@ from .models import Comment, Recomment
 from courses.models import Review
 from .forms import CommentForm, RecommentForm
 from courses.models import Course
+from django.core.paginator import Paginator
 # Create your views here.
 
 def comment(request):
@@ -123,9 +124,16 @@ def recomment_delete(request, comment_pk, recomment_pk):
 
 def review(request):
     reviews = Review.objects.order_by('-id')
+    page = request.GET.get('page', '1')
+    per_page = 5
+    paginator = Paginator(reviews, per_page)
+    page_obj = paginator.get_page(page)
 
+    last = paginator.num_pages
     context = {
-        'reviews': reviews,
+        'reviews': page_obj,
+        'page_obj': page_obj,
+        'last': last,
     }
 
     return render(request, 'communities\inflearn_index.html', context)
