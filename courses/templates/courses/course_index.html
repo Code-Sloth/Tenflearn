@@ -1,9 +1,281 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block title %}인프런 - 라이프타임
+커리어 플랫폼{% endblock title %} {% block content %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'courses/css/index.css' %}"
+/>
+{% comment %} Link Swiper's CSS {% endcomment %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+{% comment %} 상단 배너 {% endcomment %}
+<header>
+  <div class="box">
+    <div class="swiper banner">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide banner-slide">
+          <div class="banner-slide-img">
+            <img src="{% static 'courses/image/banner1.png' %}" alt="메인베너1" />
+            <div class="banner-slide-title"></div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <img src="{% static 'courses/image/banner2.png' %}" alt="메인베너2" />
+        </div>
+      </div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+  </div>
+</header>
+<main>
+  {% comment %} 해시태그 {% endcomment %}
+  <nav class="box hash-container">
+    <div class="swiper hash-curation">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/js.svg' %}"
+                alt="자바스크립트로고"
+              />
+            </div>
+            <p class="hash-curation-title">#자바스크립트</p>
+          </a>
+        </div>
 
-{% block title %}
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/ts.svg' %}"
+                alt="타입스크립트로고"
+              />
+            </div>
+            <p class="hash-curation-title">#타입스크립트</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/python.svg' %}"
+                alt="파이썬로고"
+              />
+            </div>
+            <p class="hash-curation-title">#파이썬</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/html.svg' %}"
+                alt="HTML로고"
+              />
+            </div>
+            <p class="hash-curation-title">#HTML</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/css.svg' %}"
+                alt="CSS로고"
+              />
+            </div>
+            <p class="hash-curation-title">#CSS</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/django.svg' %}"
+                alt="장고로고"
+              />
+            </div>
+            <p class="hash-curation-title">#장고</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/react.svg' %}"
+                alt="리액트로고"
+              />
+            </div>
+            <p class="hash-curation-title">#리액트</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/angular.svg' %}"
+                alt="앵귤러로고"
+              />
+            </div>
+            <p class="hash-curation-title">#앵귤러</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/java.svg' %}"
+                alt="JAVA로고"
+              />
+            </div>
+            <p class="hash-curation-title">#JAVA</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/mysql.svg' %}"
+                alt="mySQL로고"
+              />
+            </div>
+            <p class="hash-curation-title">#mySQL</p>
+          </a>
+        </div>
+        <div class="swiper-slide hash-slide">
+          <a href="">
+            <div class="hash-curation-img">
+              <img
+                src="{% static 'courses/image/hashlogo/spring.svg' %}"
+                alt="spring로고"
+              />
+            </div>
+            <p class="hash-curation-title">#스프링</p>
+          </a>
+        </div>
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </nav>
 
-{% endblock title %}
+  <article>
+    {% comment %} 로그인 시 내 학습 {% endcomment %} {% comment %}
+    <section class="box course-curation"></section>
+    {% endcomment %} 
+    
+    {% comment %} 최신순 {% endcomment %}
+    <section class="box course-container">
+      <div class="box course-container-header">
+        <h1 class="course-container-header-title">따끈따끈, 신규 강의를 만나보세요! 🙋‍♀️></h1>
+        <p class="course-curation-header-subtext">
+          최신 강의부터 먼저 만나보세요.
+        </p>
+      </div>
+      {% comment %} 강의 캐러셀 {% endcomment %}
+      <div class="box course-curation-content">
+        <div class="swiper course-curation">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide course-slide">
+                <a href="">
+                  <div class="course-card-container">
+                    <div class="course-card-img">
+                      <img src="{% static 'courses/image/a.jpg' %}" alt="강의카드사진">
+                    </div>
+                    <div class="course-card-content">
+                      <div class="course-card-content-title">자바(JAVA)알고리즘 문제풀이 입문:코딩테스트 대비</div>
+                      <div class="course-card-content-writer">김태원</div>
+                      <div class="course-card-content-star"></div>
+                      <div class="course-card-content-price">$2000
+                      </div>
+                      <div class="course-card-content-bottom">
+                        <span class="discount-tag">할인중</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </section>
 
-{% block content %}
+    {% comment %} 별점순 {% endcomment %}
+    <section class="course-container"></section>
 
+    {% comment %} 수강생순 {% endcomment %}
+    <section class="course-container"></section>
+  </article>
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script>
+  {% comment %} 강의 캐러셀 {% endcomment %}
+  const courseSwiper = new Swiper(".course-curation", {
+    slidesPerView: 2,
+    spaceBetween: 5,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      576: {
+        slidesPerView: 2,
+        spaceBetween: 5,
+      },
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 10,
+      },
+      1024: {
+        slidesPerView: 4,
+        spaceBetween: 15,
+      },
+      1200: {
+        slidesPerView: 5,
+        spaceBetween: 20,
+      },
+    },
+  });
+
+  {% comment %} 배너 {% endcomment %}
+  const bannerSwiper = new Swiper(".banner", {
+    scrollbar: {
+      el: ".swiper-scrollbar",
+      hide: true,
+    },
+  });
+
+  {% comment %} 해시 {% endcomment %}
+  const hashSwiper = new Swiper('.hash-curation', {
+    slidesPerView: 5,
+    spaceBetween: 10,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+
+    breakpoints: {
+      576: {
+        slidesPerView: 3,
+        spaceBetween: 1,
+      },
+      768: {
+        slidesPerView: 6,
+        spaceBetween: 10,
+      },
+      1024: {
+        slidesPerView: 7,
+        spaceBetween: 15,
+      },
+      1200: {
+        slidesPerView: 8,
+        spaceBetween: 20,
+      },
+    },
+  });
+</script>
 {% endblock content %}
