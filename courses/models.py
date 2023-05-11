@@ -20,7 +20,7 @@ class Course(models.Model):
     discounted_price = models.IntegerField()
 
     def course_image_path(instance, filename):
-        return f'courses/{instance.title}/{filename}'
+        return f'courses/{instance.pk}/{filename}'
 
     image = ProcessedImageField(
         upload_to=course_image_path,

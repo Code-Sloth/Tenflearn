@@ -54,3 +54,19 @@ class ReviewForm(forms.ModelForm):
             'content',
             'star',
         )
+        labels = {
+            'content': '',
+        }
+        widgets = {'content': forms.Textarea(
+                    attrs={
+                        'placeholder': '좋은 수강평을 남겨주시면 지식공유자와 이후 배우는 사람들에게 큰 도움이 됩니다!',
+                        'cols': 100,
+                        'rows': 3,
+                }),
+                'star': forms.NumberInput(
+                    attrs={
+                        'min': '1',
+                        'max': '5',
+                }),
+        }
+
