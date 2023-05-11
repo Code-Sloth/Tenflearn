@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
 
 {% block title %}
-
+{{ course.title }}
 {% endblock title %}
 
 {% block content %}
-
+<div>
+  <h2>강의 정보</h2>
+  <p>{{ course.title }}</p>
+  <p>{{ course.content }}</p>
+  <p>{{ course.star }}</p>
+  <p>{{ course.price }}</p>
+  <p>{{ course.discount_rate }}</p>
+  <p>{{ course.discounted_price }}</p>
+  <p><img src="{{ course.image.url }}" alt="{{ course.image.url }}"></p>
+  <p>{{ course.expired_date }}</p>
+  <p>{{ course.level }}</p>
+  <p>{{ course.certificates }}</p>
+  <p>{{ course.created_at }}</p>
+  {% for tag in course.tags.all %}
+      <p>#{{ tag.name }}</p>
+  {% endfor %}
+</div>
 {% endblock content %}

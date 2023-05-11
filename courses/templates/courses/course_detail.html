@@ -5,16 +5,58 @@
 {% endblock title %}
 
 {% block content %}
-<p>{{ course.title }}</p>
-<p>{{ course.content }}</p>
-<p>{{ course.star }}</p>
-<p>{{ course.price }}</p>
-<p>{{ course.discount_rate }}</p>
-<p>{{ course.discounted_price }}</p>
-<p>{{ course.image }}</p>
-<p>{{ course.expired_date }}</p>
-<p>{{ course.level }}</p>
-<p>{{ course.certificates }}</p>
-<p>{{ course.created_at }}</p>
+<div>
+  <h2>강의 정보</h2>
+  <p>{{ course.title }}</p>
+  <p>{{ course.star }}</p>
+  <p>{{ course.price }}</p>
+  <p>{{ course.discount_rate }}</p>
+  <p>{{ course.discounted_price }}</p>
+  <p><img src="{{ course.image.url }}" alt="{{ course.image.url }}"></p>
+  <p>{{ course.expired_date }}</p>
+  <p>{{ course.level }}</p>
+  <p>{{ course.certificates }}</p>
+  <p>{{ course.created_at }}</p>
+  {% for tag in course.tags.all %}
+      <p>#{{ tag.name }}</p>
+  {% endfor %}
+  <p>{{ course.content|linebreaksbr }}</p>
+</div>
+
+<hr>
+
+{% for review in reviews %}
+  <div>
+    <p>{{  review.content }}</p>
+    <p>{{  review.star }}</p>
+    <form action="{% url 'courses:review_delete' course.pk review.pk %}">
+      <input type="submit" value="댓글 삭제">
+    </form>
+  </div>
+{% endfor %}
+
+<form action="{% url 'courses:review_create' course.pk %}" method="post">
+  {% csrf_token %}
+  <div>
+    댓글 작성 : {{ review_form.as_p }}
+  </div>
+  <input type="submit" value="댓글 작성">    
+</form>
+<hr>
+
+<div>
+  <h3>강사의 다른 강의</h3>
+  {% for other_course in other_courses %}
+    <p>{{ other_course.title }}</p>
+  {% endfor %}
+</div>
+
+<hr>
+
+<div>
+  <h3>비슷한 강의</h3>
+  {{ similar_course.title }}
+</div>
+
 
 {% endblock content %}
