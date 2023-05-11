@@ -78,8 +78,12 @@ class Review(models.Model):
         super(Review, self).save(*args, **kwargs)
 
     def delete(self, *args, **kargs):
-        self.course.star = (self.course.star * self.course.reviews.count() - self.star) / (self.course.reviews.count() - 1)
+        if self.course.reviews.count() >= 2:
+            self.course.star = (self.course.star * self.course.reviews.count() - self.star) / (self.course.reviews.count() - 1)
+        else:
+            self.course.star = 0
         self.course.save()
         super(Review, self).delete(*args, **kargs)
 
-        
+    def star_multiple(self):
+        return self.star*20

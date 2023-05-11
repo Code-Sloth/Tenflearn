@@ -89,7 +89,7 @@
         강의소개
       </a>
 
-      <a class='section-header-a' href="">
+      <a class='section-header-a ps-1' href="">
         수강평<span>{{ course.reviews.count }}</span>
       </a>
 
@@ -104,17 +104,25 @@
   <div class='section-container d-flex'>
     <div class='section-left'>
       <p class='section-left-content'>
-        {{ course.content|linebreaks }}
+        {{ course.content|linebreaksbr }}
       </p>
 
-      <div>
-
+      <div class='section-left-review'>
+        {% include 'courses/course_detail_review.html' %}
       </div>
 
     </div>
 
-    <div class='right-sidebar'>
-      hi
+    <div class='section-right'>
+      
+      <div class='right-sidebar'>
+
+        <div>
+          
+        </div>
+
+      </div>
+
     </div>
   </div>
 
@@ -132,6 +140,7 @@
   <p>{{ course.price }}</p>
   <p>{{ course.discount_rate }}</p>
   <p>{{ course.discounted_price }}</p>
+
   <p>{{ course.expired_date }}</p>
   <p>{{ course.level }}</p>
   <p>{{ course.certificates }}</p>
@@ -143,7 +152,7 @@
 </div>
 
 <hr>
-{% include 'courses/course_detail_review.html' %}
+
 <hr>
 
 <div>

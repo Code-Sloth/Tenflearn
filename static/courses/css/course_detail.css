@@ -135,9 +135,10 @@
   position: sticky;
   top: 64px;
   background-color: white;
-  height: 45px;
+  height: 46px;
   border-bottom: 1px solid rgb(240 240 240);
   border-top: 0.5px solid rgb(240 240 240);
+  z-index: 50;
 }
 
 .section-header-a {
@@ -149,6 +150,7 @@
   font-size: 15px;
   color: rgb(171 176 181);
   text-decoration: none;
+  text-align: center;
 }
 
 .section-header-a span {
@@ -159,7 +161,6 @@
 
 .section-header-a:hover {
   color: black;
-  border-bottom: 2px solid black;
 }
 
 .section-left {
@@ -167,8 +168,22 @@
 }
 
 .section-left-content {
-  margin: 30px 0;
-  color: rgb(130 130 130);
+  padding: 30px 0;
+  color: rgb(80 80 80);
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.section-left-review {
+  padding-top: 20px;
+}
+
+/* 오른쪽 사이드바 */
+
+.right-sidebar {
+  width: 330px;
+  padding: 20px 24px;
+  border: 1px solid rgb(240 240 240);
+  border-radius: 10px;
 }
 
 @media(max-width: 1024px) {
