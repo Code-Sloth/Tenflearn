@@ -1,0 +1,165 @@
+.box {
+  border: 1px solid black;
+}
+
+a{
+  text-decoration: none;
+  outline: none;
+}
+
+/* 캐러셀 공통 CSS */
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 베너 캐러셀 */
+.banner {
+  width: 100%;
+  height: 20em;
+}
+
+.banner-slide-img {
+  position: relative;
+  height: 100%;
+}
+
+.banner-slide-title {
+  position: absolute;
+  bottom: 0;
+}
+
+/* 해시 태그 캐러셀 */
+
+.hash-container {
+  height: 9em;
+  margin: 0em 2.5em;
+  padding: 1.5em 2em;
+}
+.hash-curation {
+  min-width: 576px;
+}
+
+.hash-slide {
+  margin: auto 0;
+  position: absolute;
+  top: 50%;
+}
+
+.hash-curation-img {
+  width: 3em;
+  height: 3em;
+  margin: 0 auto;
+  margin-bottom: 0.4em;
+}
+
+.hash-curation-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  width: 2.75em !important;
+  height: 2.75em !important;
+  background-color: hsla(0, 0%, 100%, 0.85);
+  color: #333 !important;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  transform: scale(1.1);
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}
+
+.hash-container a {
+  color: #333;
+}
+
+/* 강의  */
+
+.course-container {
+  height: 27em;
+  padding: 1.5em 0em;
+  margin: 0 2.5em;
+}
+
+.course-container-header-title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.course-container-header-subtext {
+  font-weight: 400;
+  color: #757575;
+  font-size: 0.8rem;
+}
+
+/* 강의 캐러셀 */
+.course-curation-content {
+  height: 20em;
+}
+
+/* 강의 카드 */
+.course-card-img {
+  height: 9em;
+  margin-bottom: 0.5em;
+}
+
+
+.course-card-content-title{
+  text-align: left;
+  font-weight: 700;
+  line-height: 1.5em;
+  height: auto;
+  font-size: .8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+  color: #454545;
+}
+
+.course-card-content-writer{
+  text-align: left;
+  color: #7d7d7d;
+  font-size: .825rem;
+}
+
+.course-card-content-price{
+  text-align: left;
+  font-weight: 700;
+  color: #175cbe;
+}
+
+.course-card-content-bottom{
+  text-align: left;
+}
+
+.discount-tag{
+  background-color: hsl(1,100%,89%);
+  border-radius: 4px;
+  color: #454545;
+  font-size: .625rem;
+  padding: 0.5em 0.75em;
+}
