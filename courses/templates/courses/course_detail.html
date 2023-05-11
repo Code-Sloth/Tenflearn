@@ -132,7 +132,6 @@
   <p>{{ course.price }}</p>
   <p>{{ course.discount_rate }}</p>
   <p>{{ course.discounted_price }}</p>
-
   <p>{{ course.expired_date }}</p>
   <p>{{ course.level }}</p>
   <p>{{ course.certificates }}</p>
@@ -144,10 +143,7 @@
 </div>
 
 <hr>
-{% block review %}
-
-{% endblock review %}
-
+{% include 'courses/course_detail_review.html' %}
 <hr>
 
 <div>

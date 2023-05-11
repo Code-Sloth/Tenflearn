@@ -5,5 +5,9 @@
 {% endblock title %}
 
 {% block content %}
-
+<form action="{% url 'accounts:signup' %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit">
+</form>
 {% endblock content %}

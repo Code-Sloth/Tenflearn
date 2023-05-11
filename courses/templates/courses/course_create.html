@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+강의 생성
+{% endblock title %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+  <form action="{% url 'courses:create' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mt-4">
+      {{ form.as_p }}
+    </div>
+    <button type="button" class="btn btn-secondary" id="set-expired-date-btn">무기한 입력</button>
+    <input type="submit" class="btn btn-secondary mt-2" style="width: 500px;" value="강의 생성">
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#set-expired-date-btn').click(function() {
+      $('#id_expired_date').val('9999-12-31');
+    });
+  });
+  </script>
+{% endblock content %}
