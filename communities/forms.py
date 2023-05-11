@@ -1,5 +1,5 @@
 from django import forms
-from .models import Review, Comment, Recomment
+from .models import Comment, Recomment
 from ckeditor.widgets import CKEditorWidget
 
 class CommentForm(forms.ModelForm):
@@ -22,12 +22,3 @@ class RecommentForm(forms.ModelForm):
             'content',
         )
 
-
-class ReviewForm(forms.ModelForm):
-
-    class Meta:
-        model = Review
-        fields = (
-            'content',
-            'star',
-        )

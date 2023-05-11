@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Comment, Recomment, Review
-from .forms import CommentForm, RecommentForm, ReviewForm
+from .models import Comment, Recomment
+from courses.models import Review
+from .forms import CommentForm, RecommentForm
 from courses.models import Course
 # Create your views here.
 
@@ -120,11 +121,6 @@ def recomment_delete(request, comment_pk, recomment_pk):
     return redirect('communities:recomment', comment_pk=comment_pk)
 
 
-
-
-
-## 리뷰
-
 def review(request):
     reviews = Review.objects.order_by('-id')
 
@@ -134,33 +130,3 @@ def review(request):
 
     return render(request, 'communities\inflearn_index.html', context)
 
-
-def review_create(request):
-    course_pk = request.GET.get('course_pk')
-
-    if request.method == 'POST':
-        review_form = ReviewForm(request.POST)
-        if review_form.is_valid():
-            review = review_form.save(commit=False)
-            course = Course.objects.get(pk=course_pk)
-            review.course = course
-            review.user = request.user
-            review.save()
-
-            return redirect('#')
-
-    else:
-        review_form = ReviewForm()
-    context = {
-        'review_form': review_form,
-    }
-
-    return render(request, 'communities/comment_create.html', context)
-
-
-def review_delete(request, review_pk):
-    review = Review.objects.get(pk=review_pk)
-    course_pk = request.GET.get('course_pk', 0)
-    if request.user == review.user and request.method == 'POST':
-        review.delete()
-        return redirect('courses:detail', course_pk)

@@ -15,11 +15,6 @@ urlpatterns = [
 
 #리뷰 CRD 
     path('reviews/', views.review, name='inflearn_index'),
-    path('reviews/create/', views.review_create, name='review_create'),
-    path('reviews/<int:review_pk>/delete/', views.review_delete, name='review_delete'),
-
-
-
 ]
 
 
