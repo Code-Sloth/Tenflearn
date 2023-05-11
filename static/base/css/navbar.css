@@ -49,6 +49,7 @@
   font-size: 22px;
   font-weight: 300;
   color: rgb(120 120 120);
+  z-index: 1000;
 }
 
 .right-fs {

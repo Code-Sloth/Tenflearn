@@ -21,7 +21,10 @@ def detail(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
-    other_courses = random.sample(list(Course.objects.all()), 3)
+    if Course.objects.count() >= 3:
+        other_courses = random.sample(list(Course.objects.all().exclude(pk=course.pk)), 3)
+    else:
+        other_courses = []
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(pk=course.pk)
     similar_course = random.choice(similar_courses) if similar_courses else None
     context = {
