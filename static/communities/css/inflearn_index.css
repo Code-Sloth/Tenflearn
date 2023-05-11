@@ -1,0 +1,112 @@
+/* Community Header */
+
+.community-box-header {
+  background-color: #212529;
+  margin: 0;
+}
+
+.community-header {
+  background-color: #212529;
+  padding: 24px;
+  text-align: left;
+  margin: auto;
+  max-width: 1200px;
+
+
+}
+
+@media(max-width: 1200px) {
+  ..community-header {
+    background-color: #212529;
+    padding: 24px;
+    text-align: left;
+    margin-left: 0;
+    max-width: 1200px;
+    }
+  }
+/* 1200 기준으로 margin left 0으로 */
+
+.community-header__title {
+  font-size: 24px;
+  color: #f8f8f8;
+  font-weight: bold;
+}
+
+.community-header__content {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #f8f8f8;
+}
+
+.community-body {
+  display: flex;
+  padding: 32px;
+  margin: auto;
+  max-width: 1200px;
+
+}
+
+.community-body__left {
+  flex: 1;
+  color: rgb(0, 196, 113);
+  padding: 20px 12px;
+  font-size: 16px;
+  margin: auto;
+  height: 148px;
+  width: 24px;
+}
+
+.community-body__right {
+  flex: 5;
+}
+
+.community-body__review {
+
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  height: 76px;
+
+}
+
+
+.review-left {
+  flex: 1;
+}
+
+.review-left__star {
+  font-size: 24px;
+  color: #ffcc00;
+}
+
+.review-left__content {
+  margin-top: 16px;
+}
+
+.review-left__like {
+  margin-top: 12px;
+}
+
+.review-right__img {
+  width: 200px;
+  height: 150px;
+}
+
+
+.banner-star-box {
+  position: relative;
+  width: 120px;
+}
+
+.banner-star-box img {
+  width: 120px;
+}
+
+.banner-star-yellow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
