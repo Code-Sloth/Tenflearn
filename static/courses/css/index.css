@@ -7,6 +7,19 @@ a{
   outline: none;
 }
 
+.main-container{
+  width: 1200px;
+  padding: 0 32px;
+  margin: 0 auto;
+}
+
+@media(max-width: 1200px) {
+  .main-container {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
 /* 캐러셀 공통 CSS */
 .swiper-slide {
   text-align: center;
@@ -44,7 +57,6 @@ a{
 
 .hash-container {
   height: 9em;
-  margin: 0em 2.5em;
   padding: 1.5em 2em;
 }
 .hash-curation {
@@ -97,7 +109,6 @@ a{
 .course-container {
   height: 27em;
   padding: 1.5em 0em;
-  margin: 0 2.5em;
 }
 
 .course-container-header-title {
@@ -200,6 +211,13 @@ a{
   bottom: 0;
   left: 0;
   overflow: hidden;
+}
+
+.course-card-content-reviews-cnt{
+  font-size: .5rem;
+  bottom: 0.3rem;
+  color: #4a4a4a;
+  margin-left: .3rem;
 }
 
 /* 강의 카드 호버 */

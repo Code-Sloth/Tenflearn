@@ -6,14 +6,28 @@ from taggit.models import Tag, TaggedItem
 from communities.models import Comment
 from django.core.paginator import Paginator
 import random
+from django.db.models import Count
+from django.db.models import Q
+
 
 
 # Create your views here.
 
 def index(request):
     courses = Course.objects.all().order_by('-pk')
+    sorted_star_courses = Course.objects.all().order_by('-star')
+    sorted_enrolment_courses = Course.objects.annotate(num_enrolment_users=Count('enrolment_users')).order_by('-num_enrolment_users')
+    # similar_courses = Course.objects.filter(
+    #     Q(tags__in=courses.tags.all()) &
+    #     ~Q(enrolment_users=request.user)
+    # )
+    
+    
     context = {
         'courses': courses,
+        'sorted_star_courses': sorted_star_courses,
+        'sorted_enrolment_courses' : sorted_enrolment_courses,
+        # 'similar_courses': similar_courses,
     }
     return render(request, 'courses/course_index.html', context)
 
