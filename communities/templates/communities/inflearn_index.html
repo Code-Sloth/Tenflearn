@@ -1,14 +1,46 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
 
 {% block title %}
-
 {% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'communities\css\inflearn_index.css' %}">
 
-{% for review in reviews %}
-<div>{{ review }}</div>
-{% endfor %}
+<div class="community-box-header">
+  <div class="community-header">
+    <div class="community-header__title">수강평 총 111,268개, 만족도 96.5%</div>
+    <div class="community-header__content">🔥실시간으로 올라오는 진짜 수강평!🔥</div>
+  </div>
+</div>
 
+<div class="community-body">
+
+    <div class='community-body__left'>수강평</div>
+    <div class="community-body__right">
+      {% for review in reviews %}
+      <div class="community-body__review">
+          <div class="review-left">
+            <div class="review-left__star"><div class='banner-star-box'>
+              <div class='banner-star-gray'>
+                <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+              </div>
+              <div class='banner-star-yellow' style='width: {{ 3|divide_by_five }}%;'>
+                <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+              </div>
+  
+              </div>
+            </div>
+            <div class="review-left__content">{{ review.content }}</div>
+            <div class="review-left__like">글쓴이: {{ review.user}} {{ review.created_at }} 강의명: {{ review.course }}</div>
+          </div>
+          <div class="review-right"><img src="#" alt="강의 사진"></div>
+        </div>
+        <hr>
+      {% endfor %}
+    </div>
+</div>
 
 {% endblock content %}
