@@ -6,4 +6,42 @@
 
 {% block content %}
 
+{% comment %} 내정보 {% endcomment %}
+<p>ID: {{ user.username }}</p>
+<p>성: {{ user.last_name }}</p>
+<p>이름: {{ user.first_name }}</p>
+<hr>
+{% comment %} 내가 쓴 리뷰 {% endcomment %}
+{% for review in reviews  %}
+    <p>{{ review.title }}</p>
+    <p>{{ review.content }}</p>
+    <p>{{ review.created_at}}</p>
+{% endfor %}
+<hr>
+{% comment %} 내가 수강한 강의 목록 {% endcomment %}
+{% for course in courses %}
+    <h2>{{ course.title }}</h2>
+    <p>{{ course.content }}</p>
+    <p>Enrolled on: {{ course.enrolment_users.through.created_at }}</p>
+{% endfor %}
+<hr>
+{% comment %} 장바구니 {% endcomment %}
+<h2>장바구니</h2>
+{% for item in cart_items %}
+    <tr>
+        <td>{{ item.course.title }}</td>
+        <td>{{ item.course.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.total_price }}</td>
+        <td>
+            <a href="{% url 'accounts:remove_cart' item.course.id %}">Remove</a></td>
+    </tr>
+{% endfor %}
+
+{% if cart_items %}
+    <p>Total price: {{ cart_total }}</p>
+{% else %}
+    <p>장바구니가 비어있습니다.</p>
+{% endif %}
+
 {% endblock content %}

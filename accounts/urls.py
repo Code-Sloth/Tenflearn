@@ -7,5 +7,9 @@ urlpatterns = [
     path('signup/', views.signup, name = 'signup'),
     path('update/', views.update, name = 'update'),
     path('password/', views.change_password, name = 'change_password'),
-    # path('mypage/<username>/', views.mypage, name = 'mypage'),
+    path('mypage/<str:username>/', views.mypage, name = 'mypage'),
+    # path('cart/<int:user_id>/', views.cart, name='cart'),
+    path('add_cart/<int:course_id>/', views.add_cart, name='add_cart'),
+    path('remove_cart/<int:course_id>/', views.remove_cart, name='remove_cart'),
+    path('view_cart/', views.view_cart, name='view_cart'),
 ]
