@@ -4,7 +4,7 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
-from datetime import timedelta,datetime
+from datetime import timedelta,datetime,date
 from taggit.managers import TaggableManager
 
 # Create your models here.
@@ -37,6 +37,18 @@ class Course(models.Model):
     certificates = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     tags = TaggableManager()
+
+    def expired_unlimited(self):
+        if self.expired_date == date(9999,12,31):
+            return '무제한'
+        else:
+            return self.expired_date
+    
+    def certificates_kr(self):
+        if self.certificates == True:
+            return '발급'
+        else:
+            return '미발급'
 
     def star_multiple(self):
         return self.star*20

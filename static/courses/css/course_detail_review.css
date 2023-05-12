@@ -46,7 +46,7 @@
   margin-top: 10px;
 }
 
-.review-dashbboard-graph {
+.review-dashboard-graph {
   margin-left: 10px;
   border-radius: 5px;
   flex-grow: 1;
@@ -103,6 +103,13 @@
   background-color: #f8f9fa;
 }
 
+.review-add-comment-write {
+  width: 100%;
+}
+
+.review-add-comment-write textarea {
+  width: 100%;
+}
 
 #id_content {
   border: none;

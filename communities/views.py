@@ -38,8 +38,11 @@ def comment_detail(request, comment_pk):
     return render(request, 'communities/comment_detail.html', context)
 
 def comment_create(request):
-    course_pk = request.GET.get('course_pk', 0)
-    
+    if request.method == 'POST':
+        course_pk = request.POST.get('course_pk', 0)
+    else:
+        course_pk = request.GET.get('course_pk', 0)
+
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
@@ -56,6 +59,7 @@ def comment_create(request):
         comment_form = CommentForm()
     context = {
         'comment_form': comment_form,
+        'course_pk': course_pk,
     }
 
     return render(request, 'communities/comment_create.html', context)
