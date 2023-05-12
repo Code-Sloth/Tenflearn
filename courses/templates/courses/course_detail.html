@@ -171,5 +171,10 @@
   {% endfor %}
 </div>
 
-
+{% if request.user == course.user %}
+  <form action="{% url 'courses:delete' course.pk %}" METHOD="POST" class="p-2">
+    {% csrf_token %}
+    <button type="submit" value="DELETE" class="btn btn-outline-danger">강의 삭제</button>
+  </form>
+{% endif %}
 {% endblock content %}
