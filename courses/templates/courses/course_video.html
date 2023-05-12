@@ -9,14 +9,38 @@
 
 <div class="course">
   <iframe src="https://www.youtube.com/embed/kWiCuklohdY" 
-  class="course-video-youtube"
+  class="course-video"
   title="파이썬 코딩 무료 강의 (기본편) - 6시간 뒤면 여러분도 개발자가 될 수 있어요 [나도코딩]" 
   frameborder="0" 
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
   allowfullscreen></iframe>
 
-  <div>
-    asdfsdaf
+  <div class="course-descriptions">
+    <div>
+      <h4>{{ course.title }}</h4>
+    </div>
+    <div>
+      <span>강사 - {{ course.user }}</span>
+    </div>
+    <hr>
+    <button class="btn toggle-btn">강의 설명 보기</button>
+    <div class="course-descriptions-content">
+      {{ course.content|linebreaksbr }}
+    </div>
   </div>
 </div>
+
+<script>
+  const toggleBtn = document.querySelector('.toggle-btn');
+  const courseDescriptionContent = document.querySelector('.course-descriptions-content');
+  
+  toggleBtn.addEventListener('click', function() {
+    courseDescriptionContent.classList.toggle('show');
+    if (toggleBtn.textContent === '강의 설명 보기') {
+      toggleBtn.textContent = '강의 설명 닫기';
+    } else {
+      toggleBtn.textContent = '강의 설명 보기';
+    }
+  });
+</script>
 {% endblock content %}

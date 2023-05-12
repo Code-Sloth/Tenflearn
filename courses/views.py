@@ -10,7 +10,6 @@ from django.db.models import Count
 from django.db.models import Q
 
 
-
 # Create your views here.
 
 def index(request):
@@ -80,6 +79,13 @@ def create(request):
     return render(request, 'courses/course_create.html', context)
 
 
+def delete(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+    if request.user == course.user:
+        course.delete()
+        return redirect('courses:index')
+
+
 def comment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     context = {
@@ -137,7 +143,7 @@ def review_delete(request, course_pk, review_pk):
 def video(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     context = {
-        course
+        'course': course,
     }
     return render(request, 'courses/course_video.html', context)
 
