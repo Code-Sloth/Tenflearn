@@ -108,7 +108,7 @@ a{
 /* 강의  */
 .course-container {
   height: 27em;
-  padding: 1.5em 0em;
+  margin: 2em 0;
 }
 
 .course-container-header-title {
@@ -130,14 +130,12 @@ a{
 
 /* 강의 카드 */
 .course-slide {
-  height: 18em;
   min-width: 220px;
   position: relative;
 
 }
 .course-card-img {
   width: 100%;
-  height: 8em;
   margin-bottom: 0.5em;
 }
 
