@@ -9,6 +9,11 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_detail.css' %}">
 
+<form action="{% url 'accounts:add_cart' course.id %}" method="GET">
+  <button type="submit">장바구니 담기</button>
+</form>
+
+
 <div class='course-detail'>
 
   {% comment %} 디테일 배너 {% endcomment %}

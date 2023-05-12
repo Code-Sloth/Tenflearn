@@ -60,7 +60,7 @@ def delete(request):
 @login_required
 def update(request):
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=request.user)
+        form = CustomUserChangeForm(request.POST, files=request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('courses:index')
@@ -90,42 +90,39 @@ def change_password(request):
 
 
 def mypage(request):
+    q = request.GET.get('q')
     cart = request.session.get('cart', {})
     cart_items = []
     cart_total = 0
 
     for course_id, course_info in cart.items():
         course = Course.objects.get(id=course_id)
-        total_price = Decimal(course_info['quantity']) * course.price
+        total_price = Decimal(course_info.get('quantity', 0)) * course.price
         cart_total += total_price
         cart_items.append({
             'course': course,
-            'quantity': course_info['quantity'],
+            'quantity': course_info.get('quantity', 0),
             'total_price': total_price,
         })
 
     context = {
+        'q': q,
         'cart_items': cart_items,
         'cart_total': cart_total,
     }
     return render(request, 'accounts/mypage.html', context)
 
-
 def add_cart(request, course_id):
     course = Course.objects.get(id=course_id)
     quantity = int(request.GET.get('quantity', 1))
-    if request.user.is_authenticated:
-        cart_key = f'cart_{request.user.username}'
-    else:
-        cart_key = 'cart'
-    cart = request.session.get(cart_key, {})
+    cart = request.session.get('cart', {})
+    
     if course_id in cart:
         cart[course_id]['quantity'] += quantity
     else:
         cart[course_id] = {'quantity': quantity, 'price': str(course.price)}
-    request.session[cart_key] = cart
+    request.session['cart'] = cart
     return redirect('accounts:mypage')
-
 
 def remove_cart(request, course_id):
     cart = request.session.get('cart', {})
@@ -134,9 +131,7 @@ def remove_cart(request, course_id):
     if course_id in cart:
         del cart[course_id]
         request.session['cart'] = cart
-
     return redirect('accounts:mypage')
-
 
 def view_cart(request):
     cart = request.session.get('cart', {})
@@ -145,11 +140,11 @@ def view_cart(request):
 
     for course_id, course_info in cart.items():
         course = Course.objects.get(id=course_id)
-        total_price = Decimal(course_info['quantity']) * course.price
+        total_price = Decimal(course_info.get('quantity', 0)) * course.price
         cart_total += total_price
         cart_items.append({
             'course': course,
-            'quantity': course_info['quantity'],
+            'quantity': course_info.get('quantity', 0),
             'total_price': total_price,
         })
 

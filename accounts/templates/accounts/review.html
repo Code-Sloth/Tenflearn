@@ -1,0 +1,17 @@
+{% comment %} 내가 쓴 리뷰 {% endcomment %}
+<div>
+<h1>나의 리뷰</h1>
+    {% if request.user.review_set.all %}
+        <ul>
+        {% for review in request.user.review_set.all %}
+            <li>
+                <p>{{ review.title }}</p>
+                <p>{{ review.content }}</p>
+                <p>{{ review.created_at}}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>리뷰가 없습니다.</p>
+    {% endif %}
+</div>
