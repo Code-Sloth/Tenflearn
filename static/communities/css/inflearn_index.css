@@ -16,7 +16,7 @@
 }
 
 @media(max-width: 1200px) {
-  ..community-header {
+  .community-header {
     background-color: #212529;
     padding: 24px;
     text-align: left;
@@ -47,50 +47,67 @@
 }
 
 .community-body__left {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+@media(max-width: 1200px) {
+  .community-body__left {
+    max-width: 1200px;
+    display: none;
+  }
+  }
+
+
+.community-body__left__content {
+  align-self: start;
   color: rgb(0, 196, 113);
   padding: 20px 12px;
   font-size: 16px;
-  margin: auto;
-  height: 148px;
-  width: 24px;
+  width: 171px;
+  margin-top: 0;
 }
 
 .community-body__right {
   flex: 5;
+  align-items: center;
 }
 
 .community-body__review {
 
   display: flex;
-  align-items: center;
-  margin-bottom: 20px;
   padding: 8px 16px;
-  height: 76px;
-
+  height: 125px;
+  margin: 0 5px;
+  border-bottom: 1px solid #dbdada;
 }
 
 
 .review-left {
   flex: 1;
+  height: auto;
+  /* padding: 5px; */
 }
 
 .review-left__star {
-  font-size: 24px;
-  color: #ffcc00;
+  /* font-size: 24px; */
+  /* color: #ffcc00; */
 }
 
 .review-left__content {
-  margin-top: 16px;
+  margin-top: 5px;
 }
 
-.review-left__like {
-  margin-top: 12px;
+.review-left__info {
+  margin-top: 5px;
 }
 
 .review-right__img {
-  width: 200px;
-  height: 150px;
+  display: flex;
+  align-items: center;
+  width: 120px;
+  height: 100%;
 }
 
 
@@ -110,3 +127,21 @@
   overflow: hidden;
 }
 
+.lecture-img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* 페이지네이션 */
+
+.page-link {
+  color: black;
+  background-color: white;
+}
+
+.page-item.active .page-link {
+    background-color: #1dc078;
+    color: white;
+    border-color: #1dc078;
+}

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static %} 
+{% comment %} {% load pagination_tags %} {% endcomment %}
 {% load custom_filters %}
 
 
@@ -18,29 +19,93 @@
 
 <div class="community-body">
 
-    <div class='community-body__left'>수강평</div>
-    <div class="community-body__right">
-      {% for review in reviews %}
-      <div class="community-body__review">
-          <div class="review-left">
-            <div class="review-left__star"><div class='banner-star-box'>
-              <div class='banner-star-gray'>
-                <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
-              </div>
-              <div class='banner-star-yellow' style='width: {{ 3|divide_by_five }}%;'>
-                <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
-              </div>
-  
-              </div>
-            </div>
-            <div class="review-left__content">{{ review.content }}</div>
-            <div class="review-left__like">글쓴이: {{ review.user}} {{ review.created_at }} 강의명: {{ review.course }}</div>
-          </div>
-          <div class="review-right"><img src="#" alt="강의 사진"></div>
-        </div>
-        <hr>
-      {% endfor %}
+    <div class='community-body__left'>
+        <div class="community-body__left__content">수강평</div>
     </div>
-</div>
+
+
+    <div class="community-body__right">
+      {% for review in page_obj %}
+      <div class="community-body__review">
+        <div class="review-left">
+          <div class="review-left__star"><div class='banner-star-box'>
+            <div class='banner-star-gray'>
+              <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+            </div>
+            <div class='banner-star-yellow' style='width: {{ 3|divide_by_five }}%;'>
+              <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+            </div>
+          </div>
+        </div>
+          <div class="review-left__content">{{ review.content|truncatechars:80 }}</div>
+          <div class="review-left__info">글쓴이: {{ review.user}} {{ review.created_at }} 강의명: {{ review.course.title }}</div>
+        </div>
+          <div class="review-right__img">
+            <img class="lecture-img"src="{{ review.course.image.url }}" alt="강의 사진">
+          </div>
+      </div>
+      {% endfor %} 
+    </div>
+  </div>  
+
+
+<!-- 페이지네이션 컴포넌트 시작 -->
+<ul class="pagination justify-content-center">
+      
+  <!-- 이전 페이지 버튼 -->
+  <!-- 이전 페이지가 존재할 경우 이전 페이지 버튼 활성화 -->
+  {% if reviews.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page=1">처음</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ reviews.previous_page_number }}">이전</a>
+    </li>
+  {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">처음</a>
+    </li>
+    <li class="page-item disabled">
+      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+    </li>
+  {% endif %}
+
+  <!-- 페이지 번호 리스트 생성 반복문 -->
+  {% for page_number in reviews.paginator.page_range %}
+
+    
+    <!-- 페이지 번호가 무한히 생성되는 것을 막는 조건문 -->
+    <!-- 현재 페이지에서 +- 5 까지 생성 -->
+    {% if page_number >= reviews.number|add:-5 and page_number <= reviews.number|add:5 %}
+      {% if page_number == reviews.number %}
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  <!-- 다음 페이지 버튼 -->
+  <!-- 다음 페이지가 존재할 경우 다음 페이지 버튼 활성화 -->
+  {% if reviews.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ reviews.next_page_number }}">다음</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ last }}">마지막</a>
+    </li>
+  {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+    </li>
+    <li class="page-item disabled">
+      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">마지막</a>
+    </li>
+  {% endif %}
+</ul>
 
 {% endblock content %}
