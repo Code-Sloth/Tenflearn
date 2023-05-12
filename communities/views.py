@@ -38,9 +38,9 @@ def comment_detail(request, comment_pk):
     return render(request, 'communities/comment_detail.html', context)
 
 def comment_create(request):
-    course_pk = request.GET.get('course_pk', 0)
-    
     if request.method == 'POST':
+        course_pk = request.POST.get('course_pk', 0)
+
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -51,11 +51,13 @@ def comment_create(request):
             comment.save()
 
             return redirect('communities:comment_index')
-
     else:
+        course_pk = request.GET.get('course_pk', 0)
         comment_form = CommentForm()
+        
     context = {
         'comment_form': comment_form,
+        'course_pk': course_pk,
     }
 
     return render(request, 'communities/comment_create.html', context)
@@ -128,10 +130,11 @@ def review(request):
     per_page = 5
     paginator = Paginator(reviews, per_page)
     page_obj = paginator.get_page(page)
-
     last = paginator.num_pages
+    reviews_count = reviews.count()
     context = {
-        'reviews': page_obj,
+        'reviews_count': reviews_count,
+        # 'reviews': page_obj,
         'page_obj': page_obj,
         'last': last,
     }

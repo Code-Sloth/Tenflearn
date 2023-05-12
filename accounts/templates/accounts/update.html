@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
-
+회원정보수정
 {% endblock title %}
 
 {% block content %}
-{% if request.user.is_authenticated %}
-<form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p}}
-  <input type="submit">
-</form>
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/update.css' %}">
+
+<div class="container-update">
+  <h2>회원정보수정</h2>
+  {% if request.user.is_authenticated %}
+  <div class="form-update">
+    <form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p}}
+      <a href="{% url 'accounts:change_password' %}" class="change_password-button">비밀번호 변경</a>
+      <button type="submit" class="update-button">회원정보 수정</button>
+    </form>
+  </div>
+</div>
 {% endif %}
 {% endblock content %}

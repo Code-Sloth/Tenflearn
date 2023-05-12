@@ -6,14 +6,30 @@ from taggit.models import Tag, TaggedItem
 from communities.models import Comment
 from django.core.paginator import Paginator
 import random
+from django.db.models import Count
+from django.db.models import Q
 
 
 # Create your views here.
 
 def index(request):
     courses = Course.objects.all().order_by('-pk')
+    sorted_star_courses = Course.objects.all().order_by('-star')
+    sorted_enrolment_courses = Course.objects.annotate(num_enrolment_users=Count('enrolment_users')).order_by('-num_enrolment_users')
+    if request.user.is_authenticated:
+        enrolled_courses = Course.objects.filter(enrolment_users=request.user)
+        if enrolled_courses:
+            enrolled_course_tags = enrolled_courses.values_list('tags', flat=True).distinct()
+            similar_courses = Course.objects.filter(Q(tags__in=enrolled_course_tags) & ~Q(enrolment_users=request.user)).distinct()
+        else:
+            similar_courses = None
+    else:
+        similar_courses = None
     context = {
         'courses': courses,
+        'sorted_star_courses': sorted_star_courses,
+        'sorted_enrolment_courses' : sorted_enrolment_courses,
+        'similar_courses': similar_courses,
     }
     return render(request, 'courses/course_index.html', context)
 
@@ -22,12 +38,17 @@ def detail(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
-    if Course.objects.count() > 3:
-        other_courses = random.sample(list(Course.objects.all().exclude(pk=course.pk)), 3)
+
+    if Course.objects.count() > 4:
+        other_courses = random.sample(list(Course.objects.all().exclude(pk=course.pk)), 4)
     else:
-        other_courses = []
+        other_courses = Course.objects.all().exclude(pk=course.pk)
+
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(pk=course.pk)
-    similar_course = random.choice(similar_courses) if similar_courses else None
+
+    if similar_courses.count() > 4:
+        similar_courses = similar_courses[::3]
+
     star_percentage = []
     if reviews:
         for x in range(1, 6):
@@ -39,7 +60,7 @@ def detail(request, course_pk):
         'reviews': reviews,
         'review_form': review_form,
         'other_courses': other_courses,
-        'similar_course': similar_course,
+        'similar_courses': similar_courses,
         'star_percentage': star_percentage,
     }
     return render(request, 'courses/course_detail.html', context)
@@ -63,13 +84,35 @@ def create(request):
     return render(request, 'courses/course_create.html', context)
 
 
+def delete(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+    if request.user == course.user:
+        course.delete()
+        return redirect('courses:index')
+
+
 def comment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
+    comment_type = request.GET.get('type')
+    q = request.GET.get('q')
+
+    course_comments = course.comments.all()
+    if comment_type:
+        course_comments = course_comments.filter(category=comment_type)
+
+    if q:
+        course_comments = course_comments.filter(
+            Q(title__icontains=q)|
+            Q(content__icontains=q)|
+            Q(course__tags__name__icontains=q)
+        ).distinct()
+
     context = {
         'course': course,
+        'course_comments': course_comments,
+        'comment_type': comment_type,
     }
     return render(request, 'courses/course_comment.html', context)
-
 
 def courses(request):
     slug = request.GET.get('tag')
@@ -118,5 +161,9 @@ def review_delete(request, course_pk, review_pk):
     
 
 def video(request, course_pk):
-    return render(request, 'courses/course_video.html')
+    course = Course.objects.get(pk=course_pk)
+    context = {
+        'course': course,
+    }
+    return render(request, 'courses/course_video.html', context)
 

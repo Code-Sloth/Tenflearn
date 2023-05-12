@@ -1,14 +1,39 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
+{% load static %}
 
 {% block title %}
-
+로그인
 {% endblock title %}
 
 {% block content %}
-<form action="{% url 'accounts:login' %}" method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit">
-</form>
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/login.css' %}">
 
+<div class="container-login">
+  <div class="inflear-logo">
+    <img src="{% static 'base/image/logo.svg' %}" alt="">
+  </div>
+  <div class="form-login">
+    <form action="{% url 'accounts:login' %}" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input class="login-button" type="submit" value="로그인">
+    </form>
+  </div>
+
+  <h1>간편 로그인</h1>
+  <hr>
+  <div class='kakao-button'>
+  <a href="{% provider_login_url 'kakao' method='oauth2' %}">
+    <img class='kakao-button-img' src="{% static 'accounts/image/kakao_login_large.png' %}" alt="카카오_로그인">
+  </a>
+</div>
+
+  {% comment %} <a class='nav-bar-right-item right-fs' href="{% provider_login_url 'google' method='oauth2' %}">
+    구글
+  </a>
+  <a class='nav-bar-right-item right-fs' href="{% provider_login_url 'naver' method='oauth2' %}">
+    네이버
+  </a> {% endcomment %}
+</div>
 {% endblock content %}

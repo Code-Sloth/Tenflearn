@@ -9,7 +9,7 @@
   {% csrf_token %}
   {{ comment_form.media }}
   {{ comment_form.as_p }}
-  <input type="submit">
+  <button name='course_pk' value='{{ course_pk }}' type="submit">제출</button>
 </form>
 
 {% endblock content %}

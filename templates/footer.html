@@ -51,7 +51,7 @@
 </div>
 
 <div class='footerbar'>
-  <a class='footerbar-item' href="">
+  <a class='footerbar-item' href="{% url 'courses:courses' %}">
     <div>
       <i class="fas fa-list"></i>
     </div>
@@ -59,7 +59,7 @@
     <p>강의</p>
   </a>
 
-  <a class='footerbar-item' href="">
+  <a class='footerbar-item' href="{% url 'communities:comment_index' %}">
     <div>
       <i class="fas fa-comments"></i>
     </div>
@@ -75,7 +75,7 @@
     <p>홈</p>
   </a>
 
-  <a class='footerbar-item' href="">
+  <a class='footerbar-item' href="{% url 'communities:inflearn_index' %}">
     <div>
       <i class="fas fa-star"></i>
     </div>
@@ -83,9 +83,9 @@
     <p>인프런</p>
   </a>
 
-  {% if request.user.authenticated %}
+  {% if user.is_authenticated %}
   
-    <a class='footerbar-item' href="">
+    <a class='footerbar-item' href="{% url 'accounts:mypage' %}">
       <div>
         <i class="fas fa-user"></i>
       </div>
@@ -94,12 +94,12 @@
     </a>
 
   {% else %}
-
-    <a class='footerbar-item' href="">
+  
+    <a class='footerbar-item' href="{% url 'accounts:login' %}">
       <div>
         <i class="fas fa-right-to-bracket"></i>
       </div>
-
+      
       <p>로그인</p>
     </a>
 

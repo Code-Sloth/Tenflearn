@@ -1,5 +1,53 @@
-.video {
+.course {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 10px;
 }
+
+.course-video {
+  width: 70%;
+  height: 75vh;
+}
+
+.course-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.descriptions-btn {
+  font-size: 13px;
+}
+
+.textarea-btn {
+  font-size: 13px;
+}
+
+.course-descriptions-file-memo {
+  width: 100%;
+}
+
+.course-descriptions {
+  height: 75vh;
+  width: 20%;
+  margin: 15px;
+  padding: 10px;
+  border: 3px solid #797979;
+}
+
+.course-descriptions-content {
+  display: none;
+  height: 50vh;
+  margin: 3px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.course-descriptions-file {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+

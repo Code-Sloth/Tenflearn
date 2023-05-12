@@ -3,6 +3,8 @@
 .community-box-header {
   background-color: #212529;
   margin: 0;
+  padding: 0;
+  height: 101px;
 }
 
 .community-header {
@@ -11,7 +13,7 @@
   text-align: left;
   margin: auto;
   max-width: 1200px;
-
+    height: 101px;
 
 }
 
@@ -22,6 +24,7 @@
     text-align: left;
     margin-left: 0;
     max-width: 1200px;
+    height: 101px;
     }
   }
 /* 1200 기준으로 margin left 0으로 */
@@ -29,11 +32,10 @@
 .community-header__title {
   font-size: 24px;
   color: #f8f8f8;
-  font-weight: bold;
 }
 
 .community-header__content {
-  margin-top: 10px;
+  margin: 6px 0 0;
   font-size: 16px;
   color: #f8f8f8;
 }
@@ -63,8 +65,8 @@
 .community-body__left__content {
   align-self: start;
   color: rgb(0, 196, 113);
-  padding: 20px 12px;
-  font-size: 16px;
+  padding: 20px 20px;
+  font-size: 20px;
   width: 171px;
   margin-top: 0;
 }
@@ -78,7 +80,7 @@
 
   display: flex;
   padding: 8px 16px;
-  height: 125px;
+  height: auto;
   margin: 0 5px;
   border-bottom: 1px solid #dbdada;
 }
@@ -87,7 +89,8 @@
 .review-left {
   flex: 1;
   height: auto;
-  /* padding: 5px; */
+  padding: 0 15px;
+
 }
 
 .review-left__star {
@@ -97,10 +100,15 @@
 
 .review-left__content {
   margin-top: 5px;
+  font-size: 16px;
+  color: #000a12;
+  text-size-adjust: 100%;
 }
 
 .review-left__info {
   margin-top: 5px;
+  font-size: 12px;
+  color: #595959;
 }
 
 .review-right__img {

@@ -45,20 +45,20 @@ const hashSwiper = new Swiper('.hash-curation', {
 
   breakpoints: {
     576: {
-      slidesPerView: 3,
+      slidesPerView: 5,
       spaceBetween: 1,
     },
     768: {
       slidesPerView: 6,
-      spaceBetween: 10,
+      spaceBetween: 3,
     },
     1024: {
       slidesPerView: 7,
-      spaceBetween: 15,
+      spaceBetween: 5,
     },
     1200: {
       slidesPerView: 8,
-      spaceBetween: 20,
+      spaceBetween: 8,
     },
   },
 });

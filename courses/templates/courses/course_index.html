@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 {% comment %} 상단 배너 {% endcomment %}
 <header>
-  <div class="box">
+  <div>
     <div class="swiper banner">
       <div class="swiper-wrapper">
         <div class="swiper-slide banner-slide">
@@ -31,13 +31,13 @@
     </div>
   </div>
 </header>
-<main>
+<main class="main-container">
   {% comment %} 해시태그 {% endcomment %}
   <nav class="hash-container">
     <div class="swiper hash-curation">
       <div class="swiper-wrapper">
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=javascript">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/js.svg' %}"
@@ -49,7 +49,7 @@
         </div>
 
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=typescript">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/ts.svg' %}"
@@ -60,7 +60,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=python">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/python.svg' %}"
@@ -71,7 +71,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=html">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/html.svg' %}"
@@ -82,7 +82,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=css">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/css.svg' %}"
@@ -93,7 +93,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=django">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/django.svg' %}"
@@ -104,7 +104,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=react">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/react.svg' %}"
@@ -115,7 +115,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=angular">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/angular.svg' %}"
@@ -126,7 +126,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=java">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/java.svg' %}"
@@ -137,7 +137,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=mysql">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/mysql.svg' %}"
@@ -148,7 +148,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=spring">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/spring.svg' %}"
@@ -165,20 +165,102 @@
   </nav>
 
   <article>
-    {% comment %} 로그인 시 내 학습 {% endcomment %} {% comment %}
-    <section class="box course-curation"></section>
-    {% endcomment %} 
+    {% comment %} 로그인 회원과 비슷한 강의 {% endcomment %}
+    {% if similar_courses %}
+      <section class="course-container">
+        <div class="course-container-header">
+          <h1 class="course-container-header-title">나와 비슷한 사람들이 수강한 강의</h1>
+        </div>
+        {% comment %} 강의 캐러셀 {% endcomment %}
+        <div class="course-curation-content">
+          <div class="swiper course-curation">
+            <div class="swiper-wrapper">
+              {% comment %} TODO: 비슷한 강의 {% endcomment %}
+              {% for similar_course in similar_courses  %}
+                <div class="swiper-slide course-slide">
+                  <a href="{% url 'courses:detail' similar_course.pk %}" >
+                  {% comment %} 강의 카드 호버 {% endcomment %}
+                  <div class="course-slide-hover course-slide-hover-hidden">
+                    <div class="course-slide-hover-title">
+                      {{ similar_course.title }}
+                    </div>
+                    <div class="course-slide-hover-bottom">
+                      <p>
+                        <i class="bi bi-bar-chart">{{ similar_course.get_level_display }}</i>
+                      </p>
+                      <p>
+                        <i class="bi bi-tag-fill">
+                          {% for tag in similar_course.tags.all %}
+                          <span>#{{ tag.name }} </span>
+                          {% endfor %}
+                        </i>
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    {% comment %} 강의 카드 {% endcomment %}
+                      <div class="course-card-container">
+                        <div class="course-card-img">
+                          <img src="{{ similar_course.image.url }}" alt="{{ similar_course.title }}">
+                        </div>
+                        <div class="course-card-content">
+                          <div class="course-card-content-title">{{ similar_course.title }} </div>
+                          <div class="course-card-content-writer">{{ similar_course.user}} </div>
+                          <div class="d-flex course-card-content-star">
+                            <div class='banner-star-box'>
+                              <div class='banner-star-gray'>
+                                <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+                              </div>
+                              <div class='banner-star-yellow' style='width: {{ similar_course.star_multiple }}%;'>
+                                <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+                              </div>
+                            </div>
+                            <span class="course-card-content-reviews-cnt">({{ similar_course.reviews.count }})</span>
+                          </div>
+                          {% if not similar_course.discount_rate %}
+                            {% if not similar_course.price %}
+                            <div class="course-card-content-price">무료
+                            </div>
+                            {% else %}
+                            <div class="course-card-content-price">₩{{ similar_course.price|intcomma }}
+                            </div>
+                            {% endif %}
+                          {% else %}
+                          <div class="course-card-content-price-sub">
+                            <span class="course-card-content-price-underline">₩{{ similar_course.price|intcomma }}
+                            </span>
+                            <span class="course-card-content-price">₩{{ similar_course.discounted_price|intcomma }}
+                            </span>
+                          </div>
+                          <div class="course-card-content-bottom">
+                            <span class="discount-tag">할인중</span>
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </a>
+                </div>
+  
+                </div>
+                {% endfor %}
+              </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+        </div>
+      </section>
+    {% endif %}
     
     {% comment %} 최신순 {% endcomment %}
-    <section class="box course-container">
-      <div class="box course-container-header">
+    <section class="course-container">
+      <div class="course-container-header">
         <h1 class="course-container-header-title">따끈따끈, 신규 강의를 만나보세요! 🙋‍♀️></h1>
         <p class="course-curation-header-subtext">
-          최신 강의부터 먼저 만나보세요.
+          빠르게 바뀌는 트랜드, 먼저 도전하세요
         </p>
       </div>
       {% comment %} 강의 캐러셀 {% endcomment %}
-      <div class="box course-curation-content">
+      <div class="course-curation-content">
         <div class="swiper course-curation">
           <div class="swiper-wrapper">
             {% for course in courses  %}
@@ -211,7 +293,7 @@
                       <div class="course-card-content">
                         <div class="course-card-content-title">{{ course.title }} </div>
                         <div class="course-card-content-writer">{{ course.user}} </div>
-                        <div class="course-card-content-star">
+                        <div class="d-flex course-card-content-star">
                           <div class='banner-star-box'>
                             <div class='banner-star-gray'>
                               <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
@@ -219,8 +301,8 @@
                             <div class='banner-star-yellow' style='width: {{ course.star_multiple }}%;'>
                               <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
                             </div>
-                
                           </div>
+                          <span class="course-card-content-reviews-cnt">({{ course.reviews.count }})</span>
                         </div>
                         {% if not course.discount_rate %}
                           {% if not course.price %}
@@ -256,10 +338,185 @@
     </section>
 
     {% comment %} 별점순 {% endcomment %}
-    <section class="course-container"></section>
+    <section class="course-container">
+      <div class="course-container-header">
+        <h1 class="course-container-header-title">요즘 인기 많은 강의는?🕵></h1>
+        <p class="course-curation-header-subtext">
+          사람들의 평점을 많이 받은 강의부터 시작하세요!
+        </p>
+      </div>
+      {% comment %} 강의 캐러셀 {% endcomment %}
+      <div class="course-curation-content">
+        <div class="swiper course-curation">
+          <div class="swiper-wrapper">
+            {% for course in sorted_star_courses %}
+              <div class="swiper-slide course-slide">
+                <a href="{% url 'courses:detail' course.pk %}" >
+                {% comment %} 강의 카드 호버 {% endcomment %}
+                <div class="course-slide-hover course-slide-hover-hidden">
+                  <div class="course-slide-hover-title">
+                    {{ course.title }}
+                  </div>
+                  <div class="course-slide-hover-bottom">
+                    <p>
+                      <i class="bi bi-bar-chart">{{ course.get_level_display }}</i>
+                    </p>
+                    <p>
+                      <i class="bi bi-tag-fill">
+                        {% for tag in course.tags.all %}
+                        <span>#{{ tag.name }} </span>
+                        {% endfor %}
+                      </i>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  {% comment %} 강의 카드 {% endcomment %}
+                    <div class="course-card-container">
+                      <div class="course-card-img">
+                        {% if course.image %}
+                        <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                        {% else %}
+                        <img src="{% static 'courses/image/noimage.jpeg' %}" alt="강의메인사진">
+                        {% endif %}
+                      </div>
+                      <div class="course-card-content">
+                        <div class="course-card-content-title">{{ course.title }} </div>
+                        <div class="course-card-content-writer">{{ course.user}} </div>
+                        <div class="d-flex course-card-content-star">
+                          <div class='banner-star-box'>
+                            <div class='banner-star-gray'>
+                              <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+                            </div>
+                            <div class='banner-star-yellow' style='width: {{ course.star_multiple }}%;'>
+                              <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+                            </div>
+                          </div>
+                          <span class="course-card-content-reviews-cnt">({{ course.reviews.count }})</span>
+                        </div>
+                        {% if not course.discount_rate %}
+                          {% if not course.price %}
+                          <div class="course-card-content-price">무료
+                          </div>
+                          {% else %}
+                          <div class="course-card-content-price">₩{{ course.price|intcomma }}
+                          </div>
+                          {% endif %}
+                        {% else %}
+                        <div class="course-card-content-price-sub">
+                          <span class="course-card-content-price-underline">₩{{ course.price|intcomma }}
+                          </span>
+                          <span class="course-card-content-price">₩{{ course.discounted_price|intcomma }}
+                          </span>
+                        </div>
+                        <div class="course-card-content-bottom">
+                          <span class="discount-tag">할인중</span>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </a>
+              </div>
 
+              </div>
+              {% endfor %}
+            </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </section>
+    
     {% comment %} 수강생순 {% endcomment %}
-    <section class="course-container"></section>
+    <section class="course-container">
+      <div class="course-container-header">
+        <h1 class="course-container-header-title">이렇게 많은 수강생이 들었다고? 뭐야..👥👤웅성웅성..👥👤👥></h1>
+        <p class="course-curation-header-subtext">
+          많은 수강생이 증명한 1타 강의만 모았습니다.
+        </p>
+      </div>
+      {% comment %} 강의 캐러셀 {% endcomment %}
+      <div class="course-curation-content">
+        <div class="swiper course-curation">
+          <div class="swiper-wrapper">
+            {% for course in sorted_enrolment_courses %}
+              <div class="swiper-slide course-slide">
+                <a href="{% url 'courses:detail' course.pk %}" >
+                {% comment %} 강의 카드 호버 {% endcomment %}
+                <div class="course-slide-hover course-slide-hover-hidden">
+                  <div class="course-slide-hover-title">
+                    {{ course.title }}
+                  </div>
+                  <div class="course-slide-hover-bottom">
+                    <p>
+                      <i class="bi bi-bar-chart">{{ course.get_level_display }}</i>
+                    </p>
+                    <p>
+                      <i class="bi bi-tag-fill">
+                        {% for tag in course.tags.all %}
+                        <span>#{{ tag.name }} </span>
+                        {% endfor %}
+                      </i>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  {% comment %} 강의 카드 {% endcomment %}
+                    <div class="course-card-container">
+                      <div class="course-card-img">
+                        {% if course.image %}
+                        <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                        {% else %}
+                        <img src="{% static 'courses/image/noimage.jpeg' %}" alt="강의메인사진">
+                        {% endif %}
+                      </div>
+                      <div class="course-card-content">
+                        <div class="course-card-content-title">{{ course.title }} </div>
+                        <div class="course-card-content-writer">{{ course.user}} </div>
+                        <div class="d-flex course-card-content-star">
+                          <div class='banner-star-box'>
+                            <div class='banner-star-gray'>
+                              <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+                            </div>
+                            <div class='banner-star-yellow' style='width: {{ course.star_multiple }}%;'>
+                              <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+                            </div>
+                          </div>
+                          <span class="course-card-content-reviews-cnt">({{ course.reviews.count }})</span>
+                        </div>
+                        {% if not course.discount_rate %}
+                          {% if not course.price %}
+                          <div class="course-card-content-price">무료
+                          </div>
+                          {% else %}
+                          <div class="course-card-content-price">₩{{ course.price|intcomma }}
+                          </div>
+                          {% endif %}
+                        {% else %}
+                        <div class="course-card-content-price-sub">
+                          <span class="course-card-content-price-underline">₩{{ course.price|intcomma }}
+                          </span>
+                          <span class="course-card-content-price">₩{{ course.discounted_price|intcomma }}
+                          </span>
+                        </div>
+                        <div class="course-card-content-bottom">
+                          <span class="discount-tag">할인중</span>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </a>
+              </div>
+
+              </div>
+              {% endfor %}
+            </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </section>
+
   </article>
 </main>
 

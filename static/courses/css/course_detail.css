@@ -109,18 +109,12 @@
 }
 
 /* 디테일 사이드바 */
-.sidebar {
-  position: sticky;
-  z-index: 5;
-  background-color: rgb(200 200 200);
-  top: 75px;
-  right: 100px;
-  width: 332px;
-  height: 500px;
-  padding: 16px 24px;
-  border: 1px solid rgb(240 240 240);
-  border-radius: 8px;
-  box-shadow: 0 1px 3px 0 rgba(33,37,41,.03);
+.left-sidebar {
+  display: none;
+  margin-top: 150px;
+  width: 100%;
+  padding: 20px 15px;
+  border-bottom: 1px solid rgb(240 240 240);
 }
 
 
@@ -144,7 +138,8 @@
 .section-header-a {
   display: block;
   width: 60px;
-  height: 100%;
+  height: 44px;
+  margin-bottom: 2px;
   line-height: 45px;
   margin-right: 30px;
   font-size: 15px;
@@ -161,10 +156,11 @@
 
 .section-header-a:hover {
   color: black;
+  border-bottom: 2px solid black;
 }
 
 .section-left {
-  width: 739px;
+  max-width: 739px;
 }
 
 .section-left-content {
@@ -181,9 +177,225 @@
 
 .right-sidebar {
   width: 330px;
-  padding: 20px 24px;
   border: 1px solid rgb(240 240 240);
   border-radius: 10px;
+  margin-left: 80px;
+  margin-top: 50px;
+  position: sticky;
+  top: 130px;
+}
+
+.right-sidebar-header {
+  padding: 40px 24px;
+}
+
+.right-sidebar-price {
+  display: flex;
+}
+
+.right-sidebar-price h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(229 80 60);
+}
+
+.right-sidebar-price h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.right-sidebar-price h3 {
+  font-size: 15px;
+  color: rgb(206 212 218);
+  text-decoration: line-through;
+  padding-top: 10px;
+}
+
+.right-sidebar-enrolment {
+  margin-top: 20px;
+}
+
+.right-sidebar-enrolment button {
+  width: 100%;
+  height: 48px;
+  background-color: rgb(0 196 113);
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.right-sidebar-enrolment button:hover {
+  background-color: rgb(9, 135, 83);
+}
+
+.right-sidebar-cart button {
+  margin-top: 10px;
+  width: 100%;
+  height: 48px;
+  background-color: white;
+  border: 1px solid rgb(240 240 240);
+  border-radius: 5px;
+  color: rgb(50 50 50);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.right-sidebar-cart button:hover {
+  background-color: rgb(200 200 200);
+}
+
+.right-sidebar-footer {
+  padding: 20px 24px;
+  background-color: rgb(248 249 250);
+}
+
+.right-sidebar-footer div {
+  font-size: 14px;
+  color: rgb(112 112 112);
+  margin: 10px 0;
+}
+
+.right-sidebar-footer-level span {
+  color: rgb(200 200 200);
+}
+
+.left-sidebar-fixed {
+  display: none;
+}
+
+/* 다른 강의 */
+
+.review-footer {
+  background-color: rgb(248 249 250);
+  padding: 50px;
+}
+
+.review-othercourses {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.review-othercourses-header h1 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.review-othercourses-header h2 {
+  font-size: 16px;
+  color: rgb(173 181 189);
+}
+
+.review-othercourses-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 30px 0;
+}
+
+.review-othercourses-item {
+  display: block;
+  color: black;
+  text-decoration: none;
+  font-size: 16px;
+  width: 46%;
+  height: 160px;
+  padding: 20px;
+  padding-bottom: 0;
+  border: 1px solid rgb(180 180 180);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+  margin: 3px 10px;
+  transition: transform 0.3s ease;
+}
+
+.review-othercourses-item:hover {
+  border: 2px solid rgb(0 196 113);
+  transform: scale(1.01);
+}
+
+.review-othercourses-div {
+  display: flex;
+}
+
+.review-othercourses-img {
+  width: 128px;
+}
+
+.review-othercourses-middle {
+  width: 238px;
+  max-width: 238px;
+  margin-left: 10px;
+}
+
+.review-othercourses-middle h1 {
+  font-size: 17px;
+  font-weight: bold;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+}
+
+.review-othercourses-middle h2 {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  width: 100%;
+}
+
+.review-othercourses-middle h2 div {
+  display: block;
+  height: 18px;
+  margin: 2px 3px;
+  font-size: 8px;
+  padding: 3px 5px;
+  border-radius: 100px;
+  background-color: rgb(23 63 81);
+  color: white;
+  text-align: center;
+}
+
+.review-othercourses-starbox {
+  display: flex;
+  width: 100%;
+}
+
+.review-othercourses-middle h5 {
+  font-size: 10px;
+  color: rgb(112 112 112);
+  padding-top: 10px;
+  margin: 0;
+}
+
+.review-othercourses-right {
+  display: flex;
+  flex-grow: 1;
+  flex-flow: row-reverse;
+}
+
+.review-othercourses-right div {
+  font-size: 16px;
+}
+
+.review-else {
+  width: 95%;
+  padding: 30px;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(112 112 112);
+  background-color: white;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+  border: 1px solid rgb(180 180 180);
+  border-radius: 10px;
+}
+
+.course-detail-black {
+  color: black;
+  border-bottom: 2px solid black;
 }
 
 @media(max-width: 1024px) {
@@ -200,11 +412,112 @@
   .banner-container-right-title {
     margin-bottom: 15px;
   }
+
+  .left-sidebar {
+    display: block;
+  }
+
+  .banner-container-left {
+    border: 1px solid rgb(240 240 240);
+    border-radius: 10px;
+    padding: 0;
+  }
+
+  .section-right {
+    display: none;
+  }
+
+  .section-left {
+    max-width: 100%;
+  }
+
+  .footerbar {
+    display: none!important;
+  }
+
+  .left-sidebar-fixed {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    z-index: 200;
+    width: 100%;
+    padding: 12px 32px;
+  }
+
+  .right-sidebar-enrolment {
+    width: 48%;
+    margin: 0;
+  }
+
+  .right-sidebar-cart {
+    width: 48%;
+    margin: 0;
+    margin-right: 20px;
+  }
+
+  .right-sidebar-cart button {
+    margin: 0;
+  }
+
+  .section-header {
+    top: 50px;
+  }
+
+  .footer {
+    margin-bottom: 72px!important;
+  }
+
+  .review-othercourses-list {
+    flex-direction: column;
+  }
+
+  .review-othercourses-item {
+    width: 100%;
+  }
+
+  .review-othercourses-middle {
+    width: 60%;
+    max-width: 60%;
+  }
+
+  .review-othercourses-middle h1 {
+    font-size: 15px;
+  }
+
+  .review-othercourses-right div {
+    font-size: 14px;
+  }
+
+  .review-else {
+    font-size: 14px;
+    width: 100%;
+  }
+
 }
 
 @media(max-width: 768px) {
   .banner-container-left {
-    width: 100%;
-    left: 0;
+    width: 90%;
+    left: 5%;
+  }
+
+  .review-dashboard {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .review-dashboard-graph {
+    margin-left: 0!important;
+    margin-top: 10px;
+  }
+
+  .review-dashboard-star {
+    width: 100%!important;
+  }
+
+  .course-comment-form {
+    width: 100%!important;
   }
 }

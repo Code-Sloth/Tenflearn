@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
 {{ course.title }}
@@ -43,7 +44,7 @@
             </div>
             <div class='banner-star-text'>
               <span class='ms-1 me-2'>({{ course.star }})</span>
-              <a class='banner-star-text-a' href="">{{ course.reviews.count }}개의 수강평</a> ∙ <span>{{ course.enrolment_users.count }}명</span>의 수강생
+              <a class='banner-star-text-a' href="{% url 'courses:detail' course.pk %}#reviews">{{ course.reviews.count }}개의 수강평</a> ∙ <span>{{ course.enrolment_users.count }}명</span>의 수강생
             </div>
           </div>
 
@@ -79,9 +80,54 @@
   </div>
 
   {% comment %} 디테일 사이드바 max-width: 1024px; {% endcomment %}
-  <div class='left-sidebar d-none'>
+  <div class='left-sidebar'>
     <div>
 
+      <div class='right-sidebar-header'>
+        <div class='right-sidebar-price'>
+          {% if course.discount_rate %}
+            <h1>{{ course.discount_rate }}%</h1>
+          {% endif %}
+
+          <h2>{{ course.discounted_price|intcomma }}원</h2>
+
+          {% if course.discount_rate %}
+            <h3>{{ course.price|intcomma }}원</h3>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <div class='right-sidebar-footer'>
+        <div>
+          <span>
+            <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+          </span>
+          지식공유자: {{ course.user.last_name }}{{ course.user.first_name }}
+        </div>
+
+        <div>
+          <span>
+            <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+          </span>
+          수강기한: <strong>{{ course.expired_unlimited }}</strong>
+        </div>
+
+        <div>
+          <span>
+            <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+          </span>
+          수료증: {{ course.certificates_kr }}
+        </div>
+
+        <div class='right-sidebar-footer-level'>
+          <span>
+            <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+          </span>
+          난이도: <span {% if course.level == 'level1' %}style='color: rgb(112 112 112);'{% endif %}>입문</span> - <span {% if course.level == 'level2' %}style='color: rgb(112 112 112);'{% endif %}>초급</span> - <span {% if course.level == 'level3' %}style='color: rgb(112 112 112);'{% endif %}>중급이상</span>
+        </div>
+      </div>
+      
     </div>
   </div>
   
@@ -90,15 +136,15 @@
 
     <div class='section-container d-flex'>
 
-      <a class='section-header-a' href="">
+      <a class='section-header-a section-js-top' href="{% url 'courses:detail' course.pk %}#top">
         강의소개
       </a>
 
-      <a class='section-header-a ps-1' href="">
+      <a class='section-header-a section-js-reviews ps-1' href="{% url 'courses:detail' course.pk %}#reviews">
         수강평<span>{{ course.reviews.count }}</span>
       </a>
 
-      <a class='section-header-a' href="">
+      <a class='section-header-a {% if comment_type %}course-detail-black{% endif %}' href="{% url 'courses:comment' course.pk %}?type=qna">
         커뮤니티
       </a>
     </div>
@@ -108,12 +154,16 @@
   {% comment %} 디테일 섹션 {% endcomment %}
   <div class='section-container d-flex'>
     <div class='section-left'>
-      <p class='section-left-content'>
-        {{ course.content|linebreaksbr }}
-      </p>
+      {% block course_detail_header %}
+        <p class='section-left-content' id='reviews'>
+          {{ course.content|linebreaksbr }}
+        </p>
+      {% endblock course_detail_header %}
 
       <div class='section-left-review'>
-        {% include 'courses/course_detail_review.html' %}
+        {% block course_detail_content %}
+          {% include 'courses/course_detail_review.html' %}
+        {% endblock course_detail_content %}
       </div>
 
     </div>
@@ -122,10 +172,57 @@
       
       <div class='right-sidebar'>
 
-        <div>
-          
+        <div class='right-sidebar-header'>
+          <div class='right-sidebar-price'>
+            {% if course.discount_rate %}
+              <h1>{{ course.discount_rate }}%</h1>
+            {% endif %}
+  
+            <h2>{{ course.discounted_price|intcomma }}원</h2>
+  
+            {% if course.discount_rate %}
+              <h3>{{ course.price|intcomma }}원</h3>
+            {% endif %}
+          </div>
+  
+          <form class='right-sidebar-enrolment' action="">
+            <button type='submit'>수강신청 하기</button>
+          </form>
+  
+          <form class='right-sidebar-cart' action="">
+            <button>바구니에 담기</button>
+          </form>
         </div>
 
+        <div class='right-sidebar-footer'>
+          <div>
+            <span>
+              <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+            </span>
+            지식공유자: {{ course.user.last_name }}{{ course.user.first_name }}
+          </div>
+
+          <div>
+            <span>
+              <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+            </span>
+            수강기한: <strong>{{ course.expired_unlimited }}</strong>
+          </div>
+
+          <div>
+            <span>
+              <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+            </span>
+            수료증: {{ course.certificates_kr }}
+          </div>
+
+          <div class='right-sidebar-footer-level'>
+            <span>
+              <img src="{% static 'courses/image/dot.svg' %}" alt="dot">
+            </span>
+            난이도: <span {% if course.level == 'level1' %}style='color: rgb(112 112 112);'{% endif %}>입문</span> - <span {% if course.level == 'level2' %}style='color: rgb(112 112 112);'{% endif %}>초급</span> - <span {% if course.level == 'level3' %}style='color: rgb(112 112 112);'{% endif %}>중급이상</span>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -133,46 +230,159 @@
 
 </div>
 
+{% block course_detail_footer %}
+  <div class='review-footer'>
+    <div class='review-othercourses'>
+
+      <div class='review-othercourses-header'>
+        <h1>
+          {{ course.user.last_name }}{{ course.user.first_name }}님의 다른 강의
+        </h1>
+
+        <h2>지식공유자님의 다른 강의를 만나보세요!</h2>
+      </div>
+
+      <div class='review-othercourses-list'>
+        {% if other_courses %}
+
+          {% for other_course in other_courses %}
+            <a class='review-othercourses-item' href="{% url 'courses:detail' other_course.pk %}">
+
+              <div class='review-othercourses-div'>
+
+                {% if other_course.image %}
+                  <div class='review-othercourses-img'>
+                    <img class='w-100' src="{{ other_course.image.url }}" alt="{{ other_course.title }}">
+                  </div>
+                {% endif %}
+      
+                <div class='review-othercourses-middle'>
+                  <h1>{{ other_course.title }}</h1>
+      
+                  <h2>
+                    {% for tag in other_course.tags.all %}
+                      <div>{{ tag }}</div>
+                    {% endfor %}
+                  </h2>
+      
+                  <div class='review-othercourses-starbox'>
+                    <div class='banner-star-box' style='width: 80px;'>
+                      <div class='banner-star-gray'>
+                        <img style='width: 80px;' src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+                      </div>
+            
+                      <div class='banner-star-yellow' style='width: {{ other_course.star_multiple }}%;'>
+                        <img style='width: 80px;' src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+                      </div>
+                    </div>
+
+                    <h5>
+                      ({{ other_course.star }})
+                    </h5>
+                  </div>
+
+                </div>
+      
+                <div class='review-othercourses-right'>
+                  <div>
+                    ₩{{ other_course.discounted_price|intcomma }}
+                  </div>
+                </div>
+                
+              </div>
+            </a>
+          {% endfor %}
+        
+        {% else %}
+          <div class='review-else'>{{ course.user.last_name }}{{ course.user.first_name }}님의 다른 강의가 없습니다 😥</div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class='review-othercourses mt-5'>
+
+      <div class='review-othercourses-header'>
+        <h1>
+          비슷한 강의
+        </h1>
+
+        <h2>같은 분야의 다른 강의를 만나보세요!</h2>
+      </div>
+
+      <div class='review-othercourses-list'>
+        {% if similar_courses %}
+          {% for similar_course in similar_courses %}
+            <a class='review-othercourses-item' href="{% url 'courses:detail' similar_course.pk %}">
+
+              <div class='review-othercourses-div'>
+
+                {% if similar_course.image %}
+                  <div class='review-othercourses-img'>
+                    <img class='w-100' src="{{ similar_course.image.url }}" alt="{{ similar_course.title }}">
+                  </div>
+                {% endif %}
+      
+                <div class='review-othercourses-middle'>
+                  <h1>{{ similar_course.title }}</h1>
+      
+                  <h2>
+                    {% for tag in similar_course.tags.all %}
+                      <div>{{ tag }}</div>
+                    {% endfor %}
+                  </h2>
+      
+                  <div class='review-othercourses-starbox'>
+                    <div class='banner-star-box' style='width: 80px;'>
+                      <div class='banner-star-gray'>
+                        <img style='width: 80px;' src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+                      </div>
+            
+                      <div class='banner-star-yellow' style='width: {{ course.star_multiple }}%;'>
+                        <img style='width: 80px;' src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+                      </div>
+                    </div>
+
+                    <h5>
+                      ({{ similar_course.star }})
+                    </h5>
+                  </div>
+
+                </div>
+      
+                <div class='review-othercourses-right'>
+                  <div>
+                    ₩{{ similar_course.discounted_price|intcomma }}
+                  </div>
+                </div>
+                
+              </div>
+            </a>
+          {% endfor %}
 
 
+        {% else %}
+          <div class='review-else'>비슷한 강의가 없습니다 😥</div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+{% endblock course_detail_footer %}
 
 
+<div class='left-sidebar-fixed'>
 
+  <form class='right-sidebar-cart' action="">
+    <button>바구니에 담기</button>
+  </form>
 
+  <form class='right-sidebar-enrolment' action="">
+    <button type='submit'>수강신청 하기</button>
+  </form>
 
-
-<div>
-  <p>{{ course.price }}</p>
-  <p>{{ course.discount_rate }}</p>
-  <p>{{ course.discounted_price }}</p>
-
-  <p>{{ course.expired_date }}</p>
-  <p>{{ course.level }}</p>
-  <p>{{ course.certificates }}</p>
-  <p>{{ course.created_at }}</p>
-  {% for tag in course.tags.all %}
-      <p>#{{ tag.name }}</p>
-  {% endfor %}
-  <p>{{ course.content|linebreaksbr }}</p>
 </div>
 
-<hr>
-
-<hr>
-
-<div>
-  <h3>강사의 다른 강의</h3>
-  {% for other_course in other_courses %}
-    <p>{{ other_course.title }}</p>
-  {% endfor %}
-</div>
-
-<hr>
-
-<div>
-  <h3>비슷한 강의</h3>
-  {{ similar_course.title }}
-</div>
-
+<script src="{% static 'courses/js/course_detail.js' %}"></script>
 
 {% endblock content %}
