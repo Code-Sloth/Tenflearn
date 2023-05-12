@@ -89,11 +89,7 @@ def change_password(request):
     return render(request, 'accounts/change_password.html', context)
 
 
-def mypage(request, username):
-    User = get_user_model()
-    person = User.objects.get(username=username)
-    reviews = Review.objects.filter(user_id=person.id)
-    courses = Course.objects.filter(enrolment_users=person.id)
+def mypage(request):
     cart = request.session.get('cart', {})
     cart_items = []
     cart_total = 0
@@ -109,9 +105,6 @@ def mypage(request, username):
         })
 
     context = {
-        'person': person,
-        'reviews': reviews,
-        'courses': courses,
         'cart_items': cart_items,
         'cart_total': cart_total,
     }

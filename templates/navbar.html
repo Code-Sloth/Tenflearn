@@ -27,21 +27,21 @@
 
         <div class='off-list'>
           <div class='off-left'>
-            <a class='off-item off-course-a' href="">
+            <a class='off-item off-course-a' href="{% url 'courses:courses' %}">
               강의
             </a>
     
-            <a class='off-item off-community-a' href="">
+            <a class='off-item off-community-a' href="{% url 'communities:comment_index' %}">
               커뮤니티
             </a>
     
-            <a class='off-item' href="">
+            <a class='off-item' href="{% url 'communities:inflearn_index' %}">
               인프런
             </a>
           </div>
 
           <div class='off-right'>
-            <a class="off-item off-course d-none" href="">
+            <a class="off-item off-course d-none" href="{% url 'courses:courses' %}">
               전체
             </a>
 
@@ -61,7 +61,7 @@
               풀스택
             </a>
 
-            <a class="off-item off-community d-none" href="">
+            <a class="off-item off-community d-none" href="{% url 'communities:comment_index' %}">
               전체
             </a>
 
@@ -94,7 +94,7 @@
     </div>
 
     <div class='nav-bar-left'>
-      <a class="nav-bar-left-item ms-2" href="">
+      <a class="nav-bar-left-item ms-2" href="{% url 'courses:courses' %}">
         강의
       </a>
   
@@ -123,13 +123,23 @@
 
         </div>
 
-        <a class='nav-bar-right-item' href="">
+        <a class='nav-bar-right-item' href="{% url 'accounts:mypage' %}">
           <i class='bi bi-cart3'></i>
         </a>
 
-        <a class='nav-bar-right-item right-fs' href="">
-          <i class="bi bi-person"></i>
-        </a>
+        {% if user.is_authenticated %}
+        
+          <a class='nav-bar-right-item right-fs' href="{% url 'accounts:mypage' %}">
+            <i class="bi bi-person"></i>
+          </a>
+
+        {% else %}
+
+          <a class='nav-bar-right-item right-fs' href="{% url 'accounts:login' %}">
+            <i class="fas fa-right-to-bracket"></i>
+          </a>
+
+        {% endif %}
 
       </div>
     </div>
