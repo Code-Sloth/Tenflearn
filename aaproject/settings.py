@@ -46,6 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 소셜 로그인
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.kakao',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +153,20 @@ AUTH_USER_MODEL = 'accounts.User'
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
+
+# 소셜 로그인 관련
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'kakao': {
+        'APP': {
+            'client_id': 'b885caa0c710d5441e5a228ab4ac84dc',
+            'secret': '',
+            'key': '',
+        },
+        'SCOPE': ['account_email', 'profile_nickname'],# 권한
+        'PROFILE_FIELDS': ['nickname', 'email'], # 요청 정보 종류
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+    }
+}
