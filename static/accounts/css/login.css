@@ -11,7 +11,9 @@
   text-align: center;
 }
 
-
+.form-login {
+  width: 312px;
+}
 
 
 .login-button {

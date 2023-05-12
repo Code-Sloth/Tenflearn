@@ -6,6 +6,9 @@
   height: 100vh;
 }
 
+.form-signup {
+  width: 312px;
+}
 
 .signup-button {
   border-color: #00c471;

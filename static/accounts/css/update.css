@@ -1,4 +1,4 @@
-.container-password {
+.container-update{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,11 +6,24 @@
   height: 100vh;
 }
 
-.form-change_password {
+.form-update {
   width: 312px;
 }
 
-.change_password-button {
+.update-button {
+  border-color: #00c471;
+  font-weight: 700;
+  background-color: #00c471;
+  color: #fff;
+  width: 312px;
+  border-radius: 10px;
+  display: block;
+  text-align: center;
+  line-height: 3rem;
+  margin-bottom: 10px;
+}
+
+.change_password-button  {
   border-color: #00c471;
   font-weight: 700;
   background-color: #00c471;
