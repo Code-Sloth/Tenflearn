@@ -12,7 +12,7 @@
 
 <div class="community-box-header">
   <div class="community-header">
-    <div class="community-header__title">수강평 총 111,268개, 만족도 96.5%</div>
+    <div class="community-header__title"><strong>수강평</strong> 총 <strong>{{ reviews_count }}개</strong>, 만족도 <strong>96.5%</strong></div>
     <div class="community-header__content">🔥실시간으로 올라오는 진짜 수강평!🔥</div>
   </div>
 </div>
@@ -54,12 +54,12 @@
       
   <!-- 이전 페이지 버튼 -->
   <!-- 이전 페이지가 존재할 경우 이전 페이지 버튼 활성화 -->
-  {% if reviews.has_previous %}
+  {% if page_obj.has_previous %}
     <li class="page-item">
       <a class="page-link" href="?page=1">처음</a>
     </li>
     <li class="page-item">
-      <a class="page-link" href="?page={{ reviews.previous_page_number }}">이전</a>
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a>
     </li>
   {% else %}
     <li class="page-item disabled">
@@ -71,13 +71,13 @@
   {% endif %}
 
   <!-- 페이지 번호 리스트 생성 반복문 -->
-  {% for page_number in reviews.paginator.page_range %}
+  {% for page_number in page_obj.paginator.page_range %}
 
     
     <!-- 페이지 번호가 무한히 생성되는 것을 막는 조건문 -->
     <!-- 현재 페이지에서 +- 5 까지 생성 -->
-    {% if page_number >= reviews.number|add:-5 and page_number <= reviews.number|add:5 %}
-      {% if page_number == reviews.number %}
+    {% if page_number >= page_obj.number|add:-5 and page_number <= page_obj.number|add:5 %}
+      {% if page_number == page_obj.number %}
         <li class="page-item active" aria-current="page">
           <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
         </li>
@@ -91,9 +91,9 @@
 
   <!-- 다음 페이지 버튼 -->
   <!-- 다음 페이지가 존재할 경우 다음 페이지 버튼 활성화 -->
-  {% if reviews.has_next %}
+  {% if page_obj.has_next %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ reviews.next_page_number }}">다음</a>
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a>
     </li>
     <li class="page-item">
       <a class="page-link" href="?page={{ last }}">마지막</a>
