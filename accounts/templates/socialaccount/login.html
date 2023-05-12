@@ -3,33 +3,28 @@
 {% load static %}
 
 {% block style %}
-
+#loginButton {
+  display: none;
+}
 {% endblock style %}
 
 {% block content %}
 
-<div class="accounts-container">
-  <div class="accounts-box">
-    <a href="{% url 'account_login' %}" class="accounts-font">
-      로그인
-    </a>
-  </div>
 
-  <div class="accounts-box">
-    <a href="{% url 'account_signup' %}" class="accounts-font">
-      회원가입
-    </a>
-  </div>
+  <form method="POST">
+    {% csrf_token %}
+    <button id="loginButton" type="submit" class="" >
+      잠시 기다려 주세요
+    </button>
+  </form>
 
-  <div class="accounts-box">
-    <form method="POST">
-      {% csrf_token %}
-      <button type="submit" class="">
-        <img src="{% static '#' %}" alt="kakao-login">
-      </button>
-    </form>
-  </div>
-</div>
+
+
+<script>
+  const button = document.getElementById('loginButton');
+  button.click();
+</script>
+
 
 {% endblock content %}
 

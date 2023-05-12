@@ -1,5 +1,4 @@
 {% load static %}
-{% load socialaccount %}
 <link rel="stylesheet" type="text/css" href="{% static 'base/css/navbar.css' %}">
 
 <div class='nav-bar'>
@@ -136,7 +135,7 @@
 
         {% else %}
 
-          <a class='nav-bar-right-item right-fs' href="{% provider_login_url 'kakao' method='oauth2' %}">
+          <a class='nav-bar-right-item right-fs' href="{% url 'accounts:login' %}">
             <i class="fas fa-right-to-bracket"></i>
           </a>
 

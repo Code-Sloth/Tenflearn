@@ -4,12 +4,22 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
 
 class CustomAutentication(AuthenticationForm):
     username = forms.CharField(
-        label = '아이디',
-        widget= forms.TextInput(attrs = {'class':'form-control',}),
+        label = False,
+        widget= forms.TextInput(attrs = {
+            'class':'form-control',
+            "placeholder": "아이디",
+            "style": "width: 312px; height: 47px;",
+            "autocomplete": "username",
+            }),
     )
     password = forms.CharField(
-        label = '비밀번호',
-        widget = forms.PasswordInput(attrs = {'class':'form-contraol',}),
+        label = False,
+        widget = forms.PasswordInput(attrs = {
+            'class':'form-control',
+            "placeholder": "비밀번호",
+            "style": "width: 312px; height: 47px;",
+            "autocomplete": "current-password",
+            }),
     )
 
     class Meta:
