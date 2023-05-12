@@ -84,6 +84,27 @@ def create(request):
     return render(request, 'courses/course_create.html', context)
 
 
+@login_required
+def update(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+    if request.user == course.user:
+        if request.method == 'POST':
+            form = CoursesForm(request.POST, request.FILES, instance=course)
+            if form.is_valid():
+                form.save()
+                return redirect('courses:detail', course.pk)
+        else:
+            form = CoursesForm(instance=course)
+    else:
+        return redirect('courses:index')
+    context = {
+        'course': course,
+        'form': form,
+    }
+    return render(request, 'courses/course_update.html', context)
+
+
+@login_required
 def delete(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     if request.user == course.user:
