@@ -16,9 +16,15 @@ def index(request):
     courses = Course.objects.all().order_by('-pk')
     sorted_star_courses = Course.objects.all().order_by('-star')
     sorted_enrolment_courses = Course.objects.annotate(num_enrolment_users=Count('enrolment_users')).order_by('-num_enrolment_users')
-    enrolled_courses = Course.objects.filter(enrolment_users=request.user)
-    enrolled_course_tags = enrolled_courses.values_list('tags', flat=True).distinct()
-    similar_courses = Course.objects.filter(Q(tags__in=enrolled_course_tags) & ~Q(enrolment_users=request.user)).distinct()
+    if request.user.is_authenticated:
+        enrolled_courses = Course.objects.filter(enrolment_users=request.user)
+        if enrolled_courses:
+            enrolled_course_tags = enrolled_courses.values_list('tags', flat=True).distinct()
+            similar_courses = Course.objects.filter(Q(tags__in=enrolled_course_tags) & ~Q(enrolment_users=request.user)).distinct()
+        else:
+            similar_courses = None
+    else:
+        similar_courses = None
     context = {
         'courses': courses,
         'sorted_star_courses': sorted_star_courses,
