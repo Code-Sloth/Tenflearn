@@ -166,7 +166,9 @@
 
 <div>
   <h3>비슷한 강의</h3>
-  {{ similar_course.title }}
+  {% for similar_course in similar_courses %}
+    <p>{{ similar_course.title }}</p>
+  {% endfor %}
 </div>
 
 
