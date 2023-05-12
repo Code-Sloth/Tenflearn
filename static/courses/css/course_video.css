@@ -1,5 +1,10 @@
-.video {
+.course {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.course-video-youtube {
+  width: 70%;
+  height: 70vh;
 }
