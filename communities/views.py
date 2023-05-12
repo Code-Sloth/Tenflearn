@@ -40,10 +40,7 @@ def comment_detail(request, comment_pk):
 def comment_create(request):
     if request.method == 'POST':
         course_pk = request.POST.get('course_pk', 0)
-    else:
-        course_pk = request.GET.get('course_pk', 0)
 
-    if request.method == 'POST':
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -54,9 +51,10 @@ def comment_create(request):
             comment.save()
 
             return redirect('communities:comment_index')
-
     else:
+        course_pk = request.GET.get('course_pk', 0)
         comment_form = CommentForm()
+        
     context = {
         'comment_form': comment_form,
         'course_pk': course_pk,
