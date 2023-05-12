@@ -6,7 +6,7 @@
 
 {% block content %}
 {% if request.user.is_authenticated %}
-<form action="{% url 'accounts:update' %}" method="POST">
+<form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   {{ form.as_p}}
   <input type="submit">

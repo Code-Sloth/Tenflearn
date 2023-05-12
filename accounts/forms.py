@@ -29,4 +29,4 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
-        fields = ('username', 'last_name', 'first_name',)
+        fields = ('username', 'last_name', 'first_name','image',)
