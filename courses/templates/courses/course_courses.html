@@ -1,91 +1,156 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load humanize %} 
 {% block title %}
-전체 강의
-{% endblock title %}
-
+{% comment %}
+TODO: 상위 카테고리별로 변경 
+{% endcomment %}
+인프런 - 라이프타임커리어 플랫폼
+{% endblock title %} 
 {% block content %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'courses/css/course_courses.css' %}"
+/>
+{% comment %} <link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'courses/css/course_card.css' %}"
+/> {% endcomment %}
 
-<ul>
-  {% for tag in tags %}
-    <li><a href="{% url 'courses:courses' %}?tag={{ tag.slug }}">#{{ tag.name }}</a></li>
-  {% endfor %}
-</ul>
+<section class="box container">
+  <div class="d-flex">
+    <aside class="sidebar-left">
+      <a href="">
+        <div class="sidebar-item">전체 강의</div>
+      </a>
+      <a href="">
+        <div class="sidebar-item">웹 개발</div>
+      </a>
+      </a>
+      <a href="">
+        <div class="sidebar-item">백엔드</div>
+      </a>
+      <a href="">
+        <div class="sidebar-item">풀스택</div>
+      </a>
+    </aside>
+    <section class="box courses-body">
+      <header class="d-flex">
+        <h1 class="title">전체 강의</h1>
+        <form class="d-flex search-course">
+          <input class="form-control search-course-input" type="search" placeholder="전체 강의 검색" aria-label="Search">
+          <button class=" search-course-btn" type="submit">검색</button>
+        </form>
+      </header>
+      <main>
+        <div class="skill-tags-container overflow-hidden">
+          <div class="skill-tags">
+            {% for tag in tags %}
+            <button class="skill-tags-btn">{{ tag }}</button>
+            {% endfor %}
+          </div>
+          <div class="skill-tags-more-wrapper"></div>
+          <button class="skill-tags-more bi bi-chevron-compact-down"></button> 
+        </div>
+        <div class="courseInfo-tags-container">
+          <button class="courseInfo-tag">무료</button>
+          <button class="courseInfo-tag">유료</button>
+          <div class="courseInfo-separator"></div>
+          <button class="courseInfo-tag none-margin">할인중</button>
+          <div class="courseInfo-separator"></div>
+          <button class="courseInfo-tag">입문</button>
+          <button class="courseInfo-tag">초급</button>
+          <button class="courseInfo-tag">중급이상</button>
+        </div>
+        <div class="d-flex select-container">
+          <select class="form-select" aria-label="Default select example">
+            <option selected>최신순</option>
+            <option value="1">평점순</option>
+            <option value="2">수강자순</option>
+          </select>
+        </div>
+        <div class="courses-content-container">
+          {% for course in courses  %}
+          <div class="swiper-slide course-slide">
+            <a href="{% url 'courses:detail' course.pk %}" >
+            {% comment %} 강의 카드 호버 {% endcomment %}
+            <div class="course-slide-hover course-slide-hover-hidden">
+              <div class="course-slide-hover-title">
+                {{ course.title }}
+              </div>
+              <div class="course-slide-hover-content">
+                {{ course.content }}
+              </div>
+              <div class="course-slide-hover-bottom">
+                <p>
+                  <i class="bi bi-bar-chart">{{ course.get_level_display }}</i>
+                </p>
+                <p>
+                  <i class="bi bi-tag-fill">
+                    {% for tag in course.tags.all %}
+                    <span>#{{ tag.name }} </span>
+                    {% endfor %}
+                  </i>
+                </p>
+              </div>
+            </div>
+            <div>
+              {% comment %} 강의 카드 {% endcomment %}
+                <div class="course-card-container">
+                  <div class="course-card-img">
+                    <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                  </div>
+                  <div class="course-card-content">
+                    <div class="course-card-content-title">{{ course.title }} </div>
+                    <div class="course-card-content-writer">{{ course.user}} </div>
+                    <div class="d-flex course-card-content-star">
+                      <div class='banner-star-box'>
+                        <div class='banner-star-gray'>
+                          <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+                        </div>
+                        <div class='banner-star-yellow' style='width: {{ course.star_multiple }}%;'>
+                          <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+                        </div>
+                      </div>
+                      <span class="course-card-content-reviews-cnt">({{ course.reviews.count }})</span>
+                    </div>
+                    {% if not course.discount_rate %}
+                      {% if not course.price %}
+                      <div class="course-card-content-price">무료
+                      </div>
+                      {% else %}
+                      <div class="course-card-content-price">₩{{ course.price|intcomma }}
+                      </div>
+                      {% endif %}
+                    {% else %}
+                    <div class="course-card-content-price-sub">
+                      <span class="course-card-content-price-underline">₩{{ course.price|intcomma }}
+                      </span>
+                      <span class="course-card-content-price">₩{{ course.discounted_price|intcomma }}
+                      </span>
+                    </div>
+                    <div class="course-card-content-bottom">
+                      <span class="discount-tag">할인중</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </a>
+          </div>
 
-<hr>
+          </div>
+          {% endfor %}
+        </div>
 
-{% comment %} 강의 데이터 일반 버전 {% endcomment %}
-{% for course in courses %}
-<div>
-  <a href="{% url 'courses:detail' course.pk %}"><img src={% if course.image %}"{{ course.image.url }}"{% else %}"{% static '/courses/image/noimage.jpeg' %}"{% endif %} alt="{{ course.image }}"></a>
-  <p>제목 : {{course.title}}</p>
-  <p>별점 : {{course.star}}</p>
-  <p>금액 : {{course.discounted_price}}</p>
-  <p>태그 : 
-    {% for tag in course.tags.all %}
-      <a href="{% url 'courses:courses' %}?tag={{ tag.slug }}">#{{ tag.name }}</a>
-    {% endfor %}
-  </p>
-</div>
-{% endfor %}
-
-<hr>
-
-{% comment %} 강의 데이터 페이지네이터 버전 {% endcomment %}
-{% for course_paginated in courses_paginated %}
-<div>
-  <a href="{% url 'courses:detail' course_paginated.pk %}"><img src="{{ course_paginated.image.url }}" alt="{{ course_paginated.image.url }}"></a>
-  <p>{{ course_paginated.title }}</p>
-  <p>{{ course_paginated.star }}</p>
-  {% for tag in course_paginated.tags.all %}
-      <a href="{% url 'courses:courses' %}?tag={{ tag.slug }}">#{{ tag.name }}</a>
-  {% endfor %}
-</div>
-{% endfor %}
-
-{% if courses_paginated %}
-  <div class="pagitator">
-    <ul class="pagination justify-content-center">
-      {% if courses_paginated.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page=1">처음</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="?page={{ courses_paginated.previous_page_number }}">이전</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
-        </li>
-      {% endif %}
-      {% for page_number in courses_paginated.paginator.page_range %}
-      {% if page_number >= courses_paginated.number|add:-5 and page_number <= courses_paginated.number|add:5 %}
-          {% if page_number == courses_paginated.number %}
-            <li class="page-item active" aria-current="page">
-              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-          {% else %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-      {% if courses_paginated.has_next %}
-        <li class="page-item">
-          <a href="?page={{ courses_paginated.next_page_number }}" class="page-link" name="word">다음</a>
-        </li>
-        <li class="page-item">
-          <a href="?page={{ num_page }}" class="page-link">마지막으로</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <a href="#" class="page-link" tabindex='-1' aria-disabled='true'>다음</a>
-        </li>
-      {% endif %}
-    </ul>
+      </main>
+      <footer></footer>
+    </section>
   </div>
-{% endif %}
+</section>
+
+<script src="{% static 'courses/js/course_courses.js' %}"></script>
+<script src="{% static 'courses/js/cardHover.js' %}"></script>
 
 {% endblock content %}
