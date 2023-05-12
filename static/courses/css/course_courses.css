@@ -1,0 +1,369 @@
+.box {
+  /* border: 1px solid black; */
+}
+
+.container {
+  width: 1200px;
+  padding: 32px 24px 32px 32px;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+  outline: none;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    /* margin-left: 0; */
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar-left {
+    display: none;
+  }
+}
+
+/* 사이드바 */
+
+.sidebar-left {
+  width: 190.66px;
+  min-width: 190.66px;
+  border-top: 1px solid #e4e4e4;
+}
+
+.sidebar-item {
+  border-bottom: 1px solid #e4e4e4;
+  border-right: 1px solid #e4e4e4;
+  border-left: 1px solid #e4e4e4;
+  color: #595959;
+  background: #fafafa;
+  font-weight: 500;
+  padding: 0.85rem;
+}
+
+/* 메인 */
+.courses-body {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* 메인 - 헤더 */
+header {
+  margin: 0 8px 32px 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-weight: 700;
+  color: #343a40;
+  font-size: 20px;
+  padding: 0 8px 0 0;
+}
+
+/* 메인 - 헤더 - 검색 */
+.search-course-input {
+  border-color: #ced4da;
+  border-radius: 8px 0 0 8px;
+  padding: 5px 8px;
+  width: 222px;
+  color: #343a40;
+}
+
+.search-course-btn {
+  border-color: #ced4da;
+  border: 1px;
+  border-radius: 0 8px 8px 0;
+  border-left: 0;
+  padding: 8px 12px;
+  height: unset;
+  background-color: #f1f3f5;
+
+  color: #495057;
+  font-weight: 700;
+  font-size: 0.75px;
+}
+
+/* 메인 - 태그 필터 */
+.skill-tags-container {
+  position: relative;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  margin: 0 8px 0 20px;
+  padding-top: 4px;
+  box-sizing: border-box;
+  min-height: 48px;
+}
+
+.overflow-hidden{
+  height: 48px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.skill-tags {
+  overflow: hidden;
+}
+
+.skill-tags-btn {
+  margin: 0 8px 8px 0;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 36px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #000;
+}
+
+.skill-tags-btn:hover, .courseInfo-tag:hover {
+  background-color: #f1f3f5;
+}
+
+.skill-tags-more-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  width: 56.25px;
+  height: 44px;
+  margin-left: auto;
+  padding-left: 20px;
+  background: linear-gradient(90deg,hsla(0,0%,100%,0),#fff 25%);
+}
+
+.skill-tags-more {
+  position: absolute;
+  width: 100%;
+  right: 0;
+
+  display: block;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 0 11px;
+  height: 36px;
+  width: 36.25px;
+  color: #343a40;
+  background-color: #fff;
+}
+
+/* 강의정보 태그 */
+.courseInfo-tags-container{
+  display: flex;
+  margin: 0 8px 0 20px;
+}
+.courseInfo-tag {
+  align-items: center;
+  padding: 9px 12px;
+  margin-right: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 32px;
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 14px;
+}
+.none-margin {
+  margin-right: 0px;
+}
+.courseInfo-separator {
+  margin: auto 10px;
+  width: 1px;
+  height: 16px;
+  background-color: rgba(33,37,41,.25);
+}
+
+
+/* 필터 */
+.select-container{
+  justify-content: flex-end;
+  margin-right: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.form-select {
+  width: 87.17px;
+  height: 33.24px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  font-size: .75rem;
+  border-radius: 0.2rem;
+
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  font-weight: 400;
+  line-height: 2;
+
+  border-radius: 8px;
+  color: #212529;
+}
+
+/* 강의카드 */
+.courses-content-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 24px;
+}
+
+@media (max-width: 768px ) {
+  .course-slide {
+    width: 50%;
+  }
+}
+
+@media(min-width: 768px) and (max-width: 1199px) {
+  .course-slide {
+    width: 33%;
+    }
+  }
+
+
+@media (min-width: 1200px) {
+    .course-slide {
+      width: 25%;
+    }
+}
+
+/* index강의 카드  */
+/* TODO: 중복확인, 중복된 부분 분리하기 */
+/* 강의 카드 */
+.course-slide {
+  position: relative;
+}
+
+.course-card-container {
+  padding: 12px 8px;
+}
+.course-card-img {
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+.course-card-img img {
+  width: 100%;
+}
+
+.course-card-content-title {
+  text-align: left;
+  font-weight: 700;
+  line-height: 1.5em;
+  height: auto;
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+  color: #454545;
+}
+
+.course-card-content-writer {
+  text-align: left;
+  color: #7d7d7d;
+  font-size: 0.825rem;
+}
+
+.course-card-content-price {
+  text-align: left;
+  font-weight: 700;
+  color: #175cbe;
+}
+
+.course-card-content-price-sub {
+  text-align: left;
+}
+.course-card-content-price-underline {
+  text-decoration: line-through;
+  color: #595959;
+  font-weight: 500;
+  font-size: 0.9rem;
+  opacity: 0.75;
+  margin-right: 0.3rem;
+}
+
+.course-card-content-bottom {
+  text-align: left;
+}
+
+.discount-tag {
+  background-color: hsl(1, 100%, 89%);
+  border-radius: 4px;
+  color: #454545;
+  font-size: 0.625rem;
+  padding: 0.5em 0.75em;
+}
+/* star */
+
+.banner-star-box {
+  position: relative;
+  width: 72px;
+}
+
+.banner-star-box img {
+  width: 72px;
+}
+
+.banner-star-yellow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.course-card-content-reviews-cnt {
+  font-size: 0.5rem;
+  bottom: 0.3rem;
+  color: #4a4a4a;
+  margin-left: 0.3rem;
+}
+
+/* 강의 카드 호버 */
+.course-slide-hover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.785);
+  z-index: 5;
+}
+
+.course-slide-hover-title {
+  text-align: left;
+  color: white;
+  font-weight: 500;
+  margin: 1rem 1rem;
+}
+
+.course-slide-hover-content {
+  text-align: left;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 1rem 1rem;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.course-slide-hover-bottom {
+  text-align: left;
+  font-size: 0.8rem;
+  margin: 0.5rem 1rem;
+  color: hsl(182, 75%, 94%);
+}
+
+.course-slide-hover-bottom p {
+  margin: 0;
+}
+
+.course-slide-hover-hidden {
+  display: none;
+}

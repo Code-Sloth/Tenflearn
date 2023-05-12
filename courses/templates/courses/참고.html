@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+전체 강의
+{% endblock title %}
+
+{% block content %}
+
+<ul>
+  {% for tag in tags %}
+    <li><a href="{% url 'courses:courses' %}?tag={{ tag.slug }}">#{{ tag.name }}</a></li>
+  {% endfor %}
+</ul>
+
+<hr>
+
+{% comment %} 강의 데이터 일반 버전 {% endcomment %}
+{% for course in courses %}
+<div>
+  <a href="{% url 'courses:detail' course.pk %}"><img src={% if course.image %}"{{ course.image.url }}"{% else %}"{% static '/courses/image/noimage.jpeg' %}"{% endif %} alt="{{ course.image }}"></a>
+  <p>제목 : {{course.title}}</p>
+  <p>별점 : {{course.star}}</p>
+  <p>금액 : {{course.discounted_price}}</p>
+  <p>태그 : 
+    {% for tag in course.tags.all %}
+      <a href="{% url 'courses:courses' %}?tag={{ tag.slug }}">#{{ tag.name }}</a>
+    {% endfor %}
+  </p>
+</div>
+{% endfor %}
+
+<hr>
+
+{% comment %} 강의 데이터 페이지네이터 버전 {% endcomment %}
+{% for course_paginated in courses_paginated %}
+<div>
+  <a href="{% url 'courses:detail' course_paginated.pk %}"><img src="{{ course_paginated.image.url }}" alt="{{ course_paginated.image.url }}"></a>
+  <p>{{ course_paginated.title }}</p>
+  <p>{{ course_paginated.star }}</p>
+  {% for tag in course_paginated.tags.all %}
+      <a href="{% url 'courses:courses' %}?tag={{ tag.slug }}">#{{ tag.name }}</a>
+  {% endfor %}
+</div>
+{% endfor %}
+
+{% if courses_paginated %}
+  <div class="pagitator">
+    <ul class="pagination justify-content-center">
+      {% if courses_paginated.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1">처음</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ courses_paginated.previous_page_number }}">이전</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+      {% endif %}
+      {% for page_number in courses_paginated.paginator.page_range %}
+      {% if page_number >= courses_paginated.number|add:-5 and page_number <= courses_paginated.number|add:5 %}
+          {% if page_number == courses_paginated.number %}
+            <li class="page-item active" aria-current="page">
+              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% if courses_paginated.has_next %}
+        <li class="page-item">
+          <a href="?page={{ courses_paginated.next_page_number }}" class="page-link" name="word">다음</a>
+        </li>
+        <li class="page-item">
+          <a href="?page={{ num_page }}" class="page-link">마지막으로</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a href="#" class="page-link" tabindex='-1' aria-disabled='true'>다음</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}
+
+{% endblock content %}
