@@ -128,10 +128,11 @@ def review(request):
     per_page = 5
     paginator = Paginator(reviews, per_page)
     page_obj = paginator.get_page(page)
-
     last = paginator.num_pages
+    reviews_count = reviews.count()
     context = {
-        'reviews': page_obj,
+        'reviews_count': reviews_count,
+        # 'reviews': page_obj,
         'page_obj': page_obj,
         'last': last,
     }
