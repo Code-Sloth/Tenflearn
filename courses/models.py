@@ -11,7 +11,7 @@ from taggit.managers import TaggableManager
 
 class Course(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    enrolment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='enrolment_courses')
+    enrolment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='enrolment_courses', blank=True)
     title = models.CharField(max_length=100)
     content = models.TextField()
     star = models.DecimalField(default=0, max_digits=5, decimal_places=1)

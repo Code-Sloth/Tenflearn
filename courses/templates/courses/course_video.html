@@ -1,25 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-강의 영상
+{{ course.title }}
 {% endblock title %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_video.css' %}">
 
-<div class="video">
-  <div>
-    <iframe 
-    src="https://www.youtube.com/embed/kWiCuklohdY" 
-    title="파이썬 코딩 무료 강의 (기본편) - 6시간 뒤면 여러분도 개발자가 될 수 있어요 [나도코딩]" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    allowfullscreen
-    style="width: 100%; height: 100%; padding-bottom: 5%;">
-    </iframe>
-  </div>
-  <div>
+<div class="course">
+  <iframe src="https://www.youtube.com/embed/kWiCuklohdY" 
+  class="course-video"
+  title="파이썬 코딩 무료 강의 (기본편) - 6시간 뒤면 여러분도 개발자가 될 수 있어요 [나도코딩]" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+  allowfullscreen></iframe>
 
+  <div class="course-descriptions">
+    <div>
+      <h4>{{ course.title }}</h4>
+    </div>
+    <div>
+      <span>강사 - {{ course.user }}</span>
+    </div>
+    <hr>
+    <div class="course-btn">
+      <button class="btn descriptions-btn">강의 설명 보기</button>
+      <button class="btn textarea-btn">메모 작성</button>
+    </div>
+    <div class="course-descriptions-content">
+      {{ course.content|linebreaksbr }}
+    </div>
+    <div class="course-descriptions-file">
+      <textarea class="course-descriptions-file-memo" id="memo" placeholder="저장할 내용을 입력해주세요."></textarea>
+      <button class="btn btn-outline-secondary" onclick="Download()">다운로드</button>
+    </div>
   </div>
 </div>
+
+<script src="{% static 'courses/js/course_video.js' %}"></script>
+
 {% endblock content %}

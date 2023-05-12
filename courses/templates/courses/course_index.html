@@ -37,7 +37,7 @@
     <div class="swiper hash-curation">
       <div class="swiper-wrapper">
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=javascript">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/js.svg' %}"
@@ -49,7 +49,7 @@
         </div>
 
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=typescript">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/ts.svg' %}"
@@ -60,7 +60,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=python">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/python.svg' %}"
@@ -71,7 +71,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=html">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/html.svg' %}"
@@ -82,7 +82,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=css">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/css.svg' %}"
@@ -93,7 +93,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=django">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/django.svg' %}"
@@ -104,7 +104,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=react">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/react.svg' %}"
@@ -115,7 +115,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=angular">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/angular.svg' %}"
@@ -126,7 +126,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=java">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/java.svg' %}"
@@ -137,7 +137,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=mysql">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/mysql.svg' %}"
@@ -148,7 +148,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="">
+          <a href="{% url 'courses:courses' %}?tag=spring">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/spring.svg' %}"
@@ -165,8 +165,8 @@
   </nav>
 
   <article>
-    {% if user.is_authenticated %}
-      {% comment %} 로그인 회원과 비슷한 강의 {% endcomment %}
+    {% comment %} 로그인 회원과 비슷한 강의 {% endcomment %}
+    {% if similar_courses %}
       <section class="course-container">
         <div class="course-container-header">
           <h1 class="course-container-header-title">나와 비슷한 사람들이 수강한 강의</h1>
@@ -176,21 +176,21 @@
           <div class="swiper course-curation">
             <div class="swiper-wrapper">
               {% comment %} TODO: 비슷한 강의 {% endcomment %}
-              {% for course in courses  %}
+              {% for similar_course in similar_courses  %}
                 <div class="swiper-slide course-slide">
-                  <a href="{% url 'courses:detail' course.pk %}" >
+                  <a href="{% url 'courses:detail' similar_course.pk %}" >
                   {% comment %} 강의 카드 호버 {% endcomment %}
                   <div class="course-slide-hover course-slide-hover-hidden">
                     <div class="course-slide-hover-title">
-                      {{ course.title }}
+                      {{ similar_course.title }}
                     </div>
                     <div class="course-slide-hover-bottom">
                       <p>
-                        <i class="bi bi-bar-chart">{{ course.get_level_display }}</i>
+                        <i class="bi bi-bar-chart">{{ similar_course.get_level_display }}</i>
                       </p>
                       <p>
                         <i class="bi bi-tag-fill">
-                          {% for tag in course.tags.all %}
+                          {% for tag in similar_course.tags.all %}
                           <span>#{{ tag.name }} </span>
                           {% endfor %}
                         </i>
@@ -201,35 +201,35 @@
                     {% comment %} 강의 카드 {% endcomment %}
                       <div class="course-card-container">
                         <div class="course-card-img">
-                          <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                          <img src="{{ similar_course.image.url }}" alt="{{ similar_course.title }}">
                         </div>
                         <div class="course-card-content">
-                          <div class="course-card-content-title">{{ course.title }} </div>
-                          <div class="course-card-content-writer">{{ course.user}} </div>
+                          <div class="course-card-content-title">{{ similar_course.title }} </div>
+                          <div class="course-card-content-writer">{{ similar_course.user}} </div>
                           <div class="d-flex course-card-content-star">
                             <div class='banner-star-box'>
                               <div class='banner-star-gray'>
                                 <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
                               </div>
-                              <div class='banner-star-yellow' style='width: {{ course.star_multiple }}%;'>
+                              <div class='banner-star-yellow' style='width: {{ similar_course.star_multiple }}%;'>
                                 <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
                               </div>
                             </div>
-                            <span class="course-card-content-reviews-cnt">({{ course.reviews.count }})</span>
+                            <span class="course-card-content-reviews-cnt">({{ similar_course.reviews.count }})</span>
                           </div>
-                          {% if not course.discount_rate %}
-                            {% if not course.price %}
+                          {% if not similar_course.discount_rate %}
+                            {% if not similar_course.price %}
                             <div class="course-card-content-price">무료
                             </div>
                             {% else %}
-                            <div class="course-card-content-price">₩{{ course.price|intcomma }}
+                            <div class="course-card-content-price">₩{{ similar_course.price|intcomma }}
                             </div>
                             {% endif %}
                           {% else %}
                           <div class="course-card-content-price-sub">
-                            <span class="course-card-content-price-underline">₩{{ course.price|intcomma }}
+                            <span class="course-card-content-price-underline">₩{{ similar_course.price|intcomma }}
                             </span>
-                            <span class="course-card-content-price">₩{{ course.discounted_price|intcomma }}
+                            <span class="course-card-content-price">₩{{ similar_course.discounted_price|intcomma }}
                             </span>
                           </div>
                           <div class="course-card-content-bottom">
