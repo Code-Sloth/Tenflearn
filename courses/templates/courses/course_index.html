@@ -165,8 +165,8 @@
   </nav>
 
   <article>
-    {% if user.is_authenticated %}
-      {% comment %} 로그인 회원과 비슷한 강의 {% endcomment %}
+    {% comment %} 로그인 회원과 비슷한 강의 {% endcomment %}
+    {% if similar_courses %}
       <section class="course-container">
         <div class="course-container-header">
           <h1 class="course-container-header-title">나와 비슷한 사람들이 수강한 강의</h1>

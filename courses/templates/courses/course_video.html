@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-강의 영상
+{{ course.title }}
 {% endblock title %}
 
 {% block content %}
@@ -23,24 +23,20 @@
       <span>강사 - {{ course.user }}</span>
     </div>
     <hr>
-    <button class="btn toggle-btn">강의 설명 보기</button>
+    <div class="course-btn">
+      <button class="btn descriptions-btn">강의 설명 보기</button>
+      <button class="btn textarea-btn">메모 작성</button>
+    </div>
     <div class="course-descriptions-content">
       {{ course.content|linebreaksbr }}
+    </div>
+    <div class="course-descriptions-file">
+      <textarea class="course-descriptions-file-memo" id="memo" placeholder="저장할 내용을 입력해주세요."></textarea>
+      <button class="btn btn-outline-secondary" onclick="Download()">다운로드</button>
     </div>
   </div>
 </div>
 
-<script>
-  const toggleBtn = document.querySelector('.toggle-btn');
-  const courseDescriptionContent = document.querySelector('.course-descriptions-content');
-  
-  toggleBtn.addEventListener('click', function() {
-    courseDescriptionContent.classList.toggle('show');
-    if (toggleBtn.textContent === '강의 설명 보기') {
-      toggleBtn.textContent = '강의 설명 닫기';
-    } else {
-      toggleBtn.textContent = '강의 설명 보기';
-    }
-  });
-</script>
+<script src="{% static 'courses/js/course_video.js' %}"></script>
+
 {% endblock content %}
