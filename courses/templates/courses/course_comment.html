@@ -1,25 +1,77 @@
-{% extends 'base.html' %}
+{% extends 'courses/course_detail.html' %}
+{% load static %}
 
 {% block title %}
 {{ course.title }}
 {% endblock title %}
 
-{% block content %}
-<div>
-  <h2>강의 정보</h2>
-  <p>{{ course.title }}</p>
-  <p>{{ course.content }}</p>
-  <p>{{ course.star }}</p>
-  <p>{{ course.price }}</p>
-  <p>{{ course.discount_rate }}</p>
-  <p>{{ course.discounted_price }}</p>
-  <p><img src="{{ course.image.url }}" alt="{{ course.image.url }}"></p>
-  <p>{{ course.expired_date }}</p>
-  <p>{{ course.level }}</p>
-  <p>{{ course.certificates }}</p>
-  <p>{{ course.created_at }}</p>
-  {% for tag in course.tags.all %}
-      <p>#{{ tag.name }}</p>
-  {% endfor %}
-</div>
-{% endblock content %}
+{% block course_detail_header %}
+{% endblock course_detail_header %}
+
+{% block course_detail_content %}
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_comment.css' %}">
+
+<section class='mb-5'>
+
+  <div class='course-comment-type'>
+    <a class='ms-0 {% if comment_type == "qna" %}comment-green{% endif %}' href="{% url 'courses:comment' course.pk %}?type=qna">질문</a>
+    <a {% if comment_type == "worry" %}class='comment-green'{% endif %} href="{% url 'courses:comment' course.pk %}?type=worry">고민있어요</a>
+    <a {% if comment_type == "study" %}class='comment-green'{% endif %} href="{% url 'courses:comment' course.pk %}?type=study">스터디</a>
+  </div>
+
+  <form class='course-comment-form' action="{% url 'courses:comment' course.pk %}">
+      <input name='q' type="search">
+      <button type='submit'>
+        <img src="{% static 'courses/image/search.svg' %}" alt="search">
+      </button>
+  </form>
+
+  {% if course_comments %}
+    {% for comment in course_comments reversed %}
+      <a class='comment-list-a' href="{% url 'communities:comment_detail' comment.pk %}">
+        <div class='comment-list-div'>
+          <h1 class='comment-list-title'>
+            {{ comment.title }}
+          </h1>
+      
+          <h2 class='comment-list-content'>
+            {{ comment.content|safe|striptags }}
+          </h2>
+      
+          <div class='comment-list-tags'>
+            {% for tag in course.tags.all %}
+              <div class='comment-list-tag'># {{ tag }}</div>
+            {% endfor %}
+          </div>
+      
+          <div class='comment-list-footer'>
+            <h4>
+              <span>{{ comment.user.last_name }}{{ comment.user.first_name }}</span><span>&nbsp;·&nbsp;</span><span>{{ comment.created_time }}</span><span>&nbsp;·&nbsp;</span><span>{{ course.title }}</span>
+            </h4>
+      
+            <div class='comment-list-footer-right'>
+              <section>
+                <div><i class='fas fa-thumbs-up'></i></div>
+                <div>{{ comment.like_users.count }}</div>
+                <div class='ms-2'><i class='fas fa-comment'></i></div>
+                <div>{{ comment.recomments.count }}</div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  {% else %}
+      <div class='comment-list-else'>
+        <div>
+          아직 관련 글이 없습니다. 첫 글을 남겨주세요!
+        </div>
+      </div>
+  {% endif %}
+
+</section>
+ 
+{% endblock course_detail_content %}
+
+{% block course_detail_footer %}
+{% endblock course_detail_footer %}

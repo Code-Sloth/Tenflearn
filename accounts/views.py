@@ -114,16 +114,17 @@ def mypage(request):
 def add_cart(request, course_id):
     course = Course.objects.get(id=course_id)
     quantity = int(request.GET.get('quantity', 1))
-    cart = request.session.get('cart', {})
-
+    if request.user.is_authenticated:
+        cart_key = f'cart_{request.user.username}'
+    else:
+        cart_key = 'cart'
+    cart = request.session.get(cart_key, {})
     if course_id in cart:
         cart[course_id]['quantity'] += quantity
     else:
         cart[course_id] = {'quantity': quantity, 'price': str(course.price)}
-
-    request.session['cart'] = cart
-
-    return redirect('accounts:mypage', username=request.user.username)
+    request.session[cart_key] = cart
+    return redirect('accounts:mypage')
 
 
 def remove_cart(request, course_id):
@@ -134,7 +135,7 @@ def remove_cart(request, course_id):
         del cart[course_id]
         request.session['cart'] = cart
 
-    return redirect('accounts:mypage', username=request.user.username)
+    return redirect('accounts:mypage')
 
 
 def view_cart(request):

@@ -36,12 +36,16 @@ def detail(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
-    if Course.objects.count() > 3:
-        other_courses = random.sample(list(Course.objects.all().exclude(pk=course.pk)), 3)
+    if Course.objects.count() > 4:
+        other_courses = random.sample(list(Course.objects.all().exclude(pk=course.pk)), 4)
     else:
-        other_courses = []
+        other_courses = Course.objects.all().exclude(pk=course.pk)
+
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(pk=course.pk)
-    similar_course = random.choice(similar_courses) if similar_courses else None
+
+    if similar_courses.count() > 4:
+        similar_courses = similar_courses[::3]
+
     star_percentage = []
     if reviews:
         for x in range(1, 6):
@@ -53,7 +57,7 @@ def detail(request, course_pk):
         'reviews': reviews,
         'review_form': review_form,
         'other_courses': other_courses,
-        'similar_course': similar_course,
+        'similar_courses': similar_courses,
         'star_percentage': star_percentage,
     }
     return render(request, 'courses/course_detail.html', context)
@@ -79,11 +83,26 @@ def create(request):
 
 def comment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
+    comment_type = request.GET.get('type')
+    q = request.GET.get('q')
+
+    course_comments = course.comments.all()
+    if comment_type:
+        course_comments = course_comments.filter(category=comment_type)
+
+    if q:
+        course_comments = course_comments.filter(
+            Q(title__icontains=q)|
+            Q(content__icontains=q)|
+            Q(course__tags__name__icontains=q)
+        ).distinct()
+
     context = {
         'course': course,
+        'course_comments': course_comments,
+        'comment_type': comment_type,
     }
     return render(request, 'courses/course_comment.html', context)
-
 
 def courses(request):
     slug = request.GET.get('tag')
