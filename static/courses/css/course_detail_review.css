@@ -1,9 +1,23 @@
+.review-header {
+  margin-bottom: 8px;
+}
+
 .review-reviewname {
   font-size: 22px;
+  font-weight: bold;
+}
+
+.review-reviewcount {
+  font-size: 16px;
+  color: rgb(173 181 189);
+  margin-left: 3px;
 }
 
 .review-description {
+  color: rgb(100 100 100);
   font-size: 15px;
+  margin-bottom: 16px;
+  font-weight: lighter;
 }
 
 .review-dashboard {
@@ -16,16 +30,59 @@
   align-items: center;
   justify-content: center;
   border: 1px solid #e9ecef;
+  width: 222px;
+  height: 180px;
+  padding: 20px 0;
+  border-radius: 5px;
+}
+
+.review-dashboard-star-num h2 {
+  font-weight: bold;
+}
+
+.review-dashboard-star-count {
+  font-size: 15px;
+  color: rgb(173 181 189);
+  margin-top: 10px;
 }
 
 .review-dashbboard-graph {
+  margin-left: 10px;
+  border-radius: 5px;
+  flex-grow: 1;
+  height: 180px;
   border: 1px solid #e9ecef;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+}
+
+.review-progressbox {
+  display: flex;
+  align-items: center;
+  margin: 3px 0;
+}
+
+.review-progress-title {
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.review-progress {
+  flex-grow: 1;
+}
+
+.progress {
+  height: 8px;
+}
+
+.progress-bar {
+  background-color: rgb(255, 200, 7);
 }
 
 .starpoint_wrap{display:flex;align-items: center;justify-content: center;}
-.starpoint_box{position:relative;background:url(https://ido-archive.github.io/svc/etc/element/img/sp_star.png) 0 0 no-repeat;font-size:0;}
-.starpoint_box .starpoint_bg{display:block;position:absolute;top:0;left:0;height:18px;background:url(https://ido-archive.github.io/svc/etc/element/img/sp_star.png) 0 -20px no-repeat;pointer-events:none;}
-.starpoint_box .label_star{display:inline-block;width:20px;height:18px;box-sizing:border-box;}
+.starpoint_box{position:relative;background:url(/static/courses/image/graystars.png);font-size:0;}
+.starpoint_box .starpoint_bg{display:block;position:absolute;top:0;left:0;height:30px;background:url(/static/courses/image/yellowstars.png);pointer-events:none;}
+.starpoint_box .label_star{display:inline-block;width:28px;height:30px;box-sizing:border-box;}
 .starpoint_box .star_radio{opacity:0;width:0;height:0;position:absolute;}
 .starpoint_box .star_radio:nth-of-type(1):hover ~ .starpoint_bg,
 .starpoint_box .star_radio:nth-of-type(1):checked ~ .starpoint_bg{width:20%;}
@@ -59,6 +116,16 @@
   border: 1px solid #e9ecef;
 }
 
+.review-add-comment-write textarea::placeholder {
+  font-size: 14px;
+  color: rgb(180 180 180);
+}
+
+.review-add-comment-write textarea:focus {
+  outline: 2px solid rgb(200 200 200);
+  color: rgb(80 80 80);
+}
+
 .review-add-comment-btn {
   display: flex;
   justify-content: flex-end;
@@ -75,4 +142,61 @@
   border-color: #00c471;
   font-weight: 700;
   background-color: #00c471;
+}
+
+.review-list {
+  margin-top: 30px;
+}
+
+.review-list-img {
+  width: 40px;
+  padding-top: 5px;
+}
+
+.review-list-right {
+  padding-left: 5px;
+}
+
+.review-list-star {
+  display: flex;
+}
+
+.review-list-starcount {
+  font-size: 15px;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-top: 2px;
+}
+
+.review-list-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(160 160 160);
+  margin-top: 10px;
+}
+
+.review-list-content {
+  margin: 12px 0;
+  font-size: 15px;
+  color: rgb(120 120 120);
+}
+
+.review-list-time {
+  font-size: 13px;
+  color: rgb(173 181 189);
+}
+
+.review-list-box {
+  margin-bottom: 60px;
+}
+
+.review-list-submit {
+  font-size: 14px;
+  color:rgb(100 100 100);
+  background-color: white;
+  border: 0;
+}
+
+.review-list-submit:hover {
+  color: black;
 }
