@@ -19,12 +19,21 @@
     <a {% if comment_type == "study" %}class='comment-green'{% endif %} href="{% url 'courses:comment' course.pk %}?type=study">스터디</a>
   </div>
 
-  <form class='course-comment-form' action="{% url 'courses:comment' course.pk %}">
-      <input name='q' type="search">
-      <button type='submit'>
-        <img src="{% static 'courses/image/search.svg' %}" alt="search">
-      </button>
-  </form>
+  <div class='d-flex'>
+    <form class='course-comment-form' action="{% url 'courses:comment' course.pk %}">
+        <input name='q' type="search">
+        <button type='submit'>
+          <img src="{% static 'courses/image/search.svg' %}" alt="search">
+        </button>
+    </form>
+  
+    <div class='course-comment-flex'>
+      <a class='middle-section-write' href="{% url 'communities:comment_create' %}?course_pk={{ course.pk }}">
+        <img class='me-1' src="{% static 'communities/image/write.svg' %}" alt="write">
+        글쓰기
+      </a>
+    </div>
+  </div>
 
   {% if course_comments %}
     {% for comment in course_comments reversed %}
@@ -46,11 +55,11 @@
       
           <div class='comment-list-footer'>
             <h4>
-              <span>{{ comment.user.last_name }}{{ comment.user.first_name }}</span><span>&nbsp;·&nbsp;</span><span>{{ comment.created_time }}</span><span>&nbsp;·&nbsp;</span><span>{{ course.title }}</span>
+              <span>{{ comment.user.last_name }}{{ comment.user.first_name }}</span><span>&nbsp;·&nbsp;</span><span>{{ comment.created_time }}</span><span>&nbsp;·&nbsp;</span><span>{{ comment.title }}</span>
             </h4>
       
             <div class='comment-list-footer-right'>
-              <section>
+              <section class='comment-list-footer-right-section'>
                 <div><i class='fas fa-thumbs-up'></i></div>
                 <div>{{ comment.like_users.count }}</div>
                 <div class='ms-2'><i class='fas fa-comment'></i></div>

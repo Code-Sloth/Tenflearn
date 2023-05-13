@@ -1,38 +1,235 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
-
+  커뮤니티
 {% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'communities/css/comment_index.css' %}">
 
-<a href="{% url 'communities:comment_create' %}">create</a>
+<section>
+  <div class='comment-index-banner'>
+    <div class='comment-container'>
+      <h1 class='comment-container-h1'>묻고 답해요</h1>
 
+      <h2 class='comment-container-h2'>110만명의 커뮤니티!! 함께 토론해봐요.</h2>
+    </div>
+  </div>
 
-<div>
-  <a href="{% url 'communities:comment_index' %}">전체</a>
-  <a href="{% url 'communities:comment_index' %}?category=qna">질문&답변</a>
-  <a href="{% url 'communities:comment_index' %}?category=worry">고민있어요</a>
-  <a href="{% url 'communities:comment_index' %}?category=study">스터디</a>
-  <a href="{% url 'communities:comment_index' %}?category=etc">기타</a>
-</div>
+  <div class='comment-section'>
 
-{% if category %}
-  <h2>카테고리: {{ category }}</h2>
-{% else %}
-  <h2>전체</h2>
-{% endif %}
+    {% comment %} 왼쪽 사이드바 {% endcomment %}
+    <div class='comment-leftbar'>
+      <div>
+        <h1>함께 공부해요</h1>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "all" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=all">
+          전체
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "qna" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=qna">
+          질문 & 답변
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "worry" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=worry">
+          고민있어요
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "study" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=study">
+          스터디
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "etc" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=etc">
+          기타
+        </a>
+      </div>
 
-{% for comment in comments %}
-<a href="{% url 'communities:comment_detail' comment.pk %}"><div>
-  {{ comment.title }}
-</div></a>
+      <div class='comment-leftbar-top'>
+        <h2>
+          인프런 TOP Writers
+        </h2>
 
-<div>
-  {{ comment.content|safe }}
-</div>
-{% endfor %}
+        {% for top_user in top_users %}
+        
+          <div class='comment-leftbar-top-item'>
+            <div class='comment-leftbar-top-img'>
+              {% if top_user.image %}
+                <img class='w-100 rounded-circle' src="{{ top_user.image.url }}" alt="{{ top_user.title }}">
+              {% else %}
+                <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+              {% endif %}
+            </div>
 
+            <h4>{{ top_user }}</h4>
 
+            <h5>{{ top_user.comment_set.count }}</h5>
+          </div>
+
+        {% endfor %}
+      </div>
+    </div>
+
+    {% comment %} 중간 바 {% endcomment %}
+    <div class='comment-middle'>
+      <div class='comment-leftbar-inmiddle'>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "all" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=all">
+          전체
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "qna" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=qna">
+          질문 & 답변
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "worry" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=worry">
+          고민있어요
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "study" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=study">
+          스터디
+        </a>
+  
+        <a class='comment-leftbar-item {% if request.GET.category == "etc" %}change-green{% endif %}' href="{% url 'communities:comment_index' %}?category=etc">
+          기타
+        </a>
+      </div>
+
+      <form class='comment-middle-form'>
+        <div class='comment-middle-search'>
+          <input class='search-q' name='search-q' type="search" placeholder="궁금한 질문을 검색해보세요!">
+
+          <div>
+            <img src="{% static 'communities/image/search.svg' %}" alt="search">
+          </div>
+
+          <button type='submit'>검색</button>
+        </div>
+
+        <div class='comment-middle-search mt-2'>
+          <input class='tag-q' name='tag-q' type="search" placeholder="태그로 검색해보세요!">
+
+          <div>
+            <img src="{% static 'communities/image/tag.svg' %}" alt="search">
+          </div>
+
+          <h1 class='comment-middle-search-hidden'></h1>
+        </div>
+        
+      </form>
+
+      <section class='comment-middle-section'>
+        <div class='middle-section-order'>
+          <div class='middle-section-order-left'>
+            <a class='middle-section-order-item {% if request.GET.order == "recent" %}change-green{% endif %}' value="recent" href="">
+              최신순
+            </a>
+
+            <a class='middle-section-order-item {% if request.GET.order == "comment" %}change-green{% endif %}' value="comment" href="">
+              답변많은순
+            </a>
+
+            <a class='middle-section-order-item {% if request.GET.order == "like" %}change-green{% endif %}' value="like" href="">
+              좋아요순
+            </a>
+          </div>
+
+          <a class='middle-section-write' href="{% url 'communities:comment_create' %}">
+            <img class='me-1' src="{% static 'communities/image/write.svg' %}" alt="write">
+            글쓰기
+          </a>
+        </div>
+
+        <div class='middle-section-list'>
+          {% if comments %}
+            {% for comment in comments %}
+              <a class='comment-list-a' href="{% url 'communities:comment_detail' comment.pk %}">
+                <div class='comment-list-div'>
+                  <h1 class='comment-list-title'>
+                    {{ comment.title }}
+                  </h1>
+              
+                  <h2 class='comment-list-content'>
+                    {{ comment.content|safe|striptags }}
+                  </h2>
+              
+                  <div class='comment-list-tags'>
+                    {% for tag in comment.course.tags.all %}
+                      <div class='comment-list-tag'># {{ tag }}</div>
+                    {% endfor %}
+                  </div>
+              
+                  <div class='comment-list-footer'>
+                    <h4>
+                      <span>{{ comment.user.last_name }}{{ comment.user.first_name }}</span><span>&nbsp;·&nbsp;</span><span>{{ comment.created_time }}</span>{% if comment.course %}<span>&nbsp;·&nbsp;</span><span>{{ comment.course.title }}</span>{% endif %}
+                    </h4>
+              
+                    <div class='comment-list-footer-right'>
+                      <section class='comment-list-footer-right-section'>
+                        <div><i class='fas fa-thumbs-up'></i></div>
+                        <div>{{ comment.like_users.count }}</div>
+                        <div class='ms-2'><i class='fas fa-comment'></i></div>
+                        <div>{{ comment.recomments.count }}</div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            {% endfor %}
+          {% else %}
+              <div class='comment-list-else'>
+                <div>
+                  아직 관련 글이 없습니다. 첫 글을 남겨주세요!
+                </div>
+              </div>
+          {% endif %}
+        </div>
+      </section>
+    </div>
+
+    {% comment %} 오른쪽 사이드바 {% endcomment %}
+    <div class='comment-right'>
+      <div class='comment-right-tagbox'>
+        <h1>인기 태그</h1>
+        <div class='comment-right-tagdiv'>
+
+          {% for tag in top_tags %}
+            <a class='comment-right-tagitem' href="">
+              #{{ tag.course__tags__name }}
+            </a>
+          {% endfor %}
+
+        </div>
+      </div>
+
+      <div class='comment-right-popular'>
+        <h1 class='comment-right-popular-header'>인기글</h1>
+        {% for popular_comment in popular_comments %}
+        
+          <a class='comment-right-popular-item' href="{% url 'communities:comment_detail' popular_comment.pk %}">
+            <h1>{{ popular_comment.title }}</h1>
+            <div class='comment-right-popular-div'>
+              <div class='popular_comment-image'>
+                {% if popular_comment.image %}
+                  <img class='w-100 rounded-circle' src="{{ popular_comment.image.url }}" alt="{{ popular_comment.title }}">
+                {% else %}
+                  <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+                {% endif %}
+              </div>
+
+              <div class='comment-right-popular-username'>
+                {{ popular_comment.user.last_name }}{{ popular_comment.user.first_name }}
+              </div>
+            </div>
+          </a>
+
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script src="{% static 'communities/js/comment_index.js' %}"></script>
 
 {% endblock content %}
