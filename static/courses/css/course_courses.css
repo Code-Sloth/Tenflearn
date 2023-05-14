@@ -125,6 +125,10 @@ header {
   background-color: #f1f3f5;
 }
 
+.skill-tags-btn-active {
+  border: 1px solid #25262b;
+}
+
 .skill-tags-more-wrapper {
   position: absolute;
   right: 0;
@@ -239,6 +243,7 @@ header {
 .course-card-container {
   padding: 12px 8px;
 }
+
 .course-card-img {
   width: 100%;
   margin-bottom: 0.5em;
@@ -318,9 +323,9 @@ header {
 
 .course-card-content-reviews-cnt {
   font-size: 0.5rem;
-  bottom: 0.3rem;
   color: #4a4a4a;
   margin-left: 0.3rem;
+  padding-top: 4.5%;
 }
 
 /* 강의 카드 호버 */
@@ -347,7 +352,7 @@ header {
   margin: 1rem 1rem;
 
   display: -webkit-box;
-  -webkit-line-clamp: 8;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

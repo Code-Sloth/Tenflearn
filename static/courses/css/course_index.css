@@ -134,9 +134,11 @@ a {
 
 /* 강의 카드 */
 .course-slide {
-  min-width: 220px;
+  min-height: 310.34px;
+  height: 100%;
   position: relative;
 }
+
 .course-card-img {
   width: 100%;
   margin-bottom: 0.5em;

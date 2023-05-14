@@ -26,7 +26,7 @@ TODO: 상위 카테고리별로 변경
         <div class="sidebar-item">전체 강의</div>
       </a>
       <a href="">
-        <div class="sidebar-item">웹 개발</div>
+        <div class="sidebar-item">프론트엔드</div>
       </a>
       </a>
       <a href="">
@@ -48,7 +48,7 @@ TODO: 상위 카테고리별로 변경
         <div class="skill-tags-container overflow-hidden">
           <div class="skill-tags">
             {% for tag in tags %}
-            <button class="skill-tags-btn">{{ tag }}</button>
+            <button class="skill-tags-btn bi" data-slug="{{ tag.slug }}">{{ tag }}</button>
             {% endfor %}
           </div>
           <div class="skill-tags-more-wrapper"></div>
@@ -150,7 +150,9 @@ TODO: 상위 카테고리별로 변경
   </div>
 </section>
 
-<script src="{% static 'courses/js/course_courses.js' %}"></script>
-<script src="{% static 'courses/js/cardHover.js' %}"></script>
+<script type="module" src="{% static 'courses/js/course_courses.js' %}"></script>
+<script type="module" src="{% static 'courses/js/coursesBtnActive.js' %}"></script>
+<script type="module" src="{% static 'courses/js/cardHover.js' %}"></script>
+<script type="module" src="{% static 'courses/js/courses_tag_filter.js' %}"></script>
 
 {% endblock content %}

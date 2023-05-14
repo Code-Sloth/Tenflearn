@@ -9,7 +9,7 @@ titleLinks.forEach((link) => {
     titleH1.textContent = linkText;
 
     const context = link.textContent.trim();
-    searchInput.placeholder = context + " 강의 검색";
+    searchInput.placeholder = context + "  검색";
   });
 });
 
