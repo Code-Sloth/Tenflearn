@@ -60,14 +60,17 @@ def comment_order(queryset, o):
 
 def comment_detail(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
-    recomments = Recomment.objects.filter(comment=comment_pk)
-    print(recomments)
+    recomments = Recomment.objects.filter(comment=comment)
+
+    user_comments = comment.user.comment_set.exclude(pk=comment_pk)[:5]
+
     recomment_form = RecommentForm()
     # like_users_count = comment.like_users.count()
     context = {
         'comment': comment,
-        'recomments': recomments,
+        'recomments': recomments.order_by('-pk'),
         'recomment_form': recomment_form,
+        'user_comments': user_comments,
         # 'like_users_count': like_users_count,
 
     }
@@ -161,7 +164,7 @@ def recomment_delete(request, comment_pk, recomment_pk):
     if request.user == recomment.user and request.method == 'POST':
         recomment.delete()
 
-    return redirect('communities:recomment', comment_pk=comment_pk)
+    return redirect('communities:comment_detail', comment_pk)
 
 
 def review(request):

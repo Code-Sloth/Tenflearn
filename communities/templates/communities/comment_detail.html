@@ -1,41 +1,270 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
-
+  {{ comment.title }}
 {% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'communities/css/comment_detail.css' %}">
+
 <div>
-  작성자: {{ comment.user }}
-</div>
-<div>
-  제목: {{ comment.title }}
-</div>
-<div>
-  카테고리: {{ comment.get_category_display }}
-</div>
-<div>
-  내용: {{ comment.content|safe }}
-</div>
-<div>
-  조회수: {{ comment.views }}
+  <div class='comment-detail-container'>
+    <div class='comment-detail-left'>
+      <header class='comment-detail-left-header'>
+        <h1>
+          {{ comment.title }}
+        </h1>
+
+        <h2>
+          {{ comment.created_time }} 작성
+        </h2>
+      </header>
+
+      <hr class='hr'>
+
+      <section class='comment-detail-left-section'>
+        <div class='detail-left-section-left'>
+
+          <form class='detail-left-section-form' action="">
+
+            <button type='submit'>
+              <i class='fas fa-thumbs-up'></i>
+            </button>
+          
+            <div>
+              <span>{{ comment.like_users.count }}</span>
+            </div>
+
+            <button type='submit'>
+              <i class='fas fa-thumbs-down'></i>
+            </button>
+
+          </form>
+
+        </div>
+
+        <div class='detail-left-section-right'>
+          <h1>
+            {{ comment.content|safe }}
+          </h1>
+
+          <div class='detail-left-section-right-tagbox'>
+            {% for tag in comment.course.tags.all %}
+              <a href=""># {{ tag }}</a>
+            {% endfor %}
+          </div>
+
+          <div class='d-flex flex-row-reverse flex-grow-1'>
+            <button id='detail-share-btn'>
+              <i class='fas fa-share-nodes'></i>
+              <span class='ms-1'>공유</span>
+            </button>
+
+            {% if request.user == comment.user %}
+                  
+              <form action="{% url 'communities:comment_delete' comment.pk %}" method="POST">
+                {% csrf_token %}
+                <button class='comment-delete' type='submit'>삭제</button>
+              </form>
+
+              <form action="{% url 'communities:comment_update' comment.pk %}" method="POST">
+                {% csrf_token %}
+                <button class='comment-delete' type='submit'>수정</button>
+              </form>
+
+            {% endif %}
+          </div>
+
+        </div>
+      </section>
+
+      <footer class='comment-detail-left-footer'>
+        {% if comment.course %}
+          <a class='detail-left-footer-box' href="{% url 'courses:detail' comment.course.pk %}">
+            {% if comment.course.image %}
+              <div class='detail-left-footer-img'>
+                <img class='w-100' src="{{ comment.course.image.url }}" alt="{{ comment.course.title }}">
+              </div>
+            {% endif %}
+
+            <h1>
+              {{ comment.course.title }}
+            </h1>
+
+            <h2>
+              <div>
+                둘러보기
+              </div>
+            </h2>
+          </a>
+        {% endif %}
+      </footer>
+
+      {% comment %} 대댓글 {% endcomment %}
+      <section class='comment-detail-left-recomment'>
+        <h1 class='recomment-header'>
+          답변 <span>{{ comment.recomments.count }}</span>
+        </h1>
+
+        {% if user.is_authenticated %}
+          <button class='recomment-header-btn'>
+            <div class='recomment-header-img'>
+              {% if request.user.image %}
+                <img class='w-100 rounded-circle' src="{{ request.user.image. }}" alt="{{ request.user.username }}">
+              {% else %}
+                <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+              {% endif %}
+            </div>
+
+            <div class='recomment-header-content'>
+              {{ request.user.username }}님, 답변을 작성해보세요.
+            </div>
+          </button>
+
+          <div class='recomment-header-none d-none'>
+            <form action="{% url 'communities:recomment_create' comment.pk %}" method="POST">
+              {% csrf_token %}
+              {{ recomment_form.content }}
+              <div class='d-flex flex-row-reverse'>
+                <button class='recomment-submit' type='submit'>등록</button>
+                <button class='recomment-cancle'>취소</button>
+              </div>
+            </form>
+          </div>
+        {% endif %}
+
+        <div class='recomment-section'>
+
+          {% if recomments %}
+            {% for recomment in recomments %}
+              <div class='recomment-section-item'>
+                <form class='recomment-section-form' action="">
+
+                  <button type='submit'>
+                    <i class='fas fa-thumbs-up'></i>
+                  </button>
+                
+                  <div>
+                    <span>{{ comment.like_users.count }}</span>
+                  </div>
+      
+                  <button type='submit'>
+                    <i class='fas fa-thumbs-down'></i>
+                  </button>
+      
+                </form>
+
+                <section class='recomment-right-section'>
+                  <div class='recomment-section-header'>
+                    <div class='recomment-section-img'>
+                        {% if recomment.user.image %}
+                          <img class='w-100 rounded-circle' src="{{ recomment.user.image.url }}" alt="{{ recomment.user.username }}">
+                        {% else %}
+                          <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+                        {% endif %}
+                    </div>
+
+                    <h1>{{ recomment.user.last_name }}{{ recomment.user.first_name }}</h1>
+
+                    <h2>{{ recomment.created_time }}</h2>
+                  </div>
+
+                  <div class='recomment-section-content'>
+                    {{ recomment.content|linebreaksbr }}
+                  </div>
+
+                  {% if request.user == recomment.user %}
+                  
+                    <form class='recomment-delete' action="{% url 'communities:recomment_delete' comment.pk recomment.pk %}" method="POST">
+                      {% csrf_token %}
+                      <button type='submit'>삭제</button>
+                    </form>
+
+                  {% endif %}
+                </section>
+
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class='recomment-else'>
+              <div>
+                <i class='fas fa-message'></i>
+              </div>
+
+              <p>답변을 기다리고 있는 질문이에요.</p>
+              <p>첫번째 답변을 남겨보세요!</p>
+            </div>
+          {% endif %}
+          
+        </div>
+      </section>
+    </div>
+
+    {% comment %} 오른쪽 사이드바 {% endcomment %}
+    <div class='comment-detail-right'>
+      <header class='comment-detail-right-header'>
+        <div class='detail-right-header-left'>
+          <h1>{{ comment.user.last_name }}{{ comment.user.first_name }}</h1>
+          <h2>작성한 질문수 {{ comment.user.comment_set.count }}</h2>
+        </div>
+        
+        <div class='detail-right-header-img'>
+          {% if comment.user.image %}
+            <img class='w-100 rounded-circle' src="{{ comment.user.image.url }}" alt="{{ comment.user.username }}">
+          {% else %}
+            <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+          {% endif %}
+        </div>
+      </header>
+
+      <section class='comment-detail-right-category'>
+        <h1>
+          <i class='fas fa-layer-group'></i>
+          카테고리
+        </h1>
+
+        <a href="{% url 'communities:comment_index' %}?category={{ comment.category }}">
+          {{ comment.get_category_display }}
+        </a>
+      </section>
+
+      <footer class='comment-detail-right-footer'>
+        <h1>{{ comment.user.last_name }}{{ comment.user.first_name }}님의 다른 Q&A</h1>
+
+        {% for user_comment in user_comments %}
+          <a class='detail-right-footer-item' href="{% url 'communities:comment_detail' user_comment.pk %}">
+            <div class='detail-right-footer-title'>
+              {{ user_comment.title }}
+            </div>
+
+            <div class='detail-right-footer-user'>
+              <div class='d-flex align-items-end'>
+                <div class='detail-right-footer-img'>
+                  {% if user_comment.user.image %}
+                    <img class='w-100 rounded-circle' src="{{ user_comment.user.image.url }}" alt="{{ user_comment.user.username }}">
+                  {% else %}
+                    <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+                  {% endif %}
+                </div>
+  
+                <div class='detail-right-footer-username'>
+                  {{ user_comment.user.last_name }}{{ user_comment.user.first_name }}
+                </div>
+              </div>
+
+              <h5>
+                <span>좋아요</span><span>{{ user_comment.like_users.count }}</span><span>답변수</span><span>{{ user_comment.recomments.count }}</span>
+              </h5>
+            </div>
+          </a>
+        {% endfor %}
+      </footer>
+    </div>
+  </div>
 </div>
 
-<a href="{% url 'communities:comment_update' comment.pk %}">update</a>
 
-<hr>
-<h2>댓글</h2>
-<form action="{% url 'communities:recomment_create' comment.pk %}" method="POST">
-  {% csrf_token %}
-  {{ recomment_form.as_p }}
-  <input type="submit">
-</form>
-
-{% for recomment in recomments %}
-<div>
-  {{ recomment.user }}
-  {{ recomment.content|linebreaksbr }}</div>
-<hr>
-{% endfor %}
+<script src="{% static 'communities/js/comment_detail.js' %}"></script>
 
 {% endblock content %}
