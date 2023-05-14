@@ -161,6 +161,7 @@
 
 .section-left {
   max-width: 739px;
+  width: 739px;
 }
 
 .section-left-content {
@@ -429,6 +430,7 @@
 
   .section-left {
     max-width: 100%;
+    width: 100%;
   }
 
   .footerbar {

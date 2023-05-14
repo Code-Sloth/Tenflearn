@@ -31,7 +31,7 @@
               강의
             </a>
     
-            <a class='off-item off-community-a' href="{% url 'communities:comment_index' %}">
+            <a class='off-item off-community-a' href="{% url 'communities:comment_index' %}?category=all">
               커뮤니티
             </a>
     
@@ -61,23 +61,23 @@
               풀스택
             </a>
 
-            <a class="off-item off-community d-none" href="{% url 'communities:comment_index' %}">
+            <a class="off-item off-community d-none" href="{% url 'communities:comment_index' %}?category=all">
               전체
             </a>
 
-            <a class="off-item off-community d-none" href="">
+            <a class="off-item off-community d-none" href="{% url 'communities:comment_index' %}?category=qna">
               질문 & 답변
             </a>
 
-            <a class="off-item off-community d-none" href="">
+            <a class="off-item off-community d-none" href="{% url 'communities:comment_index' %}?category=worry">
               고민있어요
             </a>
 
-            <a class="off-item off-community d-none" href="">
+            <a class="off-item off-community d-none" href="{% url 'communities:comment_index' %}?category=study">
               스터디
             </a>
 
-            <a class="off-item off-community d-none" href="">
+            <a class="off-item off-community d-none" href="{% url 'communities:comment_index' %}?category=etc">
               기타
             </a>
           </div>
@@ -98,7 +98,7 @@
         강의
       </a>
   
-      <a class="nav-bar-left-item" href="{% url 'communities:comment_index' %}">
+      <a class="nav-bar-left-item" href="{% url 'communities:comment_index' %}?category=all">
         커뮤니티
       </a>
   

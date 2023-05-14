@@ -18,7 +18,7 @@
 {% comment %} 강의 데이터 일반 버전 {% endcomment %}
 {% for course in courses %}
 <div>
-  <a href="{% url 'courses:detail' course.pk %}"><img src={% if course.image %}"{{ course.image.url }}"{% else %}"{% static '/courses/image/noimage.jpeg' %}"{% endif %} alt="{{ course.image }}"></a>
+  <a href="{% url 'courses:detail' course.pk %}"><img src={% if course.image %}"{{ course.image.url }}"{% else %}"{% static '/courses/image/noimage.png' %}"{% endif %} alt="{{ course.image }}"></a>
   <p>제목 : {{course.title}}</p>
   <p>별점 : {{course.star}}</p>
   <p>금액 : {{course.discounted_price}}</p>
