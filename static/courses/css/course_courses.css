@@ -121,11 +121,11 @@ header {
   color: #000;
 }
 
-.skill-tags-btn:hover, .courseInfo-tag:hover {
+.skill-tags-btn:hover, .courseInfo-tag:hover, .filter-reset-btn:hover {
   background-color: #f1f3f5;
 }
 
-.skill-tags-btn-active {
+.skill-tags-btn-active, .courseInfo-btn-active {
   border: 1px solid #25262b;
 }
 
@@ -159,6 +159,7 @@ header {
 /* 강의정보 태그 */
 .courseInfo-tags-container{
   display: flex;
+  justify-content: space-between;
   margin: 0 8px 0 20px;
 }
 .courseInfo-tag {
@@ -181,6 +182,24 @@ header {
   background-color: rgba(33,37,41,.25);
 }
 
+.filter-reset-btn {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  
+  margin-left: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 32px;
+  width: 36px;
+  height: 36px;
+  background: #fff;
+  font-size: 14px;
+  color: #000;
+}
+
+.filter-reset-btn a{
+  color: #343a40;
+}
 
 /* 필터 */
 .select-container{

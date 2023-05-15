@@ -142,8 +142,16 @@ def courses(request):
     if selected_slugs:
         selected_tags = selected_slugs.split(',')
         courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
+        
     else:
         courses = Course.objects.all()
+
+    # 정렬
+    order = request.GET.get('sort')
+    if order == 'rating':
+        courses = courses.order_by('-star')
+    elif order == 'enrollment':
+        courses = courses.order_by('-enrolment_users')
     per_page = 2
     paginator = Paginator(courses, per_page)
     courses_paginated = paginator.get_page(request.GET.get('page', '1'))

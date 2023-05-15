@@ -55,20 +55,26 @@ TODO: 상위 카테고리별로 변경
           <button class="skill-tags-more bi bi-chevron-compact-down"></button> 
         </div>
         <div class="courseInfo-tags-container">
-          <button class="courseInfo-tag">무료</button>
-          <button class="courseInfo-tag">유료</button>
-          <div class="courseInfo-separator"></div>
-          <button class="courseInfo-tag none-margin">할인중</button>
-          <div class="courseInfo-separator"></div>
-          <button class="courseInfo-tag">입문</button>
-          <button class="courseInfo-tag">초급</button>
-          <button class="courseInfo-tag">중급이상</button>
+          <div class="d-flex">
+            <button class="courseInfo-tag">무료</button>
+            <button class="courseInfo-tag">유료</button>
+            <div class="courseInfo-separator"></div>
+            <button class="courseInfo-tag none-margin">할인중</button>
+            <div class="courseInfo-separator"></div>
+            <button class="courseInfo-tag">입문</button>
+            <button class="courseInfo-tag">초급</button>
+            <button class="courseInfo-tag">중급이상</button>
+          </div>
+          <button class="filter-reset-btn">
+            <a href="{% url 'courses:courses' %}" class ="bi bi-arrow-repeat">
+            </a>
+          </button>
         </div>
         <div class="d-flex select-container">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>최신순</option>
-            <option value="1">평점순</option>
-            <option value="2">수강자순</option>
+          <select class="form-select" name="order" aria-label="Default select example">
+            <option value="recent" {% if not request.GET.order or request.GET.order == 'recent' %}selected{% endif %}>최신순</option>
+            <option value="rating" {% if request.GET.order == 'rating' %}selected{% endif %}>평점순</option>
+            <option value="enrollment" {% if request.GET.order == 'enrollment' %}selected{% endif %}>수강자순</option>
           </select>
         </div>
         <div class="courses-content-container">

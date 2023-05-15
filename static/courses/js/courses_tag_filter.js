@@ -25,3 +25,25 @@ tags.forEach(tag => {
     }
   });
 });
+
+const sortSelect = document.querySelector('.form-select')
+sortSelect.addEventListener('change', async (event) => {
+  const selectedTags = document.querySelectorAll('.skill-tags-btn-active');
+  const tagSlugs = Array.from(selectedTags).map(tag => tag.dataset.slug).join(',');
+  
+  const sortOption = event.target.value;
+  try {
+    const response = await fetch(`/courses/?tags=${tagSlugs}&sort=${sortOption}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html') 
+    const courses = doc.querySelector('.courses-content-container')
+    coursesContainer.innerHTML = courses.innerHTML;
+    cardHover();
+  } catch (error) {
+    console.error(error);
+  }
+});
