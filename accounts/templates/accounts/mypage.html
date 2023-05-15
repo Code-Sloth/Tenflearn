@@ -5,9 +5,13 @@
 {% endblock title %}
 
 {% block content %}
-  <div>
-      <a class="{% if q == 'course' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=course">수강목록</a>
-      <a class="{% if q == 'review' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=review">리뷰목록</a>
+{% load humanize %}
+<div>
+  <div class="d-flex justify-content-end">
+      <a class="{% if q == 'course' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=course">수강목록
+      </a>
+      <a class="{% if q == 'review' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=review">리뷰목록
+      </a>
       <a class="{% if q == 'cart' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=cart">주문목록</a>
   </div>
   <div>
@@ -20,10 +24,10 @@
           {% include 'accounts/cart.html' %}
       {% endif %}
   </div>
+</div>
 
-<hr>
 {% if request.user.is_authenticated %}
-{{user}}님 안녕하세요!
+<h2>{{user}}님 안녕하세요!</h2>
 {% endif %}
 <br>
 내정보 
@@ -37,22 +41,24 @@
 <p>성: {{ user.last_name }}</p>
 <p>이름: {{ user.first_name }}</p>
 
-<hr>
 
-<h2>장바구니</h2>
+{% comment %} <h2>장바구니</h2>
 {% for item in cart_items %}
-    <p>강의이름:{{ item.course.title }}</p>
-    <p>가격:{{ item.course.price }}</p>
-    <p>할인율:{{ item.course.discount_rate }}</p>
-    <p>합계:{{ item.course.discounted_price }}</p>
-    <p><a href="{% url 'accounts:remove_cart' item.course.id %}">Remove</a></p>
+    <p>강의이름: {{ item.course.title }}</p>
+    <p>가격: ￦{{ item.course.price|intcomma }}원</p>
+    <p>할인율: {{ item.course.discount_rate }}%</p>
+    <p>합계: ￦{{ item.course.discounted_price|intcomma }}원</p>
+    <form action="{% url 'accounts:remove_cart' item.course.id %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">장바구니 삭제</button>
+    </form>
 {% endfor %}
 
 {% if cart_items %}
-    <p>Total price: {{ cart_total }}</p>
+    
 {% else %}
     <p>장바구니가 비어있습니다.</p>
-{% endif %}
+{% endif %} {% endcomment %}
 
 
 {% endblock content %} 

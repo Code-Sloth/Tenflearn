@@ -10,6 +10,8 @@ from django.contrib.auth import update_session_auth_hash
 from courses.models import Review
 from courses.models import Course
 from decimal import Decimal
+from accounts.models import ShoppingCart
+
 
 
 def login(request):
@@ -89,29 +91,17 @@ def change_password(request):
     return render(request, 'accounts/change_password.html', context)
 
 
+@login_required
 def mypage(request):
     q = request.GET.get('q')
-    cart = request.session.get('cart', {})
-    cart_items = []
-    cart_total = 0
-
-    for course_id, course_info in cart.items():
-        course = Course.objects.get(id=course_id)
-        total_price = Decimal(course_info.get('quantity', 0)) * course.price
-        cart_total += total_price
-        cart_items.append({
-            'course': course,
-            'quantity': course_info.get('quantity', 0),
-            'total_price': total_price,
-        })
-
+    
     context = {
         'q': q,
-        'cart_items': cart_items,
-        'cart_total': cart_total,
     }
     return render(request, 'accounts/mypage.html', context)
 
+
+@login_required
 def add_cart(request, course_id):
     course = Course.objects.get(id=course_id)
     quantity = int(request.GET.get('quantity', 1))
@@ -121,9 +111,23 @@ def add_cart(request, course_id):
         cart[course_id]['quantity'] += quantity
     else:
         cart[course_id] = {'quantity': quantity, 'price': str(course.price)}
+        
+    # 장바구니 데이터 저장
+    if request.user.is_authenticated:
+        ShoppingCart.objects.update_or_create(
+            user=request.user,
+            course=course,
+            defaults={
+                'quantity': cart[course_id]['quantity'],
+                'price': course.price,
+            }
+        )
+        
     request.session['cart'] = cart
     return redirect('accounts:mypage')
 
+
+@login_required
 def remove_cart(request, course_id):
     cart = request.session.get('cart', {})
     course_id = str(course_id)
@@ -131,8 +135,15 @@ def remove_cart(request, course_id):
     if course_id in cart:
         del cart[course_id]
         request.session['cart'] = cart
+
+     # Delete the cart item from the database if the user is authenticated
+    if request.user.is_authenticated:
+        ShoppingCart.objects.filter(user=request.user, course_id=course_id).delete()
+
     return redirect('accounts:mypage')
 
+
+@login_required
 def view_cart(request):
     cart = request.session.get('cart', {})
     cart_items = []
@@ -145,11 +156,11 @@ def view_cart(request):
         cart_items.append({
             'course': course,
             'quantity': course_info.get('quantity', 0),
-            'total_price': total_price,
+            'total_price': '{:.2f}'.format(total_price),
         })
 
     context = {
         'cart_items': cart_items,
-        'cart_total': cart_total,
+        'cart_total': '{:,.0f}'.format(cart_total),
     }
     return render(request, 'accounts/mypage.html', context)

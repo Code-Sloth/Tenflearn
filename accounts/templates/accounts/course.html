@@ -3,9 +3,9 @@
 
 <div class = 'container-my_course'>
     <h1>나의 수강목록</h1>
-        {% if request.user.course_set.all %} #
+        {% if user.enrolment_courses.all %}
             <ul>
-            {% for course in request.user.course_set.all %}
+            {% for course in user.enrolment_courses.all %}
                 <li>
                     <p>{{ course.title }}</p>
                     <p>{{ course.content }}</p>
