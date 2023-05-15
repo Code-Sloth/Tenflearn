@@ -1,0 +1,46 @@
+.container-my_course {
+  font: 16px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.card-box {
+  flex: 1;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 16px;
+  margin: 8px 8px;
+  min-width: 300px;
+  height: 290px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.24);
+}
+
+.card-img {
+  max-width: 100%;
+  width: 303px;
+  height: 197px;
+  margin-right: 16px;
+}
+
+.card-body {
+  padding: 5px;
+  margin-top: 8px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.card-text {
+  font-size: 14px;
+}
+

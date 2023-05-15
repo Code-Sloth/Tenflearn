@@ -34,13 +34,15 @@
 .change-green {
   color: rgb(0, 196, 113);
 }
+
 .header {
   background-color: rgb(0, 196, 113);
   padding: 20px;
   margin-bottom: 20px;
   color: white;
-  width: 300px;
+  width: 250px;
   border-radius: 10%;
+  text-align: end;
 }
 
 .content {
@@ -51,4 +53,9 @@
   max-width: 200px;
   border-radius: 20%;
   margin: 20px 0px;
+  width: 150px;
+}
+
+.content-info {
+  width: 650px ;
 }

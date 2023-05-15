@@ -25,6 +25,9 @@
   {% if not q %}{% with q='course' %}{% endwith %}
     {% if request.user.is_authenticated %}
     <div class="container d-flex">
+        <div class="content-info">
+          <h3>자세한 정보</h3>
+        </div>
         <div class="header">
             <h2>Hello {{ user }}!</h2>
             <div class="content">
@@ -38,9 +41,6 @@
                 <p><strong>아이디:</strong> {{ user.username }}</p>
                 <p><strong>이름:</strong> {{ user.last_name }}{{ user.first_name }}</p>
             </div>
-        </div>
-        <div class="content">
-          <h3>자세한 정보</h3>
         </div>
 
     </div>

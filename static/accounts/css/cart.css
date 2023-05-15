@@ -1,0 +1,41 @@
+.cart-body {
+  width: 1000px;
+}
+
+.cart-body-left {
+
+  display: flex;
+  padding: 8px 16px;
+  height: auto;
+  margin: 0 5px;
+  border-bottom: 1px solid #dbdada;
+  width: 900px;
+}
+
+
+.cart-body-right {
+  flex: 1;
+  height: auto;
+  width: auto;
+  padding: 0 15px;
+}
+
+.cart-body__img {
+  display: flex;
+  align-items: end;
+  width: 120px;
+  height: 100%;
+}
+
+
+.lecture-img {
+  max-width: 100%;
+  height: auto;
+}
+
+.price {
+  width: 100px;
+  text-align: right;
+  border-left: solid gray 1px;
+  margin-left: 5px;
+}

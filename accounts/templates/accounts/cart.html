@@ -1,5 +1,61 @@
 {% load humanize %}
+{% load static %}
+{% load custom_filters %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'accounts\css\cart.css' %}">
+
+
 <div>
+    <h3>수강바구니</h3>
+    <input type="checkbox" id="select_all">
+    <label for="select_all">전체 선택</label>
+        <div class="cart-body-left">
+            <div class="selector">
+                <input type="checkbox" name="items" value="{{ item.id }}">
+                <label for="{{ item.id }}">{{ item.name }}</label>
+            </div>
+            <div class="cart-body__img">
+                <img class="lecture-img"src="#" alt="강의 사진">
+            </div>
+            <div class="cart-body-right">
+                <div class="cart-right__content"> 강의명 </div>
+                <div class="cart-right__info"> 작성자 | 수강기간 </div>
+            </div>
+            <div class="delete-button">
+                <a href="#">X</a>
+            </div>
+            <div class="price">
+                가격
+            </div>
+        </div>
+
+<script>
+    function selectAll() {
+        var checkboxes = document.querySelectorAll('input[name="items"]');
+        for (var i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = document.getElementById('select_all').checked;
+        }
+      }
+</script>
+
+{% comment %} 
+    <div class="cart-container">
+        <p>강의이름: 장바구니 강의 제목</p>
+        <p>가격: ￦10000원</p>
+        <p>할인율: 50%</p>
+        <p>합계: 5000원</p>
+        <p><a href="#">Remove</a></p>
+    </div>         {% endcomment %}
+
+    
+    {% comment %} {% if cart_items %}
+        
+    {% else %}
+        <p>장바구니가 비어있습니다.</p>
+    {% endif %} {% endcomment %}
+    </div>
+
+{% comment %} <div>
 <h1>장바구니</h1>
 {% for item in cart_items %}
     <p>강의이름: {{ item.course.title }}</p>
@@ -14,4 +70,4 @@
 {% else %}
     <p>장바구니가 비어있습니다.</p>
 {% endif %}
-</div>
+</div> {% endcomment %}
