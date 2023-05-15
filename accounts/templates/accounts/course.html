@@ -1,6 +1,9 @@
-<div>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/course.css' %}">
+
+<div class = 'container-my_course'>
     <h1>나의 수강목록</h1>
-        {% if request.user.course_set.all %}
+        {% if request.user.course_set.all %} #
             <ul>
             {% for course in request.user.course_set.all %}
                 <li>
@@ -13,5 +16,4 @@
         {% else %}
             <p>수강하는 강의가 없습니다.</p>
         {% endif %}
-    </div>
-    
+</div>
