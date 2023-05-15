@@ -135,13 +135,22 @@ def comment(request, course_pk):
     return render(request, 'courses/course_comment.html', context)
 
 def courses(request):
-    slug = request.GET.get('tag')
     tags = Tag.objects.all()
-    if slug:
-        tag = get_object_or_404(Tag, slug=slug)
-        courses = Course.objects.filter(tags=tag)
+    # 선택한 태그들 가져옴
+    selected_slugs = request.GET.get('tags')
+    if selected_slugs:
+        selected_tags = selected_slugs.split(',')
+        courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
+        
     else:
         courses = Course.objects.all()
+
+    # 정렬
+    order = request.GET.get('sort')
+    if order == 'rating':
+        courses = courses.order_by('-star')
+    elif order == 'enrollment':
+        courses = courses.order_by('-enrolment_users')
     per_page = 2
     paginator = Paginator(courses, per_page)
     courses_paginated = paginator.get_page(request.GET.get('page', '1'))
