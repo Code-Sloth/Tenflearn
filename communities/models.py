@@ -16,6 +16,7 @@ class Comment(models.Model):
     title = models.CharField(max_length=100)
     content = RichTextUploadingField(blank=True,null=True)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_comments')
+    unlike_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='unlike_comments')
     views = models.IntegerField(default=0)
     like = models.IntegerField(default=0)
 
@@ -44,6 +45,7 @@ class Recomment(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='recomments')
     content = models.TextField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_recomments')
+    unlike_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='unlike_recomments')
     like = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 

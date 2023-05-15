@@ -26,18 +26,26 @@
       <section class='comment-detail-left-section'>
         <div class='detail-left-section-left'>
 
-          <form class='detail-left-section-form' action="">
+          <form class='detail-left-section-form' data-comment-id="{{ comment.pk }}">
 
-            <button type='submit'>
-              <i class='fas fa-thumbs-up'></i>
+            <button name='like_value' value='like' type='submit'>
+              {% if request.user in comment.like_users.all %}
+                <i class='fas fa-thumbs-up comment-like-icon like_green'></i>
+              {% else %}
+                <i class='fas fa-thumbs-up comment-like-icon like_gray'></i>
+              {% endif %}
             </button>
           
-            <div>
+            <div class='comment-detail-left-section-count'>
               <span>{{ comment.like_users.count }}</span>
             </div>
 
-            <button type='submit'>
-              <i class='fas fa-thumbs-down'></i>
+            <button name='like_value' value='unlike' type='submit'>
+              {% if request.user in comment.like_users.all %}
+                <i class='fas fa-thumbs-up comment-unlike-icon like_green'></i>
+              {% else %}
+                <i class='fas fa-thumbs-up comment-unlike-icon like_gray'></i>
+              {% endif %}
             </button>
 
           </form>
@@ -123,7 +131,7 @@
           </button>
 
           <div class='recomment-header-none d-none'>
-            <form action="{% url 'communities:recomment_create' comment.pk %}" method="POST">
+            <form class='recomment-section-create-form' action="{% url 'communities:recomment_create' comment.pk %}" method="POST" data-comment-id="{{ comment.pk }}">
               {% csrf_token %}
               {{ recomment_form.content }}
               <div class='d-flex flex-row-reverse'>
@@ -136,66 +144,78 @@
 
         <div class='recomment-section'>
 
-          {% if recomments %}
-            {% for recomment in recomments %}
-              <div class='recomment-section-item'>
-                <form class='recomment-section-form' action="">
+          {% for recomment in recomments reversed %}
+            <div class='recomment-section-item'>
+              
+              <form class='recomment-section-form' data-comment-id="{{ comment.pk }}">
+                <input type="hidden" class='recomment-section-id' value="{{ recomment.pk }}">
 
-                  <button type='submit'>
-                    <i class='fas fa-thumbs-up'></i>
-                  </button>
-                
-                  <div>
-                    <span>{{ comment.like_users.count }}</span>
-                  </div>
-      
-                  <button type='submit'>
-                    <i class='fas fa-thumbs-down'></i>
-                  </button>
-      
-                </form>
-
-                <section class='recomment-right-section'>
-                  <div class='recomment-section-header'>
-                    <div class='recomment-section-img'>
-                        {% if recomment.user.image %}
-                          <img class='w-100 rounded-circle' src="{{ recomment.user.image.url }}" alt="{{ recomment.user.username }}">
-                        {% else %}
-                          <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
-                        {% endif %}
-                    </div>
-
-                    <h1>{{ recomment.user.last_name }}{{ recomment.user.first_name }}</h1>
-
-                    <h2>{{ recomment.created_time }}</h2>
-                  </div>
-
-                  <div class='recomment-section-content'>
-                    {{ recomment.content|linebreaksbr }}
-                  </div>
-
-                  {% if request.user == recomment.user %}
-                  
-                    <form class='recomment-delete' action="{% url 'communities:recomment_delete' comment.pk recomment.pk %}" method="POST">
-                      {% csrf_token %}
-                      <button type='submit'>삭제</button>
-                    </form>
-
+                <button value='like' type='submit'>
+                  {% if request.user in recomment.like_users.all %}
+                    <i class='fas fa-thumbs-up recomment-like-icon like_green'></i>
+                  {% else %}
+                    <i class='fas fa-thumbs-up recomment-like-icon like_gray'></i>
                   {% endif %}
-                </section>
+                </button>
+              
+                <div class='recomment-detail-left-section-count'>
+                  <span>{{ comment.like_users.count }}</span>
+                </div>
+    
+                <button value='unlike' type='submit'>
+                  {% if request.user in recomment.like_users.all %}
+                    <i class='fas fa-thumbs-down recomment-unlike-icon like_green'></i>
+                  {% else %}
+                    <i class='fas fa-thumbs-down recomment-unlike-icon like_gray'></i>
+                  {% endif %}
+                </button>
+    
+              </form>
 
-              </div>
-            {% endfor %}
-          {% else %}
+              <section class='recomment-right-section'>
+                <div class='recomment-section-header'>
+                  <div class='recomment-section-img'>
+                      {% if recomment.user.image %}
+                        <img class='w-100 rounded-circle' src="{{ recomment.user.image.url }}" alt="{{ recomment.user.username }}">
+                      {% else %}
+                        <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+                      {% endif %}
+                  </div>
+
+                  <h1>{{ recomment.user.username }}</h1>
+
+                  <h2>{{ recomment.created_time }}</h2>
+                </div>
+
+                <div class='recomment-section-content'>
+                  {{ recomment.content|linebreaksbr }}
+                </div>
+
+                {% if request.user == recomment.user %}
+                
+                  <form class='recomment-delete' action="{% url 'communities:recomment_delete' recomment.comment.pk recomment.pk %}" method="POST" data-comment-id="{{ comment.pk }}">
+                    <input type="hidden" class='recomment-delete-id' value="{{ recomment.pk }}">
+                    {% csrf_token %}
+                    <button type='submit'>삭제</button>
+                  </form>
+
+                {% endif %}
+              </section>
+
+            </div>
+            
+            {% empty %}
+
             <div class='recomment-else'>
               <div>
                 <i class='fas fa-message'></i>
               </div>
-
+              
               <p>답변을 기다리고 있는 질문이에요.</p>
               <p>첫번째 답변을 남겨보세요!</p>
             </div>
-          {% endif %}
+            
+            {% endfor %}
           
         </div>
       </section>
@@ -205,7 +225,7 @@
     <div class='comment-detail-right'>
       <header class='comment-detail-right-header'>
         <div class='detail-right-header-left'>
-          <h1>{{ comment.user.last_name }}{{ comment.user.first_name }}</h1>
+          <h1>{{ comment.user.username }}</h1>
           <h2>작성한 질문수 {{ comment.user.comment_set.count }}</h2>
         </div>
         
@@ -230,41 +250,47 @@
       </section>
 
       <footer class='comment-detail-right-footer'>
-        <h1>{{ comment.user.last_name }}{{ comment.user.first_name }}님의 다른 Q&A</h1>
+        <h1>{{ comment.user.username }}님의 다른 Q&A</h1>
 
-        {% for user_comment in user_comments %}
-          <a class='detail-right-footer-item' href="{% url 'communities:comment_detail' user_comment.pk %}">
-            <div class='detail-right-footer-title'>
-              {{ user_comment.title }}
-            </div>
-
-            <div class='detail-right-footer-user'>
-              <div class='d-flex align-items-end'>
-                <div class='detail-right-footer-img'>
-                  {% if user_comment.user.image %}
-                    <img class='w-100 rounded-circle' src="{{ user_comment.user.image.url }}" alt="{{ user_comment.user.username }}">
-                  {% else %}
-                    <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
-                  {% endif %}
-                </div>
-  
-                <div class='detail-right-footer-username'>
-                  {{ user_comment.user.last_name }}{{ user_comment.user.first_name }}
-                </div>
+        {% if user_comments %}
+          {% for user_comment in user_comments %}
+            <a class='detail-right-footer-item' href="{% url 'communities:comment_detail' user_comment.pk %}">
+              <div class='detail-right-footer-title'>
+                {{ user_comment.title }}
               </div>
 
-              <h5>
-                <span>좋아요</span><span>{{ user_comment.like_users.count }}</span><span>답변수</span><span>{{ user_comment.recomments.count }}</span>
-              </h5>
-            </div>
-          </a>
-        {% endfor %}
+              <div class='detail-right-footer-user'>
+                <div class='d-flex align-items-end'>
+                  <div class='detail-right-footer-img'>
+                    {% if user_comment.user.image %}
+                      <img class='w-100 rounded-circle' src="{{ user_comment.user.image.url }}" alt="{{ user_comment.user.username }}">
+                    {% else %}
+                      <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+                    {% endif %}
+                  </div>
+    
+                  <div class='detail-right-footer-username'>
+                    {{ user_comment.user.username }}
+                  </div>
+                </div>
+
+                <h5>
+                  <span>좋아요</span><span>{{ user_comment.like_users.count }}</span><span>답변수</span><span>{{ user_comment.recomments.count }}</span>
+                </h5>
+              </div>
+            </a>
+          {% endfor %}
+        {% else %}
+          <div class='detail-right-qna-else'>
+            다른 작성글이 없습니다 😥
+          </div>
+        {% endif %}
       </footer>
     </div>
   </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{% static 'communities/js/comment_detail.js' %}"></script>
 
 {% endblock content %}
