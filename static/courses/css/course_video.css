@@ -35,9 +35,15 @@
   border: 3px solid #797979;
 }
 
+.course-descriptions-quiz {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .course-descriptions-content {
   display: none;
-  height: 50vh;
+  height: 30vh;
   margin: 3px;
   overflow-y: auto;
   overflow-x: hidden;
