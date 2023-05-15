@@ -8,10 +8,16 @@
 <link
   rel="stylesheet"
   type="text/css"
-  href="{% static 'courses/css/index.css' %}"
+  href="{% static 'courses/css/course_index.css' %}"
 />
+{% comment %} <link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'courses/css/course_card.css' %}"
+/> {% endcomment %}
 {% comment %} Link Swiper's CSS {% endcomment %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
 {% comment %} 상단 배너 {% endcomment %}
 <header>
   <div>
@@ -31,6 +37,7 @@
     </div>
   </div>
 </header>
+
 <main class="main-container">
   {% comment %} 해시태그 {% endcomment %}
   <nav class="hash-container">
@@ -377,7 +384,7 @@
                         {% if course.image %}
                         <img src="{{ course.image.url }}" alt="{{ course.title }}">
                         {% else %}
-                        <img src="{% static 'courses/image/noimage.jpeg' %}" alt="강의메인사진">
+                        <img src="{% static 'courses/image/noimage.png' %}" alt="강의메인사진">
                         {% endif %}
                       </div>
                       <div class="course-card-content">
@@ -467,7 +474,7 @@
                         {% if course.image %}
                         <img src="{{ course.image.url }}" alt="{{ course.title }}">
                         {% else %}
-                        <img src="{% static 'courses/image/noimage.jpeg' %}" alt="강의메인사진">
+                        <img src="{% static 'courses/image/noimage.png' %}" alt="강의메인사진">
                         {% endif %}
                       </div>
                       <div class="course-card-content">
@@ -523,5 +530,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script src="{% static 'courses/js/curation.js' %}"></script>
-<script src="{% static 'courses/js/cardHover.js' %}"></script>
+<script type="module" src="{% static 'courses/js/cardHover.js' %}"></script>
 {% endblock content %}

@@ -104,63 +104,96 @@ def mypage(request):
 @login_required
 def add_cart(request, course_id):
     course = Course.objects.get(id=course_id)
-    quantity = int(request.GET.get('quantity', 1))
-    cart = request.session.get('cart', {})
+    quantity = 1
     
-    if course_id in cart:
-        cart[course_id]['quantity'] += quantity
-    else:
-        cart[course_id] = {'quantity': quantity, 'price': str(course.price)}
-        
-    # 장바구니 데이터 저장
-    if request.user.is_authenticated:
-        ShoppingCart.objects.update_or_create(
-            user=request.user,
-            course=course,
-            defaults={
-                'quantity': cart[course_id]['quantity'],
-                'price': course.price,
-            }
-        )
-        
-    request.session['cart'] = cart
+    # Add the course to the cart for the authenticated user
+    request.user.cart_courses.add(course)
+    
     return redirect('accounts:mypage')
 
 
 @login_required
 def remove_cart(request, course_id):
-    cart = request.session.get('cart', {})
-    course_id = str(course_id)
-
-    if course_id in cart:
-        del cart[course_id]
-        request.session['cart'] = cart
-
-     # Delete the cart item from the database if the user is authenticated
-    if request.user.is_authenticated:
-        ShoppingCart.objects.filter(user=request.user, course_id=course_id).delete()
-
+    course = Course.objects.get(id=course_id)
+    
+    # Remove the course from the cart for the authenticated user
+    request.user.cart_courses.remove(course)
+    
     return redirect('accounts:mypage')
 
 
 @login_required
 def view_cart(request):
-    cart = request.session.get('cart', {})
-    cart_items = []
-    cart_total = 0
-
-    for course_id, course_info in cart.items():
-        course = Course.objects.get(id=course_id)
-        total_price = Decimal(course_info.get('quantity', 0)) * course.price
-        cart_total += total_price
-        cart_items.append({
-            'course': course,
-            'quantity': course_info.get('quantity', 0),
-            'total_price': '{:.2f}'.format(total_price),
-        })
+    cart_items = request.user.cart_courses.all()
+    cart_total = sum(course.price for course in cart_items)
 
     context = {
         'cart_items': cart_items,
         'cart_total': '{:,.0f}'.format(cart_total),
     }
     return render(request, 'accounts/mypage.html', context)
+
+
+# @login_required
+# def add_cart(request, course_id):
+#     course = Course.objects.get(id=course_id)
+#     quantity = int(request.GET.get('quantity', 1))
+#     cart = request.session.get('cart', {})
+    
+#     if course_id in cart:
+#         cart[course_id]['quantity'] += quantity
+#     else:
+#         cart[course_id] = {'quantity': quantity, 'price': str(course.price)}
+        
+#     # 장바구니 데이터 저장
+#     if request.user.is_authenticated:
+#         ShoppingCart.objects.update_or_create(
+#             user=request.user,
+#             course=course,
+#             defaults={
+#                 'quantity': cart[course_id]['quantity'],
+#                 'price': course.price,
+#             }
+#         )
+        
+#     request.session['cart'] = cart
+#     return redirect('accounts:mypage')
+
+
+# @login_required
+# def remove_cart(request, course_id):
+#     cart = request.session.get('cart', {})
+#     course_id = str(course_id)
+
+#     if course_id in cart:
+#         del cart[course_id]
+#         request.session['cart'] = cart
+
+#      # Delete the cart item from the database if the user is authenticated
+#     if request.user.is_authenticated:
+#         ShoppingCart.objects.filter(user=request.user, course_id=course_id).delete()
+
+#     return redirect('accounts:mypage')
+
+
+# @login_required
+# def view_cart(request):
+#     cart = request.session.get('cart', {})
+#     cart_items = []
+#     cart_total = 0
+
+#     for course_id, course_info in cart.items():
+#         course = Course.objects.get(id=course_id)
+#         total_price = Decimal(course_info.get('quantity', 0)) * course.price
+#         cart_total += total_price
+#         cart_items.append({
+#             'course': course,
+#             'quantity': course_info.get('quantity', 0),
+#             'total_price': '{:.2f}'.format(total_price),
+#         })
+
+#     context = {
+#         'cart_items': cart_items,
+#         'cart_total': '{:,.0f}'.format(cart_total),
+#     }
+#     return render(request, 'accounts/mypage.html', context)

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+퀴즈 풀기
+{% endblock title %}
+
+{% block content %}
+<h1>퀴즈 결과</h1>
+<h2>{{ quiz.quiz_title }}</h2>
+<p>총 문항 수: {{ total_questions }}</p>
+<p>맞춘 문항 수: {{ num_correct_answers }}</p>
+<p>틀린 문항 수: {{ num_incorrect_answers }}</p>
+{% endblock content %}

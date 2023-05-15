@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+퀴즈 풀기
+{% endblock title %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4 text-center">{{ quiz.quiz_title }}</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {% for question in questions %}
+                <div class="card mb-3" style="border:1px solid #1EC078">
+                    <div class="card-header" style="background-color:#8AE6A2; border-bottom:1px solid #1EC078">{{ forloop.counter }}) {{ question.question_text }}</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input type="text" name="{{ question.id }}" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">결과 확인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

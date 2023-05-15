@@ -151,6 +151,35 @@
   color: rgb(150 150 150);
 }
 
+
+.middle-section-write {
+  display: block;
+  font-size: 14px;
+  width: 90px;
+  height: 40px;
+  padding: 10px 12px;
+  color: white;
+  background-color: rgb(62 64 66);
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 18px;
+}
+
+.course-comment-flex {
+  display: flex;
+  flex-grow: 1;
+  flex-flow: row-reverse;
+}
+
+.middle-section-write:hover {
+  background-color: rgb(31, 32, 32);
+}
+
+.comment-list-footer-right-section {
+  padding-bottom: 8px;
+}
+
 @media (max-width: 1200px) {
   .comment-list-else {
     width: 100%;

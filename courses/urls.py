@@ -14,4 +14,7 @@ urlpatterns = [
     path('reviews/<int:course_pk>/create/', views.review_create, name='review_create'),
     path('reviews/<int:course_pk>/delete/<int:review_pk>/', views.review_delete, name='review_delete'),
     path('course/<int:course_pk>/video/', views.video, name='video'),
+    path('course/<int:course_pk>/quiz/<int:quiz_pk>/', views.quiz, name='quiz'),
+    path('course/<int:course_pk>/quiz/create/', views.quiz_create, name='quiz_create'),
+    path('course/<int:course_pk>/quiz/<int:quiz_pk>/result/', views.quiz_result, name='quiz_result'),
 ]

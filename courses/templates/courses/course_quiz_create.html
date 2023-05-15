@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+퀴즈 생성
+{% endblock title %}
+
+{% block content %}
+<div class="p-3">
+  <form method="POST">
+    {% csrf_token %}
+    {{ quiz_form.as_p }}
+    {{ qna_formset.management_form }}
+    <table>
+      {% for form in qna_formset.forms %}
+        {{ form.as_table }}
+      {% endfor %}
+    </table>
+    <input type="submit" value="퀴즈 생성">
+  </form>
+</div>
+{% endblock content %}
