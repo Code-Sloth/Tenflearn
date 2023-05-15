@@ -17,6 +17,7 @@ class Comment(models.Model):
     content = RichTextUploadingField(blank=True,null=True)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_comments')
     views = models.IntegerField(default=0)
+    like = models.IntegerField(default=0)
 
     category_Choices = (('qna','질문 & 답변'),('worry','고민있어요'),('study','스터디'),('etc','기타'))
     category = models.CharField(max_length=20, choices=category_Choices)
@@ -43,6 +44,7 @@ class Recomment(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='recomments')
     content = models.TextField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_recomments')
+    like = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
