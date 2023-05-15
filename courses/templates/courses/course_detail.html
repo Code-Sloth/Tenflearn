@@ -180,12 +180,14 @@
             {% endif %}
           </div>
   
-          <form class='right-sidebar-enrolment' action="">
+          <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+            {% csrf_token %}
             <button type='submit'>수강신청 하기</button>
           </form>
   
-          <form class='right-sidebar-cart' action="">
-            <button>바구니에 담기</button>
+          <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">바구니에 담기</button>
           </form>
         </div>
 

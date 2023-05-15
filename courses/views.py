@@ -262,3 +262,22 @@ def quiz_result(request, course_pk, quiz_pk):
     }
     return render(request, 'courses/course_quiz_result.html', context)
 
+
+def enrolment(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+
+    if course.enrolment_users.filter(pk=request.user.pk).exists():
+        course.enrolment_users.remove(request.user)
+    else:
+        course.enrolment_users.add(request.user)
+    return redirect('accounts:mypage')
+
+
+def cart(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+
+    if course.cart_users.filter(pk=request.user.pk).exists():
+        course.cart_users.remove(request.user)
+    else:
+        course.cart_users.add(request.user)
+    return redirect('accounts:mypage')
