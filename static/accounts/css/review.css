@@ -1,0 +1,51 @@
+.review-body {
+  width: 1000px;
+}
+
+.review-body__review {
+
+  display: flex;
+  padding: 8px 16px;
+  height: auto;
+  margin: 0 5px;
+  border-bottom: 1px solid #dbdada;
+  width: 900px;
+}
+
+
+.review-left {
+  flex: 1;
+  height: auto;
+  width: auto;
+  padding: 0 15px;
+}
+
+.review-right__img {
+  display: flex;
+  align-items: end;
+  width: 120px;
+  height: 100%;
+}
+
+
+.banner-star-box {
+  position: relative;
+  width: 120px;
+}
+
+.banner-star-box img {
+  width: 120px;
+}
+
+.banner-star-yellow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.lecture-img {
+  max-width: 100%;
+  height: auto;
+}
+

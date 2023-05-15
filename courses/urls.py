@@ -17,4 +17,6 @@ urlpatterns = [
     path('course/<int:course_pk>/quiz/<int:quiz_pk>/', views.quiz, name='quiz'),
     path('course/<int:course_pk>/quiz/create/', views.quiz_create, name='quiz_create'),
     path('course/<int:course_pk>/quiz/<int:quiz_pk>/result/', views.quiz_result, name='quiz_result'),
+    path('course/<int:course_pk>/enrolment/', views.enrolment, name='enrolment'),
+    path('course/<int:course_pk>/cart/', views.cart, name="cart"),
 ]

@@ -89,6 +89,7 @@
 .review-left {
   flex: 1;
   height: auto;
+  width: auto;
   padding: 0 15px;
 
 }

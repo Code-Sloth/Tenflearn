@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 {% load static %} 
 {% comment %} {% load pagination_tags %} {% endcomment %}
 {% load custom_filters %}
@@ -22,7 +23,6 @@
     <div class='community-body__left'>
         <div class="community-body__left__content">수강평</div>
     </div>
-
 
     <div class="community-body__right">
       {% for review in page_obj %}

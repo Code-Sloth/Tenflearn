@@ -4,6 +4,8 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.conf import settings
 import os
+from django.contrib.auth.models import User
+from courses.models import Course
 
 # Create your models here.
 
