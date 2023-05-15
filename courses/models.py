@@ -6,13 +6,16 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from datetime import timedelta,datetime,date
 from taggit.managers import TaggableManager
-from accounts.models import User
 
 # Create your models here.
 
 class Course(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     enrolment_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='enrolment_courses', blank=True)
+    cart_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='cart_courses', blank=True)
+
+    category = models.CharField(max_length=100)
+
     title = models.CharField(max_length=100)
     content = models.TextField()
     star = models.DecimalField(default=0, max_digits=5, decimal_places=1)
@@ -62,6 +65,11 @@ class Course(models.Model):
         super().save(*args, **kargs)
 
 
+class Url(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='urls')
+    url = models.CharField(max_length=200)
+
+
 class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='reviews')
@@ -105,7 +113,7 @@ class Review(models.Model):
 class Quiz(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='quizzes')
     quiz_title = models.CharField(max_length=100)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class QnA(models.Model):
@@ -116,5 +124,5 @@ class QnA(models.Model):
 
 class StudentAnswer(models.Model):
     qna = models.ForeignKey(QnA, on_delete=models.CASCADE)
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_correct = models.BooleanField(default=False)

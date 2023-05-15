@@ -10,6 +10,9 @@ import os
 class User(AbstractUser):
     followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
 
+    position_Choices = (('tutor','강사'),('student','학생'))
+    position = models.CharField(max_length=20, choices=position_Choices)
+
     def profile_image_path(instance, filename):
         return f'accounts/{instance.pk}/{filename}'
 
