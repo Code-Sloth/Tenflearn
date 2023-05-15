@@ -7,67 +7,65 @@
 
 <div>
     <h3>수강바구니</h3>
-    <input type="checkbox" id="select_all">
-    <label for="select_all">전체 선택</label>
-        <div class="cart-body-left">
-            <div class="selector">
-                <input type="checkbox" name="items" value="{{ item.id }}">
-                <label for="{{ item.id }}">{{ item.name }}</label>
-            </div>
-            <div class="cart-body__img">
-                <img class="lecture-img"src="#" alt="강의 사진">
-            </div>
-            <div class="cart-body-right">
-                <div class="cart-right__content"> 강의명 </div>
-                <div class="cart-right__info"> 작성자 | 수강기간 </div>
-            </div>
-            <div class="delete-button">
-                <a href="#">X</a>
-            </div>
-            <div class="price">
-                가격
-            </div>
+    <div class="select-box">
+        <div>
+            <label>
+                <input type="checkbox" id="select-all" onclick="toggleCheckboxes()">
+                전체 선택
+            </label>
         </div>
+        <div>
+            <button class="delete-button" id="delete-all">삭제</butto>
+        </div>    
+    </div>
+    {% for course in request.user.cart_courses.all %}
+            
+    <div class="selector">
+        <input type="checkbox" name="course" value="{{ course.id }}">
+        <label for="{{ course.id }}"></label>
+        <div class="cart-body-left">
+        <div class="cart-body__img">
+            <img class="lecture-img"src="{{ course.image.url }}" alt="강의 사진">
+        </div>
+        <div class="cart-body-right">
+            <div class="cart-right__content"> 강의명 : {{ course.title }} </div>
+            <div class="cart-right__info"> 작성자 | 수강기간 </div>
+        </div>
+        <div class="delete-button">
+            <a href="{% url 'courses:cart' course.pk %}" class="delete-button">X</a>
+        </div>
+        <div class="price">
+            <div>가격: {{ course.price|intcomma }}원</div>
+            <div>할인율: {{ course.discount_rate }}%</div>
+            <div>결제금액: ￦{{ course.discounted_price|intcomma }}원</div>
+        </div>
+    </div>
+    </div>
+    {% empty %}
+        <div class="cart-body-left">
+            <p>장바구니가 비어있습니다.</p>
+        </div>
+    {% endfor %}
+</div>
+
+
+
 
 <script>
-    function selectAll() {
-        var checkboxes = document.querySelectorAll('input[name="items"]');
+    function toggleCheckboxes() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var selectAllCheckbox = document.getElementById('select-all');
+
         for (var i = 0; i < checkboxes.length; i++) {
-          checkboxes[i].checked = document.getElementById('select_all').checked;
+            checkboxes[i].checked = selectAllCheckbox.checked;
         }
-      }
+    }
+
+    document.getElementById("delete-all").onclick = function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      
+        for (var i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].parentNode.remove();
+        }
+      };
 </script>
-
-{% comment %} 
-    <div class="cart-container">
-        <p>강의이름: 장바구니 강의 제목</p>
-        <p>가격: ￦10000원</p>
-        <p>할인율: 50%</p>
-        <p>합계: 5000원</p>
-        <p><a href="#">Remove</a></p>
-    </div>         {% endcomment %}
-
-    
-    {% comment %} {% if cart_items %}
-        
-    {% else %}
-        <p>장바구니가 비어있습니다.</p>
-    {% endif %} {% endcomment %}
-    </div>
-
-{% comment %} <div>
-<h1>장바구니</h1>
-{% for item in cart_items %}
-    <p>강의이름: {{ item.course.title }}</p>
-    <p>가격: ￦{{ item.course.price|intcomma }}원</p>
-    <p>할인율: {{ item.course.discount_rate }}%</p>
-    <p>합계: ￦{{ item.course.discounted_price|intcomma }}원</p>
-    <p><a href="{% url 'accounts:remove_cart' item.course.id %}">Remove</a></p>
-{% endfor %}
-
-{% if cart_items %}
-    
-{% else %}
-    <p>장바구니가 비어있습니다.</p>
-{% endif %}
-</div> {% endcomment %}

@@ -17,7 +17,6 @@
         <a class="{% if q == 'review' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=review">내 수강평
         </a>
         <a class="{% if q == 'cart' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=cart">수강 바구니</a>
-
     </div>
 
 
@@ -25,23 +24,31 @@
   {% if not q %}{% with q='course' %}{% endwith %}
     {% if request.user.is_authenticated %}
     <div class="container d-flex">
-        <div class="content-info">
+        {% comment %} <div class="content-info">
           <h3>자세한 정보</h3>
-        </div>
+        </div> {% endcomment %}
+        
         <div class="header">
-            <h2>Hello {{ user }}!</h2>
+            <div class="title">
+              <h4>Welcome to Tenflearn {{ user }}!</h4>
+            </div>
             <div class="content">
-                <h3>내 정보</h3>
-            
                 {% if user.image %}
                     <img src="{{ user.image.url }}" alt="{{ user.username }}'s Profile Image" class="profile-image">
                 {% else %}
                     <p>No image</p>
                 {% endif %}
-                <p><strong>아이디:</strong> {{ user.username }}</p>
-                <p><strong>이름:</strong> {{ user.last_name }}{{ user.first_name }}</p>
+                <div class="info">
+                  <p><strong>아이디:</strong> {{ user.username }}</p>
+                  <p><strong>이름:</strong> {{ user.last_name }}{{ user.first_name }}</p>
+                  <p><strong>팔로잉 수: {{ user.followings|length }}</p>
+                  <p>
+                    <a class="btn" href="{% url 'accounts:update' %}">회원정보수정</a>
+                  </p> 
+                </div>
             </div>
         </div>
+
 
     </div>
     {% endif %}

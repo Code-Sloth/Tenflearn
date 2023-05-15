@@ -3,34 +3,19 @@
 
 <div class = 'container-my_course'>
     <h3>수강 중 강의</h3>
-          <div class="cards">
+    <div class="cards">
+      {% if user.enrolment_courses.all %}
+          {% for course in user.enrolment_courses.all %}
             <div class="card-box">
-              <img class="card-img" src="{% static 'courses\image\noimage.png' %}" alt="Image">
-              <div class="card-body">
-                <h5 class="card-title"><strong>Title - 파이썬 배우기</strong></h5>
-                <p class="card-text">기한: expiry_date </p>
-              </div>
-            </div>
-          </div>
-</div>
-
-{% comment %} view 연결 이후 코드 아래 {% endcomment %}
-
-{% comment %} <div class = 'container-my_course'>
-    <h1>수강중인 강의</h1>
-    {% if user.enrolment_courses.all %}
-        {% for course in user.enrolment_courses.all %}
-          <div class="cards">
-            <div class="card-box">
-              <img class="card-img" src="{% url 'course.image.url' %}" alt="Image">
+              <img class="card-img" src="{{ course.image.url }}" alt="Image">
               <div class="card-body">
                 <h5 class="card-title"><strong>{{ course.title }}</strong></h5>
-                <p class="card-text">기한: {{ course.expiry_date }}</p>
+                <p class="card-text">기한: {{ course.expired_date }}</p>
               </div>
             </div>
-          </div>
-        {% endfor %}
+          {% endfor %}
+      </div>
     {% else %} 
-          <p>수강하는 강의가 없습니다.</p>
-        {% endif %}
-</div> {% endcomment %}
+        <p>수강하는 강의가 없습니다.</p>
+    {% endif %}
+</div>

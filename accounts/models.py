@@ -42,10 +42,3 @@ class User(AbstractUser):
                 if old_user.image:
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
         super(User, self).save(*args, **kwargs)
-
-
-class ShoppingCart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=8, decimal_places=2)

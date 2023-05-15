@@ -2,6 +2,30 @@
   width: 1000px;
 }
 
+
+.select-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-button {
+  background-color: #00c471;
+  color: white;
+  font-size: 12px;
+  /* font-weight: bold; */
+  padding: 3px 5px;
+  border-radius: 5px;
+  height: 25px;
+  width: auto;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #00c471;
+}
+
 .cart-body-left {
 
   display: flex;
@@ -34,7 +58,7 @@
 }
 
 .price {
-  width: 100px;
+  width: 200px;
   text-align: right;
   border-left: solid gray 1px;
   margin-left: 5px;
