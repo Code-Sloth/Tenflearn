@@ -1,64 +1,63 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% load humanize %}
 {% block title %}
 
 {% endblock title %}
 
 {% block content %}
-{% load humanize %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts\css\mypage.css' %}">
+{% comment %} 수정 {% endcomment %}
+<div class="mypage-body">
+
+    <div class='mypage-body__left'>
+        <a class="mypage-body__left__content {% if not q %}change-green{% else %} pass {% endif %}" href="{% url 'accounts:mypage' %}">내 정보
+        <a class="{% if q == 'course' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=course">내 학습
+        </a>
+        <a class="{% if q == 'review' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=review">내 수강평
+        </a>
+        <a class="{% if q == 'cart' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=cart">수강 바구니</a>
+
+    </div>
+
+
 <div>
-  <div class="d-flex justify-content-end">
-      <a class="{% if q == 'course' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=course">수강목록
-      </a>
-      <a class="{% if q == 'review' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=review">리뷰목록
-      </a>
-      <a class="{% if q == 'cart' %}query{% endif %}" href="{% url 'accounts:mypage' %}?q=cart">주문목록</a>
-  </div>
-  <div>
-      {% if not q %}{% with q='course' %}{% endwith %}{% endif %}
-      {% if q == 'course' %}
-          {% include 'accounts/course.html' %}
-      {% elif q == 'review' %}
-          {% include 'accounts/review.html' %}
-      {% elif q == 'cart' %}
-          {% include 'accounts/cart.html' %}
-      {% endif %}
-  </div>
+  {% if not q %}{% with q='course' %}{% endwith %}
+    {% if request.user.is_authenticated %}
+    <div class="container d-flex">
+        <div class="header">
+            <h2>Hello {{ user }}!</h2>
+            <div class="content">
+                <h3>내 정보</h3>
+            
+                {% if user.image %}
+                    <img src="{{ user.image.url }}" alt="{{ user.username }}'s Profile Image" class="profile-image">
+                {% else %}
+                    <p>No image</p>
+                {% endif %}
+                <p><strong>아이디:</strong> {{ user.username }}</p>
+                <p><strong>이름:</strong> {{ user.last_name }}{{ user.first_name }}</p>
+            </div>
+        </div>
+        <div class="content">
+          <h3>자세한 정보</h3>
+        </div>
+
+    </div>
+    {% endif %}
+  {% endif %}
+
+  
+  {% if q == 'course' %}
+    {% include 'accounts/course.html' %}
+  {% elif q == 'review' %}
+    {% include 'accounts/review.html' %}
+  {% elif q == 'cart' %}
+  {% include 'accounts/cart.html' %}
+  {% endif %}
 </div>
 
-{% if request.user.is_authenticated %}
-<h2>{{user}}님 안녕하세요!</h2>
-{% endif %}
-<br>
-내정보 
-{% if user.image %}
-    <img src="{{ user.image.url }}"/ alt="{{ user.username }}'s Profile Image">
-{% else %}
-    <p>이미지가 없습니다.</p>
-{% endif %}
 
-<p>ID: {{ user.username }}</p>
-<p>성: {{ user.last_name }}</p>
-<p>이름: {{ user.first_name }}</p>
-
-
-{% comment %} <h2>장바구니</h2>
-{% for item in cart_items %}
-    <p>강의이름: {{ item.course.title }}</p>
-    <p>가격: ￦{{ item.course.price|intcomma }}원</p>
-    <p>할인율: {{ item.course.discount_rate }}%</p>
-    <p>합계: ￦{{ item.course.discounted_price|intcomma }}원</p>
-    <form action="{% url 'accounts:remove_cart' item.course.id %}" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">장바구니 삭제</button>
-    </form>
-{% endfor %}
-
-{% if cart_items %}
-    
-{% else %}
-    <p>장바구니가 비어있습니다.</p>
-{% endif %} {% endcomment %}
 
 
 {% endblock content %} 
