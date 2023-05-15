@@ -1,16 +1,16 @@
+{% load humanize %}
 <div>
 <h1>장바구니</h1>
 {% for item in cart_items %}
-    <p>강의이름:{{ item.course.title }}</p>
-    <p>가격:{{ item.course.price }}</p>
-    <p>할인율:{{ item.course.discount_rate }}</p>
-    <p>할인가격:{{ item.course.discounted_price }}</p>
-    <p>합계:{{ item.total_price }}</p>
+    <p>강의이름: {{ item.course.title }}</p>
+    <p>가격: ￦{{ item.course.price|intcomma }}원</p>
+    <p>할인율: {{ item.course.discount_rate }}%</p>
+    <p>합계: ￦{{ item.course.discounted_price|intcomma }}원</p>
     <p><a href="{% url 'accounts:remove_cart' item.course.id %}">Remove</a></p>
 {% endfor %}
 
 {% if cart_items %}
-    <p>Total price: {{ cart_total }}</p>
+    
 {% else %}
     <p>장바구니가 비어있습니다.</p>
 {% endif %}
