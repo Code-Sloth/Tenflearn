@@ -1,6 +1,6 @@
 from django import forms
-from django.forms import ClearableFileInput
-from .models import Course, Review
+from django.forms import ClearableFileInput, inlineformset_factory
+from .models import Course, Review, Quiz, QnA
 from taggit.forms import TagField
 
 class CoursesForm(forms.ModelForm):
@@ -70,3 +70,37 @@ class ReviewForm(forms.ModelForm):
                 }),
         }
 
+
+class QuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_title',]
+        widgets = {
+            'quiz_title': forms.TextInput(attrs={'class': 'form-control', 'style': 'width: 500px'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['quiz_title'].label = "퀴즈 제목"
+
+
+class QnAForm(forms.ModelForm):
+    class Meta:
+        model = QnA
+        fields = ['question_text', 'answer_text']
+        widgets = {
+            'question_text': forms.TextInput(attrs={'class': 'form-control', 'style': 'width: 500px'}),
+            'answer_text': forms.TextInput(attrs={'class': 'form-control', 'style': 'width: 500px'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['question_text'].label = "질문"
+        self.fields['answer_text'].label = "답변"
+
+
+
+QnAFormSet = inlineformset_factory(
+    Quiz, QnA, form=QnAForm,
+    fields=['question_text', 'answer_text'], extra=1, can_delete=True
+)

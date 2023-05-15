@@ -19,8 +19,11 @@
     <div>
       <h4>{{ course.title }}</h4>
     </div>
-    <div>
+    <div class="course-descriptions-quiz">
       <span>강사 - {{ course.user }}</span>
+      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        퀴즈 풀기
+      </button>
     </div>
     <hr>
     <div class="course-btn">
@@ -33,6 +36,30 @@
     <div class="course-descriptions-file">
       <textarea class="course-descriptions-file-memo" id="memo" placeholder="저장할 내용을 입력해주세요."></textarea>
       <button class="btn btn-outline-secondary" onclick="Download()">다운로드</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">퀴즈 풀기</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% for quiz in course.quizzes.all %}
+          <div>
+            <h3>{{ quiz.quiz_title }}</h3>
+            <a href="{% url 'courses:quiz' course.pk quiz.pk %}"><button type="button" class="btn btn-outline-success">
+              퀴즈 풀러 가기
+            </button></a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>

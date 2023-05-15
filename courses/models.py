@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from datetime import timedelta,datetime,date
 from taggit.managers import TaggableManager
+from accounts.models import User
 
 # Create your models here.
 
@@ -99,3 +100,21 @@ class Review(models.Model):
 
     def star_multiple(self):
         return self.star*20
+
+
+class Quiz(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='quizzes')
+    quiz_title = models.CharField(max_length=100)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class QnA(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+    question_text = models.TextField()
+    answer_text = models.TextField()
+
+
+class StudentAnswer(models.Model):
+    qna = models.ForeignKey(QnA, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_correct = models.BooleanField(default=False)

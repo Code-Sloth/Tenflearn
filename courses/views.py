@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Course, Review
-from .forms import CoursesForm, ReviewForm
+from .models import Course, Review, Quiz, StudentAnswer
+from .forms import CoursesForm, ReviewForm, QuizForm, QnAForm, QnAFormSet
+from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
-from taggit.models import Tag, TaggedItem
-from communities.models import Comment
+from taggit.models import Tag
 from django.core.paginator import Paginator
 import random
 from django.db.models import Count
 from django.db.models import Q
-
 
 # Create your views here.
 
@@ -187,4 +186,70 @@ def video(request, course_pk):
         'course': course,
     }
     return render(request, 'courses/course_video.html', context)
+
+
+@login_required
+def quiz_create(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+    quiz_form = QuizForm(request.POST or None)
+    QnAFormSet = formset_factory(QnAForm, extra=5)
+    qna_formset = QnAFormSet(request.POST or None)
+
+    if request.method == 'POST':
+        if quiz_form.is_valid() and qna_formset.is_valid():
+            quiz = quiz_form.save(commit=False)
+            quiz.course = course
+            quiz.created_by = request.user
+            quiz.save()
+            for form in qna_formset:
+                if form.is_valid():
+                    qna = form.save(commit=False)
+                    qna.quiz = quiz
+                    qna.save()
+            return redirect('courses:detail', course_pk)
+
+    context = {
+        'quiz_form': quiz_form,
+        'qna_formset': qna_formset,
+        'course': course,
+    }
+    return render(request, 'courses/course_quiz_create.html', context)
+
+
+def quiz(request, course_pk, quiz_pk):
+    quiz = Quiz.objects.get(pk=quiz_pk)
+    questions = quiz.questions.all()
+
+    if request.method == 'POST':
+        student = request.user
+        for question in questions:
+            student_answer, created = StudentAnswer.objects.get_or_create(
+                qna=question,
+                student=student
+            )
+            student_answer.is_correct = question.answer_text == request.POST.get(str(question.id))
+            student_answer.save()
+        return redirect('courses:quiz_result', course_pk, quiz_pk)
+
+    context = {
+        'quiz': quiz,
+        'questions': questions,
+    }
+    return render(request, 'courses/course_quiz.html', context)
+
+
+@login_required
+def quiz_result(request, course_pk, quiz_pk):
+    quiz = Quiz.objects.get(id=quiz_pk)
+    total_questions = quiz.questions.count()
+    student_answers = StudentAnswer.objects.filter(qna__quiz=quiz, student=request.user)
+    num_correct_answers = student_answers.filter(is_correct=True).count()
+    num_incorrect_answers = student_answers.filter(is_correct=False).count()
+    context = {
+        'quiz': quiz,
+        'total_questions': total_questions,
+        'num_correct_answers': num_correct_answers,
+        'num_incorrect_answers': num_incorrect_answers,
+    }
+    return render(request, 'courses/course_quiz_result.html', context)
 
