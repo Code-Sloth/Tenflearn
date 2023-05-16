@@ -53,8 +53,16 @@ function playVideo(index) {
 }
 
 var buttons = document.getElementsByClassName("modal-content-list")[0].getElementsByTagName("button");
+var activeButton = buttons[0];
+
+
 for (var i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener("click", function () {
+    if (activeButton) {
+      activeButton.classList.remove("background-gray");
+    }
+    activeButton = this;
+    activeButton.classList.add("background-gray");
     var index = parseInt(this.getAttribute("data-index"));
     playVideo(index);
   });
