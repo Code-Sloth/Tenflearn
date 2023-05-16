@@ -9,6 +9,10 @@ from django.urls import reverse
 from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from bs4 import BeautifulSoup
+from django.middleware.csrf import get_token
 
 # Create your views here.
 
@@ -62,13 +66,18 @@ def comment_detail(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     recomments = Recomment.objects.filter(comment=comment)
 
+    if not request.session.get('comment_viewed_{}'.format(comment_pk)):
+        comment.views += 1
+        comment.save()
+        request.session['comment_viewed_{}'.format(comment_pk)] = True
+        
     user_comments = comment.user.comment_set.exclude(pk=comment_pk)[:5]
 
     recomment_form = RecommentForm()
     # like_users_count = comment.like_users.count()
     context = {
         'comment': comment,
-        'recomments': recomments.order_by('-pk'),
+        'recomments': recomments,
         'recomment_form': recomment_form,
         'user_comments': user_comments,
         # 'like_users_count': like_users_count,
@@ -134,28 +143,30 @@ def comment_delete(request, comment_pk):
 
 ## 대댓글
 
+@login_required
 def recomment_create(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
 
-    if request.method == 'POST':
-        recomment_form = RecommentForm(request.POST)
-        if recomment_form.is_valid():
-            recomment = recomment_form.save(commit=False)
-            recomment.comment = comment
-            recomment.user = request.user
-            recomment.save()
+    recomment_form = RecommentForm(request.POST)
+    if recomment_form.is_valid():
+        recomment = recomment_form.save(commit=False)
+        recomment.comment = comment
+        recomment.user = request.user
+        recomment.save()
 
-            return redirect('communities:comment_detail', comment_pk)
+        recomments = comment.recomments.all()
 
-    else:
-        recomment_form = RecommentForm()
+        recomments_html = render_to_string('communities/comment_detail.html', {'comment': comment, 'recomments': recomments, 'request': request, 'csrf_token': get_token(request)})
 
-    context = {
-        'comment': comment,
-        'recomment_form': recomment_form,
-    }
+        soup = BeautifulSoup(recomments_html, 'html.parser')
+        recomment_section = soup.find('div', {'class': 'recomment-section'})
+        recomment_section_html = str(recomment_section)
 
-    return render(request, 'communities/recomment_create.html', context)
+        return JsonResponse({'recomment_section_html': recomment_section_html, 'recomment_count': comment.recomments.count()})
+
+    errors = recomment_form.errors.as_json()
+    return JsonResponse({'errors': errors}, status=400)
+
 
 
 def recomment_delete(request, comment_pk, recomment_pk):
@@ -184,3 +195,118 @@ def review(request):
 
     return render(request, 'communities\inflearn_index.html', context)
 
+def comment_like(request, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+    like_value = request.POST.get('like_value')
+
+    if comment.user == request.user:
+        error_message = "자신의 글에는 사용할 수 없습니다."
+        return JsonResponse({'error': error_message})
+
+    if like_value == 'like':
+        if comment.like_users.filter(pk=request.user.pk).exists():
+            comment.like -= 1
+            comment.like_users.remove(request.user)
+            is_liked = False
+            is_unliked = False
+
+        elif comment.unlike_users.filter(pk=request.user.pk).exists():
+            comment.like += 2
+            comment.unlike_users.remove(request.user)
+            comment.like_users.add(request.user)
+            is_liked = True
+            is_unliked = False
+
+        else:
+            comment.like += 1
+            comment.like_users.add(request.user)
+            is_liked = True
+            is_unliked = False
+
+    else:
+        if comment.unlike_users.filter(pk=request.user.pk).exists():
+            comment.like += 1
+            comment.unlike_users.remove(request.user)
+            is_liked = False
+            is_unliked = False
+
+        elif comment.like_users.filter(pk=request.user.pk).exists():
+            comment.like -= 2
+            comment.like_users.remove(request.user)
+            comment.unlike_users.add(request.user)
+            is_liked = False
+            is_unliked = True
+
+        else:
+            comment.like -= 1
+            comment.unlike_users.add(request.user)
+            is_liked = False
+            is_unliked = True
+
+    comment.save()
+
+    context = {
+        'is_liked': is_liked,
+        'is_unliked': is_unliked,
+        'comment_like': comment.like,
+    }
+
+    return JsonResponse(context)
+
+def recomment_like(request, comment_pk, recomment_pk):
+    recomment = Recomment.objects.get(pk=recomment_pk)
+    like_value = request.POST.get('like_value')
+
+    if recomment.user == request.user:
+        error_message = "자신의 댓글에는 사용할 수 없습니다."
+        return JsonResponse({'error': error_message})
+
+    if like_value == 'like':
+        if recomment.like_users.filter(pk=request.user.pk).exists():
+            recomment.like -= 1
+            recomment.like_users.remove(request.user)
+            is_liked = False
+            is_unliked = False
+
+        elif recomment.unlike_users.filter(pk=request.user.pk).exists():
+            recomment.like += 2
+            recomment.unlike_users.remove(request.user)
+            recomment.like_users.add(request.user)
+            is_liked = True
+            is_unliked = False
+
+        else:
+            recomment.like += 1
+            recomment.like_users.add(request.user)
+            is_liked = True
+            is_unliked = False
+
+    else:
+        if recomment.unlike_users.filter(pk=request.user.pk).exists():
+            recomment.like += 1
+            recomment.unlike_users.remove(request.user)
+            is_liked = False
+            is_unliked = False
+
+        elif recomment.like_users.filter(pk=request.user.pk).exists():
+            recomment.like -= 2
+            recomment.like_users.remove(request.user)
+            recomment.unlike_users.add(request.user)
+            is_liked = False
+            is_unliked = True
+
+        else:
+            recomment.like -= 1
+            recomment.unlike_users.add(request.user)
+            is_liked = False
+            is_unliked = True
+
+    recomment.save()
+
+    context = {
+        'is_liked': is_liked,
+        'is_unliked': is_unliked,
+        'recomment_like': recomment.like,
+    }
+
+    return JsonResponse(context)

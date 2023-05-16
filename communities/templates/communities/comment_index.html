@@ -61,7 +61,7 @@
               {% endif %}
             </div>
 
-            <h4>{{ top_user }}</h4>
+            <h4>{{ top_user.username }}</h4>
 
             <h5>{{ top_user.comment_set.count }}</h5>
           </div>
@@ -161,7 +161,7 @@
               
                   <div class='comment-list-footer'>
                     <h4>
-                      <span>{{ comment.user.last_name }}{{ comment.user.first_name }}</span><span>&nbsp;·&nbsp;</span><span>{{ comment.created_time }}</span>{% if comment.course %}<span>&nbsp;·&nbsp;</span><span>{{ comment.course.title }}</span>{% endif %}
+                      <span>{{ comment.user.username }}</span><span>&nbsp;·&nbsp;</span><span>{{ comment.created_time }}</span>{% if comment.course %}<span>&nbsp;·&nbsp;</span><span>{{ comment.course.title }}</span>{% endif %}
                     </h4>
               
                     <div class='comment-list-footer-right'>
@@ -210,15 +210,15 @@
             <h1>{{ popular_comment.title }}</h1>
             <div class='comment-right-popular-div'>
               <div class='popular_comment-image'>
-                {% if popular_comment.image %}
-                  <img class='w-100 rounded-circle' src="{{ popular_comment.image.url }}" alt="{{ popular_comment.title }}">
+                {% if popular_comment.user.image %}
+                  <img class='w-100 rounded-circle' src="{{ popular_comment.user.image.url }}" alt="{{ popular_comment.title }}">
                 {% else %}
                   <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
                 {% endif %}
               </div>
 
               <div class='comment-right-popular-username'>
-                {{ popular_comment.user.last_name }}{{ popular_comment.user.first_name }}
+                {{ popular_comment.user.username }}
               </div>
             </div>
           </a>

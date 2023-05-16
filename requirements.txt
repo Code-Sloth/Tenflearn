@@ -1,4 +1,5 @@
 asgiref==3.6.0
+beautifulsoup4==4.12.2
 certifi==2023.5.7
 cffi==1.15.1
 charset-normalizer==3.1.0
@@ -10,7 +11,6 @@ django-appconf==1.0.5
 django-ckeditor==6.5.1
 django-imagekit==4.1.0
 django-js-asset==2.0.0
-django-pagination==1.0.7
 django-taggit==4.0.0
 idna==3.4
 oauthlib==3.2.2
@@ -23,5 +23,6 @@ pytz==2023.3
 requests==2.30.0
 requests-oauthlib==1.3.1
 six==1.16.0
+soupsieve==2.4.1
 sqlparse==0.4.4
 urllib3==2.0.2

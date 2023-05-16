@@ -20,6 +20,26 @@
         {% endif %}
       </div>
 
+      {% if urls %}
+      <div id="myModal" class="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-content-header">
+                <button class="btn close-btn" style="color:white;">&times;</button>
+            </div>
+            <div class="modal-content-video">
+            </div>
+            <div class="modal-content-list">
+              {% for url in urls %}
+              <button class="btn modal-content-list-btn" data-index="{{ forloop.counter0 }}">{{ course.title }} - {{ forloop.counter }}</button>
+              <iframe width="480" height="270" src={{ url.url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
       <div class='banner-container-right'>
         <h1 class='banner-container-right-title'>
           {{ course.title }}
@@ -64,9 +84,9 @@
           </div>
 
           {% for tag in course.tags.all %}
-          <a class='banner-container-tag' href=''>
-            {{ tag.name }}
-          </a>
+            <a class='banner-container-tag' href="">
+              {{ tag.name }}
+            </a>
           {% endfor %}
         </div>
 
@@ -180,12 +200,14 @@
             {% endif %}
           </div>
   
-          <form class='right-sidebar-enrolment' action="">
+          <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+            {% csrf_token %}
             <button type='submit'>수강신청 하기</button>
           </form>
   
-          <form class='right-sidebar-cart' action="">
-            <button>바구니에 담기</button>
+          <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">바구니에 담기</button>
           </form>
         </div>
 
@@ -368,11 +390,13 @@
 
 <div class='left-sidebar-fixed'>
 
-  <form class='right-sidebar-cart' action="">
+  <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+    {% csrf_token %}
     <button>바구니에 담기</button>
   </form>
 
-  <form class='right-sidebar-enrolment' action="">
+  <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+    {% csrf_token %}
     <button type='submit'>수강신청 하기</button>
   </form>
 
