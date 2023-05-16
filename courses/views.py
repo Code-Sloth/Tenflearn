@@ -151,9 +151,9 @@ def comment(request, course_pk):
 
 
 def courses(request):
-    categories = Course.objects.values_list('category', flat=True).distinct()
-    selected_category = request.GET.get('category')
-        
+    categories = Course.objects.values_list("category", flat=True).distinct()
+    selected_category = request.GET.get("category")
+
     # 선택한 태그들 가져옴
     tag_list = []
     if selected_category:
@@ -166,28 +166,30 @@ def courses(request):
         tags = Tag.objects.all()
         courses = Course.objects.all()
 
-    selected_slugs = request.GET.get('tags') 
+    selected_slugs = request.GET.get("tags")
     if selected_slugs:
         selected_tags = selected_slugs.split(",")
         courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
 
     # 정렬
-    order = request.GET.get('sort')
-    if order == 'rating':
-        courses = courses.order_by('-star')
-    elif order == 'enrollment':
-        courses = courses.annotate(num_enrolment_users=Count('enrolment_users')).order_by('-num_enrolment_users')
+    order = request.GET.get("sort")
+    if order == "rating":
+        courses = courses.order_by("-star")
+    elif order == "enrollment":
+        courses = courses.annotate(
+            num_enrolment_users=Count("enrolment_users")
+        ).order_by("-num_enrolment_users")
     per_page = 2
     paginator = Paginator(courses, per_page)
     courses_paginated = paginator.get_page(request.GET.get("page", "1"))
     num_page = paginator.num_pages
     context = {
-        'courses': courses,
-        'courses_paginated': courses_paginated,
-        'num_page': num_page,
-        'tags': tags,
-        'categories': categories,
-        'selected_category': selected_category,
+        "courses": courses,
+        "courses_paginated": courses_paginated,
+        "num_page": num_page,
+        "tags": tags,
+        "categories": categories,
+        "selected_category": selected_category,
     }
     return render(request, "courses/course_courses.html", context)
 
@@ -227,11 +229,11 @@ def video(request, course_pk):
     )
     urls = Url.objects.filter(course_id=course_pk)
     context = {
-        'course': course,
-        'all_quizzes_completed': all_quizzes_completed,
-        'urls': urls,
+        "course": course,
+        "all_quizzes_completed": all_quizzes_completed,
+        "urls": urls,
     }
-    return render(request, 'courses/course_video.html', context)
+    return render(request, "courses/course_video.html", context)
 
 
 @login_required
@@ -301,19 +303,20 @@ def quiz_result(request, course_pk, quiz_pk):
     return render(request, "courses/course_quiz_result.html", context)
 
 
+@login_required
 def enrolment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
-
-    if course.enrolment_users.filter(pk=request.user.pk).exists():
-        course.enrolment_users.remove(request.user)
+    if request.method == "POST":
+        if course.enrolment_users.filter(pk=request.user.pk).exists():
+            course.enrolment_users.remove(request.user)
+        else:
+            course.enrolment_users.add(request.user)
     else:
-        course.enrolment_users.add(request.user)
+        pass
     return redirect("/accounts/mypage/?q=cart")
 
 
-from django.urls import reverse
-
-
+@login_required
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
 
@@ -322,4 +325,6 @@ def cart(request, course_pk):
     else:
         course.cart_users.add(request.user)
 
-    return redirect("/accounts/mypage/?q=cart")
+
+    return redirect("courses:detail", course_pk)
+
