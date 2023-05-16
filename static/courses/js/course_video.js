@@ -43,3 +43,23 @@ function Download(){
       window.URL.revokeObjectURL(url);
   }, 100);
 }
+
+// video
+var iframes = document.getElementsByClassName("course-video-list")[0].getElementsByTagName("iframe");
+var firstVideo = iframes[0].cloneNode(true);
+var bodyVideo = document.getElementsByClassName("course-video")[0];
+bodyVideo.appendChild(firstVideo);
+
+function playVideo(index) {
+  bodyVideo.innerHTML = "";
+  var targetVideo = iframes[index].cloneNode(true);
+  bodyVideo.appendChild(targetVideo);
+}
+
+var buttons = document.getElementsByClassName("course-video-list")[0].getElementsByTagName("button");
+for (var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener("click", function () {
+    var index = parseInt(this.getAttribute("data-index"));
+    playVideo(index);
+  });
+}
