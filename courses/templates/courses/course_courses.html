@@ -19,7 +19,7 @@
       <a href="{% url 'courses:courses' %}">
         <div class="sidebar-item">전체 강의</div>
       </a>
-      {% for category in categories  %}
+      {% for category in category_list  %}
           <div data-category="{{ category }}" class="sidebar-item">{{ category }}</div>
       {% endfor %}
     

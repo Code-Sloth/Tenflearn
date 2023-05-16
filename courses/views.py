@@ -152,6 +152,8 @@ def comment(request, course_pk):
 
 def courses(request):
     categories = Course.objects.values_list('category', flat=True).distinct()
+    category_list = set(','.join(list(categories)).split(','))
+
     selected_category = request.GET.get('category')
         
     # 선택한 태그들 가져옴
@@ -186,7 +188,7 @@ def courses(request):
         'courses_paginated': courses_paginated,
         'num_page': num_page,
         'tags': tags,
-        'categories': categories,
+        'category_list': category_list,
         'selected_category': selected_category,
     }
     return render(request, "courses/course_courses.html", context)
