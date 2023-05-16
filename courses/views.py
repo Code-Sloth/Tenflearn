@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Course, Review, Quiz, StudentAnswer
+from .models import Course, Review, Quiz, StudentAnswer, Url
 from .forms import CoursesForm, ReviewForm, QuizForm, QnAForm, QnAFormSet
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
@@ -44,6 +44,7 @@ def detail(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
+    urls = Url.objects.filter(course_id=course_pk)
 
     if Course.objects.count() > 4:
         other_courses = random.sample(
@@ -70,6 +71,7 @@ def detail(request, course_pk):
     context = {
         "course": course,
         "reviews": reviews,
+        "urls": urls,
         "review_form": review_form,
         "other_courses": other_courses,
         "similar_courses": similar_courses,
@@ -205,10 +207,19 @@ def review_delete(request, course_pk, review_pk):
 
 def video(request, course_pk):
     course = Course.objects.get(pk=course_pk)
+    user = request.user
+    quizzes = Quiz.objects.filter(course=course)
+    all_quizzes_completed = all(
+        StudentAnswer.objects.filter(qna__quiz=quiz, student=user).exists()
+        for quiz in quizzes
+    )
+    urls = Url.objects.filter(course_id=course_pk)
     context = {
-        "course": course,
+        'course': course,
+        'all_quizzes_completed': all_quizzes_completed,
+        'urls': urls,
     }
-    return render(request, "courses/course_video.html", context)
+    return render(request, 'courses/course_video.html', context)
 
 
 @login_required

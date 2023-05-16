@@ -523,3 +523,32 @@
     width: 100%!important;
   }
 }
+
+.modal-content {
+  width: 550px;
+  align-items: center;
+  background-color: black;
+}
+
+.modal-content-header {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.modal-content-video {
+  padding-top: 5px;
+}
+
+.modal-content-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content-list iframe {
+  display: none;
+}
+
+.modal-content-list-btn {
+  color: white;
+}
