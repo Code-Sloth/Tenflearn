@@ -16,9 +16,48 @@
     <div class='banner-container'>
       <div class='banner-container-left'>
         {% if course.image %}
-          <img class='w-100' src="{{ course.image.url }}" alt="{{ course.title }}">
+          <button class='banner-container-left-btn {% if urls %}banner-hover{% endif %}'>
+            <img class='w-100' src="{{ course.image.url }}" alt="{{ course.title }}">
+            {% if urls %}
+              <div class='banner-container-left-free'>
+                <span class='banner-playbtn'><img src="{% static 'courses/image/playbtn.svg' %}" alt="playbutton"></span><span>{{ urls.count }}개</span> 무료 보기
+              </div>
+            {% endif %}
+          </button>
         {% endif %}
       </div>
+
+      {% if urls %}
+        <div id="myModal" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-content-header">
+                <div>미리보기</div>
+                <button class="btn close-btn" style="color:white;">&times;</button>
+              </div>
+              <div class="modal-content-video">
+              </div>
+              <div class="modal-content-list">
+                <h1>{{ course.title }}</h1>
+                <h2>무료 공개 강의</h2>
+
+                {% for url in urls %}
+                  <button class="modal-content-list-btn {% if forloop.counter0 == 0 %}background-gray{% endif %}" data-index="{{ forloop.counter0 }}">
+                    {% if course.image %}
+                      <div class='modal-img-box'>
+                        <img class='w-100' src="{{ course.image.url }}" alt="{{ course.title }}">
+                      </div>
+                    {% endif %}
+                    <div class='ms-3'>{{ course.title }} - {{ forloop.counter }}</div>
+                  </button>
+
+                  <iframe width="100%" height="340" src="{{ url.url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
 
       <div class='banner-container-right'>
         <h1 class='banner-container-right-title'>
@@ -64,9 +103,9 @@
           </div>
 
           {% for tag in course.tags.all %}
-          <a class='banner-container-tag' href=''>
-            {{ tag.name }}
-          </a>
+            <a class='banner-container-tag' href="">
+              {{ tag.name }}
+            </a>
           {% endfor %}
         </div>
 
@@ -179,16 +218,26 @@
               <h3>{{ course.price|intcomma }}원</h3>
             {% endif %}
           </div>
-  
-          <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
-            {% csrf_token %}
-            <button type='submit'>수강신청 하기</button>
-          </form>
-  
-          <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">바구니에 담기</button>
-          </form>
+
+            {% if request.user in course.enrolment_users.all %}
+              <h1>강의 등록 됨</h1>
+              <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="GET">
+                {% csrf_token %}
+                <button type='submit'>수강 바구니로 이동</button>
+              </form>
+              {% else %}
+              <h1>강의 등록 안됨</h1>
+              <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+                {% csrf_token %}
+                <button type='submit'>수강신청 하기</button>
+              </form>
+              <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">바구니에 담기</button>
+              </form>
+              {% endif %}
+          
+
         </div>
 
         <div class='right-sidebar-footer'>

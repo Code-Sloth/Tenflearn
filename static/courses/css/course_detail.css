@@ -13,8 +13,10 @@
 }
 
 .banner-container-left {
+  position: relative;
   width: 473px;
   padding: 5px 0;
+  border-radius: 10px;
 }
 
 .banner-container-left img {
@@ -522,4 +524,124 @@
   .course-comment-form {
     width: 100%!important;
   }
+}
+
+/* 비디오 모달 */
+
+.modal-content {
+  width: 660px;
+  padding: 20px 32px;
+  padding-bottom: 50px;
+  align-items: center;
+  background-color: rgb(33 37 41);
+}
+
+.modal-content-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.modal-content-header div {
+  color: white;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+.modal-content-video {
+  width: 100%;
+  padding-top: 5px;
+}
+
+.modal-content-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.modal-content-list h1 {
+  font-size: 16px;
+  color: white;
+  margin-bottom: 50px;
+  margin-top: 10px;
+}
+
+.modal-content-list h2 {
+  font-size: 16px;
+  color: white;
+  padding-bottom: 20px;
+  margin: 0;
+  border-bottom: 1px solid rgb(52 58 64);
+  font-weight: bold;
+}
+
+.modal-content-list iframe {
+  display: none;
+}
+
+.modal-content-list-btn {
+  color: white;
+  display: flex;
+  text-align: start;
+  align-items: center;
+  width: 100%;
+  background-color: rgb(33 37 41);
+  border: 0;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgb(52 58 64);
+  transition: transform 0.3s ease;
+  font-size: 14px;
+}
+
+.modal-content-list-btn:hover {
+  transform: scale(1.02);
+  font-weight: bold;
+  background-color: rgb(52 58 64);
+}
+
+.modal-img-box {
+  width: 95px;
+}
+
+.background-gray {
+  background-color: rgb(52 58 64);
+}
+
+.banner-container-left-btn {
+  width: 100%;
+  border-radius: 10px;
+  padding: 0;
+  border: 0;
+}
+
+.banner-hover:hover {
+  opacity: 0.9;
+}
+
+.banner-container-left-free {
+  position: absolute;
+  bottom: 20px;
+  width: 94%;
+  left: 3%;
+  text-align: center;
+  color: white;
+  background-color: rgb(27 28 29);
+  border: 2px solid rgb(0 196 113);
+  border-radius: 4px;
+  height: 40px;
+  padding: 7px 0;
+  font-size: 15px;
+}
+
+.banner-container-left-free span {
+  color: rgb(0 196 113);
+}
+
+.banner-playbtn {
+  margin-right: 8px;
+}
+
+.banner-playbtn img {
+  margin-bottom: 2px;
 }
