@@ -199,11 +199,17 @@
               <h3>{{ course.price|intcomma }}원</h3>
             {% endif %}
           </div>
-  
-          <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
-            {% csrf_token %}
-            <button type='submit'>수강신청 하기</button>
-          </form>
+
+
+          {% if request.user.pk in course.enrolment_user.all %}
+            <h1>있다</h1>
+            <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+              {% csrf_token %}
+              <button type='submit'>수강신청 하기</button>
+            </form>
+          
+          
+          {% endif %}
   
           <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
             {% csrf_token %}
