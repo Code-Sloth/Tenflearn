@@ -218,16 +218,26 @@
               <h3>{{ course.price|intcomma }}원</h3>
             {% endif %}
           </div>
-  
-          <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
-            {% csrf_token %}
-            <button type='submit'>수강신청 하기</button>
-          </form>
-  
-          <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">바구니에 담기</button>
-          </form>
+
+            {% if request.user in course.enrolment_users.all %}
+              <h1>강의 등록 됨</h1>
+              <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="GET">
+                {% csrf_token %}
+                <button type='submit'>수강 바구니로 이동</button>
+              </form>
+              {% else %}
+              <h1>강의 등록 안됨</h1>
+              <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+                {% csrf_token %}
+                <button type='submit'>수강신청 하기</button>
+              </form>
+              <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">바구니에 담기</button>
+              </form>
+              {% endif %}
+          
+
         </div>
 
         <div class='right-sidebar-footer'>
