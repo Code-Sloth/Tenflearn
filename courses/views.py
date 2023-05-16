@@ -325,4 +325,6 @@ def cart(request, course_pk):
     else:
         course.cart_users.add(request.user)
 
+
     return redirect("courses:detail", course_pk)
+
