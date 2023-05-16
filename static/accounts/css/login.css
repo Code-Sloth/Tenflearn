@@ -2,14 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  margin-top: 170px;
+  /* justify-content: center; */
   height: 100vh;
+  transform: scale(1.05);
 }
+
 
 .inflear-logo {
   margin: 20px;
   text-align: center;
 }
+
 
 .form-login {
   width: 312px;
@@ -17,16 +21,18 @@
 
 
 .login-button {
-  border-color: #00c471;
+  /* border-color: #00c471; */
   font-weight: 700;
   background-color: #00c471;
   color: #fff;
   width: 312px;
   border-radius: 10px;
+  border: 0;
   display: block;
   text-align: center;
   line-height: 3rem;
   margin-bottom: 10px;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
 }
 
 .container-login h1 {
@@ -45,11 +51,14 @@
 
 .kakao-button {
   margin-top: 2px;
-  align-items:self-start;
-  width: 90px;
+  align-items: center;
+  text-align: center;
+  width: 327px;
   border-radius: 10px;
 }
 
 .kakao-button-img {
-  width: 90px;
+  width: 312px;
+  height: 48px;
+  border-radius: 10px;
 }
