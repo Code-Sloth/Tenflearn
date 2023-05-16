@@ -66,6 +66,11 @@ def comment_detail(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     recomments = Recomment.objects.filter(comment=comment)
 
+    if not request.session.get('comment_viewed_{}'.format(comment_pk)):
+        comment.views += 1
+        comment.save()
+        request.session['comment_viewed_{}'.format(comment_pk)] = True
+        
     user_comments = comment.user.comment_set.exclude(pk=comment_pk)[:5]
 
     recomment_form = RecommentForm()
