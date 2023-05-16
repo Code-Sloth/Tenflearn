@@ -20,6 +20,26 @@
         {% endif %}
       </div>
 
+      {% if urls %}
+      <div id="myModal" class="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-content-header">
+                <button class="btn close-btn" style="color:white;">&times;</button>
+            </div>
+            <div class="modal-content-video">
+            </div>
+            <div class="modal-content-list">
+              {% for url in urls %}
+              <button class="btn modal-content-list-btn" data-index="{{ forloop.counter0 }}">{{ course.title }} - {{ forloop.counter }}</button>
+              <iframe width="480" height="270" src={{ url.url }} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
       <div class='banner-container-right'>
         <h1 class='banner-container-right-title'>
           {{ course.title }}
