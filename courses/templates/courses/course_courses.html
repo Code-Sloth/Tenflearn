@@ -2,10 +2,8 @@
 {% load static %}
 {% load humanize %} 
 {% block title %}
-{% comment %}
-TODO: 상위 카테고리별로 변경 
-{% endcomment %}
-인프런 - 라이프타임커리어 플랫폼
+  강의 | 인프런
+  {{request.GET.category}}
 {% endblock title %} 
 {% block content %}
 <link
@@ -13,34 +11,30 @@ TODO: 상위 카테고리별로 변경
   type="text/css"
   href="{% static 'courses/css/course_courses.css' %}"
 />
-{% comment %} <link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'courses/css/course_card.css' %}"
-/> {% endcomment %}
+
 
 <section class="box container">
   <div class="d-flex">
     <aside class="sidebar-left">
-      <a href="">
+      <a href="{% url 'courses:courses' %}">
         <div class="sidebar-item">전체 강의</div>
       </a>
-      <a href="">
-        <div class="sidebar-item">프론트엔드</div>
-      </a>
-      </a>
-      <a href="">
-        <div class="sidebar-item">백엔드</div>
-      </a>
-      <a href="">
-        <div class="sidebar-item">풀스택</div>
-      </a>
+      {% for category in categories  %}
+          <div data-category="{{ category }}" class="sidebar-item">{{ category }}</div>
+      {% endfor %}
+    
     </aside>
     <section class="box courses-body">
       <header class="d-flex">
-        <h1 class="title">전체 강의</h1>
+        <h1 class="title">
+          {% if request.GET.category %}
+            {{ request.GET.category }}
+          {% else %}
+            전체 강의
+          {% endif %}</h1>
         <form class="d-flex search-course">
-          <input class="form-control search-course-input" type="search" placeholder="전체 강의 검색" aria-label="Search">
+          <input class="form-control search-course-input" type="search" 
+          placeholder="전체 강의 검색" aria-label="Search">
           <button class=" search-course-btn" type="submit">검색</button>
         </form>
       </header>
@@ -48,7 +42,11 @@ TODO: 상위 카테고리별로 변경
         <div class="skill-tags-container overflow-hidden">
           <div class="skill-tags">
             {% for tag in tags %}
+            {% if request.GET.tags == tag.slug %}
+            <button class="skill-tags-btn bi bi-check-lg skill-tags-btn-active" data-slug="{{ tag.slug }}">{{ tag }}</button>
+            {% else %}
             <button class="skill-tags-btn bi" data-slug="{{ tag.slug }}">{{ tag }}</button>
+            {% endif %}
             {% endfor %}
           </div>
           <div class="skill-tags-more-wrapper"></div>
@@ -151,7 +149,8 @@ TODO: 상위 카테고리별로 변경
         </div>
 
       </main>
-      <footer></footer>
+      <footer>
+      </footer>
     </section>
   </div>
 </section>

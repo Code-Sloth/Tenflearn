@@ -1,17 +1,3 @@
-const titleLinks = document.querySelectorAll('.sidebar-item')
-const titleH1 = document.querySelector('.title')
-const searchInput = document.querySelector(".search-course-input");
-
-titleLinks.forEach((link) => {
-  link.addEventListener("click", (event) => {
-    event.preventDefault(); // 기본 동작 방지
-    const linkText = event.currentTarget.textContent;
-    titleH1.textContent = linkText;
-
-    const context = link.textContent.trim();
-    searchInput.placeholder = context + "  검색";
-  });
-});
 
 const toggleBtn = document.querySelector('.skill-tags-more');
 

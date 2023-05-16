@@ -135,22 +135,34 @@ def comment(request, course_pk):
     return render(request, 'courses/course_comment.html', context)
 
 def courses(request):
-    tags = Tag.objects.all()
+    categories = Course.objects.values_list('category', flat=True).distinct()
+    selected_category = request.GET.get('category')
+        
     # 선택한 태그들 가져옴
-    selected_slugs = request.GET.get('tags')
+    tag_list = []
+    if selected_category:
+        tags = Tag.objects.filter(course__category=selected_category).distinct()
+        for tag in tags:
+            tag_list.append(tag.slug)
+        courses = Course.objects.filter(tags__slug__in=tag_list).distinct()
+
+    else:
+        tags = Tag.objects.all()
+        courses = Course.objects.all()
+
+    selected_slugs = request.GET.get('tags') 
     if selected_slugs:
         selected_tags = selected_slugs.split(',')
         courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
-        
-    else:
-        courses = Course.objects.all()
+
 
     # 정렬
     order = request.GET.get('sort')
     if order == 'rating':
         courses = courses.order_by('-star')
     elif order == 'enrollment':
-        courses = courses.order_by('-enrolment_users')
+        courses = courses.annotate(num_enrolment_users=Count('enrolment_users')).order_by('-num_enrolment_users')
+        
     per_page = 2
     paginator = Paginator(courses, per_page)
     courses_paginated = paginator.get_page(request.GET.get('page', '1'))
@@ -160,6 +172,8 @@ def courses(request):
         'courses_paginated': courses_paginated,
         'num_page': num_page,
         'tags': tags,
+        'categories': categories,
+        'selected_category': selected_category,
     }
     return render(request, 'courses/course_courses.html', context)
 

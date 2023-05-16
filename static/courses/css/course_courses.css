@@ -42,6 +42,9 @@ a {
   background: #fafafa;
   font-weight: 500;
   padding: 0.85rem;
+  
+  cursor: pointer;
+
 }
 
 /* 메인 */
@@ -361,6 +364,12 @@ header {
   color: white;
   font-weight: 500;
   margin: 1rem 1rem;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .course-slide-hover-content {
