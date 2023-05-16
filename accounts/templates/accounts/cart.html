@@ -12,7 +12,7 @@
             <input type="checkbox" id="select-all" onclick="toggleCheckboxes()">
             전체 선택
         </label>
-        <button class="delete-button" id="delete-all">선택삭제</butto>
+        <button class="delete-button" id="delete-all">선택삭제</button>
     </div>
     <div class="course">
       {% for course in request.user.cart_courses.all %}
