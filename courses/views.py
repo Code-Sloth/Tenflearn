@@ -298,3 +298,5 @@ def cart(request, course_pk):
         course.cart_users.remove(request.user)
     else:
         course.cart_users.add(request.user)
+
+    return redirect("/accounts/mypage/?q=cart")
