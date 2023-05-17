@@ -4,32 +4,37 @@
 <link rel="stylesheet" type="text/css" href="{% static 'accounts\css\review.css' %}">
 
 <div>
-<h3>나의 수강평</h3>
-{% if request.user.review_set.all %}
+<h3 class='review-header-title'>나의 수강평</h3>
+  {% if request.user.review_set.all %}
     <div class="review-body">
       {% for review in request.user.review_set.all %}
-      <div class="review-body__review">
-        <div class="review-left">
-          <div class="review-left__star"><div class='banner-star-box'>
-            <div class='banner-star-gray'>
-              <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
-            </div>
-            <div class='banner-star-yellow' style='width: {{ 3|divide_by_five }}%;'>
-              <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+        <div class="review-body__review">
+          <div class="review-left">
+            <div class="review-left__star"><div class='banner-star-box'>
+              <div class='banner-star-gray'>
+                <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
+              </div>
+              <div class='banner-star-yellow' style='width: {{ review.star_multiple }}%;'>
+                <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
+              </div>
             </div>
           </div>
-        </div>
           <div class="review-left__content">{{ review.content|truncatechars:80 }}</div>
-          <div class="review-left__info"> {{ review.created_at }} 강의명: {{ review.course.title }}</div>
-        </div>
-          <div class="review-right__img">
-            <img class="lecture-img"src="{{ review.course.image.url }}" alt="강의 사진">
+          <div class="review-left__info"> 
+            <h1>{{ review.course.title }}</h1>
+            <h2>{{ review.created_time }}</h2>
           </div>
-      </div>
+          </div>
+          <a class="review-right__img" href="{% url 'courses:detail' review.course.pk  %}">
+            <img class="lecture-img"src="{{ review.course.image.url }}" alt="강의 사진">
+          </a>
+        </div>
       {% endfor %} 
     </div>
   {% else %}
-      <p>리뷰가 없습니다.</p>
+    <div style='min-height: 600px;'>
+      <h5 class='pt-5 ps-5 text-secondary'>작성한 리뷰가 없습니다. 😥</h5>
+    </div>
   {% endif %}
-  </div>
+</div>
 

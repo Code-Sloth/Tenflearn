@@ -21,8 +21,8 @@ urlpatterns = [
     path('reviews/<int:course_pk>/delete/<int:review_pk>/', views.review_delete, name='review_delete'),
 
     # 카카오페이
-    path('kakaopay/', views.kakaopay, name='kakaopay'),
-    path('pay_success/', views.pay_success, name='pay_success'),
+    path('<int:course_pk>/kakaopay/', views.kakaopay, name='kakaopay'),
+    path('<int:course_pk>/pay_success/', views.pay_success, name='pay_success'),
     path('pay_fail/', views.pay_fail, name='pay_fail'),
     path('pay_cancel/', views.pay_cancel, name='pay_cancel'),
 ]

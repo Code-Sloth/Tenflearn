@@ -361,10 +361,9 @@ def cart(request, course_pk):
     return redirect("courses:detail", course_pk)
 
 @login_required
-def kakaopay(request):
-    # kakao_price = request.POST.get('kakao-price')
-    # course = Course.objects.get(pk=course_pk)
-    # print(course, kakao_price)
+def kakaopay(request, course_pk):
+    kakao_price = request.POST.get('kakao-price')
+    course = Course.objects.get(pk=course_pk)
     admin_key = KAKAO_KEY
 
     url = f'https://kapi.kakao.com/v1/payment/ready'
@@ -373,16 +372,16 @@ def kakaopay(request):
     }
     data = {
         'cid': 'TC0ONETIME',
-        'partner_order_id': 'partner_order_id', #주문 번호
-        'partner_user_id': 'partner_user_id', #유저 이름
-        'item_name': '초코파이', #제품명
+        'partner_order_id': course.pk, #주문 번호
+        'partner_user_id': request.user.username, #유저 이름
+        'item_name': course.title, #제품명
         'quantity': '1', #수량
-        'total_amount': '500', #가격
+        'total_amount': kakao_price, #가격
         'tax_free_amount':'0',
 
-        'approval_url':'http://127.0.0.1:8000/pay_success/', 
-        'fail_url':'http://127.0.0.1:8000/pay_fail',
-        'cancel_url':'http://127.0.0.1:8000/pay_cancel'
+        'approval_url': f'http://127.0.0.1:8000/{course.pk}/pay_success/', 
+        'fail_url': 'http://127.0.0.1:8000/pay_fail/',
+        'cancel_url': 'http://127.0.0.1:8000/pay_cancel/'
     }
     res = requests.post(url, data=data, headers=headers)
     result = res.json()
@@ -390,8 +389,9 @@ def kakaopay(request):
     return redirect(result['next_redirect_pc_url'])
 
 @login_required
-def pay_success(request):
-    # course = Course.objects.get(pk=course_pk)
+def pay_success(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+
     url = 'https://kapi.kakao.com/v1/payment/approve'
     admin_key = KAKAO_KEY
 
@@ -401,8 +401,8 @@ def pay_success(request):
     data = {
         'cid':'TC0ONETIME',
         'tid': request.session['tid'], #결제 고유 번호
-        'partner_order_id': 'partner_order_id', #주문 번호
-        'partner_user_id': 'partner_user_id', #유저 아이디
+        'partner_order_id': course.pk, #주문 번호
+        'partner_user_id': request.user.username, #유저 아이디
         'pg_token': request.GET['pg_token'] 
     }
     res = requests.post(url, data=data, headers=headers)
@@ -414,7 +414,7 @@ def pay_success(request):
     if result.get('msg'): #msg = 오류 코드
         return redirect('courses:pay_fail')
     else:
-        # course.enrolment_users.add(request.user)
+        course.enrolment_users.add(request.user)
         return render(request, 'courses/pay_success.html', context)
 
 @login_required

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
+
 {% block title %}결제완료{% endblock title %}
 
 {% block content %}
@@ -26,18 +28,13 @@
     </div>
 
     <div class='complete-flex'>
-      <h5>상품명</h5>
+      <h5>강의명</h5>
       <p>{{ result.item_name }}</p>
     </div>
 
     <div class='complete-flex'>
-      <h5>구매수량</h5>
-      <p>{{ result.quantity }}</p>
-    </div>
-
-    <div class='complete-flex'>
       <h5>결제금액</h5>
-      <p>{{ result.amount.total }}</p>
+      <p>{{ result.amount.total|intcomma }}원</p>
     </div>
 
     <div class='complete-flex'>
@@ -46,7 +43,7 @@
     </div>
 
     <div class='kakao-main w-100 mt-5'>
-      <a href="{% url 'courses:index' %}">메인으로 이동</a>
+      <a href="{% url 'courses:detail' result.partner_order_id %}">강의 들으러가기</a>
     </div>
   </div>
 
