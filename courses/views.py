@@ -32,6 +32,7 @@ def index(request):
             similar_courses = None
     else:
         similar_courses = None
+
     context = {
         "courses": courses,
         "sorted_star_courses": sorted_star_courses,
@@ -152,9 +153,21 @@ def comment(request, course_pk):
 
 
 def courses(request):
-    categories = Course.objects.values_list('category', flat=True).distinct()
-    category_list = set(','.join(list(categories)).split(','))
+    courses = Course.objects.all().order_by('-pk')
 
+    # 검색
+    search_q = request.GET.get('search-q','')
+    if search_q:
+        courses = courses.filter(
+            Q(title__icontains=search_q)|
+            Q(content__icontains=search_q)
+        )
+        print('====================================')
+        print(courses)
+
+
+    categories = courses.values_list('category', flat=True).distinct()
+    category_list = set(','.join(list(categories)).split(','))
     selected_category = request.GET.get('category')
         
     # 선택한 태그들 가져옴
@@ -163,16 +176,15 @@ def courses(request):
         tags = Tag.objects.filter(course__category=selected_category).distinct()
         for tag in tags:
             tag_list.append(tag.slug)
-        courses = Course.objects.filter(tags__slug__in=tag_list).distinct()
+        courses = courses.filter(tags__slug__in=tag_list).distinct()
 
     else:
         tags = Tag.objects.all()
-        courses = Course.objects.all()
-
+        
     selected_slugs = request.GET.get('tags') 
     if selected_slugs:
         selected_tags = selected_slugs.split(",")
-        courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
+        courses = courses.filter(tags__slug__in=selected_tags).distinct()
 
     # 옵션
     options = request.GET.get('option', '').split(',')
@@ -196,11 +208,6 @@ def courses(request):
                 
         courses = courses.filter(price_condition & discount_condition & level_condition)
 
-
-                    
-
-    
-        
     # 정렬
     order = request.GET.get('sort')
     if order == 'rating':

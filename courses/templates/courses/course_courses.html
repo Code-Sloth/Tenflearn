@@ -33,7 +33,7 @@
             전체 강의
           {% endif %}</h1>
         <form class="d-flex search-course">
-          <input class="form-control search-course-input" type="search" 
+          <input class="form-control search-course-input" type="search" name="search-q"
           placeholder="전체 강의 검색" aria-label="Search">
           <button class=" search-course-btn" type="submit">검색</button>
         </form>
@@ -159,5 +159,6 @@
 <script type="module" src="{% static 'courses/js/coursesBtnActive.js' %}"></script>
 <script type="module" src="{% static 'courses/js/cardHover.js' %}"></script>
 <script type="module" src="{% static 'courses/js/courses_tag_filter.js' %}"></script>
+<script type="module" src="{% static 'courses/js/search.js' %}"></script>
 
 {% endblock content %}
