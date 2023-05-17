@@ -20,7 +20,7 @@
             <img class='w-100' src="{{ course.image.url }}" alt="{{ course.title }}">
             {% if urls %}
               <div class='banner-container-left-free'>
-                <span class='banner-playbtn'><img src="{% static 'courses/image/playbtn.svg' %}" alt="playbutton"></span><span>{{ urls.count }}개</span> 무료 보기
+                <span class='banner-playbtn'><img src="{% static 'courses/image/playbtn.svg' %}" alt="playbutton"></span><span>3개</span> 무료 보기
               </div>
             {% endif %}
           </button>
@@ -41,7 +41,7 @@
                 <h1>{{ course.title }}</h1>
                 <h2>무료 공개 강의</h2>
 
-                {% for url in urls %}
+                {% for url in urls|slice:":3" %}
                   <button class="modal-content-list-btn {% if forloop.counter0 == 0 %}background-gray{% endif %}" data-index="{{ forloop.counter0 }}">
                     {% if course.image %}
                       <div class='modal-img-box'>
@@ -123,7 +123,11 @@
             <h1>{{ course.discount_rate }}%</h1>
           {% endif %}
 
-          <h2>{{ course.discounted_price|intcomma }}원</h2>
+          {% if course.discounted_price %}
+            <h2>{{ course.discounted_price|intcomma }}원</h2>
+          {% else %}
+            <h2>무료</h2>
+          {% endif %}
 
           {% if course.discount_rate %}
             <h3>{{ course.price|intcomma }}원</h3>
@@ -208,34 +212,39 @@
 
         <div class='right-sidebar-header'>
           <div class='right-sidebar-price'>
-            {% if course.discount_rate %}
+            {% if request.user in course.enrolment_users.all %}
+              <h2>학습중</h2>
+            {% elif course.discount_rate %}
               <h1>{{ course.discount_rate }}%</h1>
-            {% endif %}
-  
-            <h2>{{ course.discounted_price|intcomma }}원</h2>
-  
-            {% if course.discount_rate %}
+              <h2>{{ course.discounted_price|intcomma }}원</h2>
               <h3>{{ course.price|intcomma }}원</h3>
+            {% else %}
+              <h2>무료</h2>
             {% endif %}
           </div>
 
-            {% if request.user in course.enrolment_users.all %}
-              <h1>강의 등록 됨</h1>
-              <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="GET">
+          {% if request.user in course.enrolment_users.all %}
+            <form class='right-sidebar-enrolment' action="{% url 'courses:video' course_pk=course.pk %}" method="POST">
+              {% csrf_token %}
+              <button type='submit'>이어 학습하기</button>
+            </form>
+            {% else %}
+            <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+              {% csrf_token %}
+              <button type='submit'>수강신청 하기</button>
+            </form>
+            {% if request.user in course.cart_users.all %}
+              <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="GET">
                 {% csrf_token %}
                 <button type='submit'>수강 바구니로 이동</button>
               </form>
-              {% else %}
-              <h1>강의 등록 안됨</h1>
-              <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
-                {% csrf_token %}
-                <button type='submit'>수강신청 하기</button>
-              </form>
+            {% else %}
               <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
                 {% csrf_token %}
                 <button type="submit">바구니에 담기</button>
               </form>
-              {% endif %}
+            {% endif %}
+          {% endif %}
           
 
         </div>
@@ -331,7 +340,11 @@
       
                 <div class='review-othercourses-right'>
                   <div>
-                    ₩{{ other_course.discounted_price|intcomma }}
+                    {% if other_course.discounted_price %}
+                      ₩{{ other_course.discounted_price|intcomma }}
+                    {% else %}
+                      무료
+                    {% endif %}
                   </div>
                 </div>
                 
@@ -398,7 +411,11 @@
       
                 <div class='review-othercourses-right'>
                   <div>
-                    ₩{{ similar_course.discounted_price|intcomma }}
+                    {% if similar_course.discounted_price %}
+                      ₩{{ similar_course.discounted_price|intcomma }}
+                    {% else %}
+                      무료
+                    {% endif %}
                   </div>
                 </div>
                 

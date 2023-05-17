@@ -61,9 +61,10 @@ a {
 
 .hash-container {
   height: 9em;
-  padding: 1.5em 2em;
+  padding: 1.5em 0em;
 }
 .hash-curation {
+  width: 100%;
   min-width: 576px;
 }
 
@@ -84,6 +85,15 @@ a {
   font-size: 12px;
   font-weight: 600;
 }
+
+/* TODO: 버튼 위치 조정 */
+/* .swiper-button-next{
+  right: -22px  !important;
+}
+
+.swiper-button-prev {
+  left: -22px !important;
+} */
 
 .swiper-button-next,
 .swiper-button-prev {
@@ -152,7 +162,7 @@ a {
   text-align: left;
   font-weight: 700;
   line-height: 1.5em;
-  height: auto;
+  height: 3rem;
   font-size: 0.8rem;
   overflow: hidden;
   text-overflow: ellipsis;

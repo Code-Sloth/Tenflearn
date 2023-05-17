@@ -6,9 +6,9 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'communities/css/comment_create.css' %}">
-<div class="container">
+<div class="comment-create-container">
   
-  <form action="{% url 'communities:comment_create' %}" method="POST">
+  <form action="{% url 'communities:comment_update' comment.pk %}" method="POST">
     {% csrf_token %}
       {{ comment_form.media }}
     <div class="comment_category">

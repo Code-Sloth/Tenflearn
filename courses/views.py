@@ -45,13 +45,14 @@ def detail(request, course_pk):
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
     urls = Url.objects.filter(course_id=course_pk)
+    other_courses = Course.objects.filter(user=course.user)
 
-    if Course.objects.count() > 4:
+    if other_courses.count() > 4:
         other_courses = random.sample(
-            list(Course.objects.all().exclude(pk=course.pk)), 4
+            list(other_courses.exclude(pk=course.pk)), 4
         )
     else:
-        other_courses = Course.objects.all().exclude(pk=course.pk)
+        other_courses = other_courses.exclude(pk=course.pk)
 
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(
         pk=course.pk
@@ -319,12 +320,13 @@ def enrolment(request, course_pk):
 
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
-
-    if course.cart_users.filter(pk=request.user.pk).exists():
-        course.cart_users.remove(request.user)
+    if request.method == "POST":
+        if course.cart_users.filter(pk=request.user.pk).exists():
+            course.cart_users.remove(request.user)
+        else:
+            course.cart_users.add(request.user)
     else:
-        course.cart_users.add(request.user)
-
+        return redirect("/accounts/mypage/?q=cart")
     return redirect("courses:detail", course_pk)
 
 
