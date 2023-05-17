@@ -197,6 +197,7 @@
   padding: 10px;
 }
 
+
 .mypage-img {
   width: 230px;
 }
@@ -258,3 +259,16 @@
   outline: 1px solid rgb(0, 196, 113);
   color: rgb(90 90 90);
 }
+
+.active{
+  background: rgb(0, 196, 113);
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.active{
+  background: rgb(0, 196, 113);
+  border-radius: 50%;
+  color: #ffffff;
+}
+
