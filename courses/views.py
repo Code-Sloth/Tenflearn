@@ -288,9 +288,6 @@ def enrolment(request, course_pk):
     return redirect("/accounts/mypage/?q=cart")
 
 
-from django.urls import reverse
-
-
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
 
@@ -298,3 +295,4 @@ def cart(request, course_pk):
         course.cart_users.remove(request.user)
     else:
         course.cart_users.add(request.user)
+    return redirect("/accounts/mypage/?q=cart")
