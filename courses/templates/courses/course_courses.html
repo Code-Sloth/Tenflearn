@@ -19,10 +19,12 @@
       <a href="{% url 'courses:courses' %}">
         <div class="sidebar-item">전체 강의</div>
       </a>
-      {% for category in category_list  %}
-          <div data-category="{{ category }}" class="sidebar-item">{{ category }}</div>
-      {% endfor %}
-    
+
+      <div data-category="웹 개발" class="sidebar-item">웹 개발</div>
+      <div data-category="프론트엔드" class="sidebar-item">프론트엔드</div>
+      <div data-category="백엔드" class="sidebar-item">백엔드</div>
+      <div data-category="풀스택" class="sidebar-item">풀스택</div>
+
     </aside>
     <section class="box courses-body">
       <header class="d-flex">

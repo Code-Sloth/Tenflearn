@@ -163,12 +163,9 @@ def courses(request):
             Q(title__icontains=search_q)|
             Q(content__icontains=search_q)
         )
-        print('====================================')
-        print(courses)
-
 
     categories = courses.values_list('category', flat=True).distinct()
-    category_list = set(','.join(list(categories)).split(','))
+    category_list = set(','.join(list(categories)).replace(', ', ',').split(','))
     selected_category = request.GET.get('category')
         
     # 선택한 태그들 가져옴
