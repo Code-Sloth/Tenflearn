@@ -1,0 +1,42 @@
+.result-btn{
+  background-color: rgb(0 196 113);
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.result-btn:hover{
+  background-color: rgb(9, 135, 83);
+  color: white;
+}
+
+
+
+.result-container{
+  border: 1px solid rgb(180 180 180);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+
+  width: 50%;
+}
+
+.card-header{
+  text-align: center;
+  background-color: rgb(0 35 51);
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.card-body{
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.incorrect-body{
+  color: red
+}

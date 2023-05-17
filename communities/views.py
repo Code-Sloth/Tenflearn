@@ -16,7 +16,6 @@ from django.middleware.csrf import get_token
 
 # Create your views here.
 
-
 def comment(request):
     comments = Comment.objects.all().order_by("-pk")
     top_users = (
@@ -28,7 +27,7 @@ def comment(request):
 
     top_tags = (
         Comment.objects.exclude(course__isnull=True)
-        .values("course__tags__name")
+        .values("course__tags__name", 'course__tags__slug')
         .annotate(tag_count=Count("course__tags"))
         .order_by("-tag_count")[:10]
     )

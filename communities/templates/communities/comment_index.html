@@ -194,7 +194,7 @@
         <div class='comment-right-tagdiv'>
 
           {% for tag in top_tags %}
-            <a class='comment-right-tagitem' href="{% url 'courses:courses' %}?category=&tags={{tag}}">
+            <a class='comment-right-tagitem' href="{% url 'courses:courses' %}?category=&tags={{ tag.course__tags__slug }}">
               #{{ tag.course__tags__name }}
             </a>
           {% endfor %}
