@@ -399,9 +399,9 @@ def kakaopay(request, course_pk):
         'quantity': '1', #수량
         'total_amount': kakao_price, #가격
         'tax_free_amount':'0',
-        'approval_url': f'http://127.0.0.1:8000/{course.pk}/pay_success/', 
-        'fail_url': 'http://127.0.0.1:8000/pay_fail/',
-        'cancel_url': 'http://127.0.0.1:8000/pay_cancel/'
+        'approval_url': f'https://tenflearn.kro.kr/{course.pk}/pay_success/', 
+        'fail_url': 'https://tenflearn.kro.kr/pay_fail/',
+        'cancel_url': 'https://tenflearn.kro.kr/pay_cancel/'
 
     }
     res = requests.post(url, data=data, headers=headers)
