@@ -3,7 +3,7 @@ const descBtn = document.querySelector('.descriptions-btn');
 const courseDescriptionContent = document.querySelector('.course-descriptions-content');
 descBtn.addEventListener('click', function() {
   coursetextareaContent.classList.remove('show');
-  courseDescriptionContent.classList.toggle('show');
+  courseDescriptionContent.classList.toggle('show2');
   if (descBtn.textContent === '강의 설명 보기') {
     descBtn.textContent = '강의 설명 닫기';
   } else {
@@ -15,7 +15,7 @@ descBtn.addEventListener('click', function() {
 const textareaBtn = document.querySelector('.textarea-btn');
 const coursetextareaContent = document.querySelector('.course-descriptions-file');
 textareaBtn.addEventListener('click', function() {
-  courseDescriptionContent.classList.remove('show');
+  courseDescriptionContent.classList.remove('show2');
   coursetextareaContent.classList.toggle('show');
   if (textareaBtn.textContent === '메모 작성') {
     textareaBtn.textContent = '메모 닫기';
@@ -55,11 +55,8 @@ function playVideo(index) {
   var targetVideo = iframes[index].cloneNode(true);
   bodyVideo.appendChild(targetVideo);
 }
-
-var buttons = document.getElementsByClassName("course-video-list")[0].getElementsByTagName("button");
-for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", function () {
-    var index = parseInt(this.getAttribute("data-index"));
-    playVideo(index);
-  });
-}
+var selectElement = document.getElementById("video-select");
+selectElement.addEventListener("change", function () {
+  var selectedIndex = parseInt(this.value);
+  playVideo(selectedIndex);
+});
