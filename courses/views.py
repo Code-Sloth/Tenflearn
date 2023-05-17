@@ -315,8 +315,8 @@ def enrolment(request, course_pk):
         pass
     return redirect("/accounts/mypage/?q=cart")
 
-
 @login_required
+
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
 
@@ -325,6 +325,6 @@ def cart(request, course_pk):
     else:
         course.cart_users.add(request.user)
 
-
     return redirect("courses:detail", course_pk)
+
 
