@@ -228,19 +228,20 @@
               {% csrf_token %}
               <button type='submit'>이어 학습하기</button>
             </form>
-            {% else %}
-            <form class='right-sidebar-enrolment' name='cart' value='1' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
-              {% csrf_token %}
-              <button type='submit'>수강신청 하기</button>
-            </form>
-            {% if request.user in course.cart_users.all %}
-              <a href="{% url 'courses:cart' course_pk=course.pk %}" class='right-sidebar-cart'>수강 바구니로 이동</a>
-            {% else %}
-              <form class='right-sidebar-cart' name='cart' value='2' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
-                {% csrf_token %}
-                <button type="submit">바구니에 담기</button>
-              </form>
-            {% endif %}
+          {% else %}
+              {% if request.user in course.cart_users.all %}
+                <a href="{% url 'accounts:mypage' %}?q=cart" class='green-button'>수강 바구니로 이동</a>
+              {% else %}
+                <form class='right-sidebar-enrolment' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="cart" value="1">
+                  <button type='submit'>수강신청 하기</button>
+                </form>
+                <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit">바구니에 담기</button>
+                </form>
+              {% endif %}
           {% endif %}
           
 

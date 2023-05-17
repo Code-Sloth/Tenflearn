@@ -351,14 +351,14 @@ def enrolment(request, course_pk):
 @login_required
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
-    cart = request.GET.get("cart")
+    cart = request.POST.get("cart")
 
     if course.cart_users.filter(pk=request.user.pk).exists():
         course.cart_users.remove(request.user)
     else:
         course.cart_users.add(request.user)
 
-    if cart == 1:
+    if cart == "1":
         return redirect("/accounts/mypage/?q=cart")
     else:
         return redirect("courses:detail", course_pk)
