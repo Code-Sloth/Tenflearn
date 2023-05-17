@@ -9,6 +9,9 @@ import random
 from django.db.models import Count
 from django.db.models import Q
 from functools import reduce
+import requests
+import os
+KAKAO_KEY = os.getenv('KAKAO_KEY')
 
 # Create your views here.
 
@@ -356,5 +359,4 @@ def cart(request, course_pk):
     else:
         return redirect("/accounts/mypage/?q=cart")
     return redirect("courses:detail", course_pk)
-
 

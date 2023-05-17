@@ -77,7 +77,10 @@
           </div>
         </div>
         <div>
-          <input class="pay-button" type="submit" value="결제하기">
+          <form action="{% if user.is_anonymous %}{% url 'accounts:login' %}{% else %}{% url 'courses:kakaopay' %}{% endif %}" method="POST">
+            {% csrf_token %}
+            <button class="pay-button" type="submit" name='kakao-price' value='10000'>결제하기</button>
+          </form>
         </div>
       </div>
     </div>
