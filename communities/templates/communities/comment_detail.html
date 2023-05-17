@@ -59,7 +59,7 @@
 
           <div class='detail-left-section-right-tagbox'>
             {% for tag in comment.course.tags.all %}
-              <a href="{% url 'courses:courses' %}?category=&tags={{tag}}"># {{ tag }}</a>
+              <a href="{% url 'courses:courses' %}?category=&tags={{tag.slug}}"># {{ tag }}</a>
             {% endfor %}
           </div>
 

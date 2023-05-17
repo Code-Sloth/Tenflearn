@@ -1,13 +1,38 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 퀴즈 풀기
 {% endblock title %}
 
 {% block content %}
-<h1>퀴즈 결과</h1>
-<h2>{{ quiz.quiz_title }}</h2>
-<p>총 문항 수: {{ total_questions }}</p>
-<p>맞춘 문항 수: {{ num_correct_answers }}</p>
-<p>틀린 문항 수: {{ num_incorrect_answers }}</p>
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_quizresult.css' %}">
+
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+      <div class="col-md-8">
+          <h2 class="mb-4 text-center quiz-title">{{ quiz.quiz_title }} 결과</h2>
+            <div class="card result-container mb-3 mx-auto">
+                <div class="card-header result-item">총 문항 수</div>
+                <div class="card-body ">{{ total_questions }}</div>
+                <div class="card-header result-item">맞춘 문항 수</div>
+                <div class="card-body ">{{ num_correct_answers }}</div>
+                <div class="card-header result-item">틀린 문항 수</div>
+                {% if num_incorrect_answers == 0 %}
+                <div class="card-body ">{{ num_incorrect_answers }}</div>
+                {% else %}
+                <div class="card-body incorrect-body ">{{ num_incorrect_answers }}</div>
+                {% endif %}
+            </div>
+            <div class="text-center">
+              <a href="{% url 'courses:video' course_pk %}">
+                <button type="submit" class="btn result-btn">완료</button>
+              </a>
+            </div>
+
+      </div>
+  </div>
+</div>
+
 {% endblock content %}

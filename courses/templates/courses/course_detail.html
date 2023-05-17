@@ -103,7 +103,7 @@
           </div>
 
           {% for tag in course.tags.all %}
-            <a class='banner-container-tag' href="{% url 'courses:courses' %}?category=&tags={{ tag }}">
+            <a class='banner-container-tag' href="{% url 'courses:courses' %}?category=&tags={{ tag.slug }}">
               {{ tag.name }}
             </a>
           {% endfor %}

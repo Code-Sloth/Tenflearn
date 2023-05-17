@@ -20,7 +20,7 @@ def comment(request):
     comments = Comment.objects.all().order_by('-pk')
     top_users = get_user_model().objects.filter(comment__isnull=False).annotate(comment_count=Count('comment')).order_by('-comment_count')[:7]
     
-    top_tags = Comment.objects.exclude(course__isnull=True).values('course__tags__name').annotate(tag_count=Count('course__tags')).order_by('-tag_count')[:10]
+    top_tags = Comment.objects.exclude(course__isnull=True).values('course__tags__name', 'course__tags__slug').annotate(tag_count=Count('course__tags')).order_by('-tag_count')[:10]
 
     popular_comments = Comment.objects.annotate(popular=Count('like_users')).order_by('-popular')[:5]
 

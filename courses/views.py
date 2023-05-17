@@ -310,6 +310,7 @@ def quiz(request, course_pk, quiz_pk):
         return redirect("courses:quiz_result", course_pk, quiz_pk)
 
     context = {
+        'course_pk':course_pk,
         "quiz": quiz,
         "questions": questions,
     }
@@ -324,6 +325,7 @@ def quiz_result(request, course_pk, quiz_pk):
     num_correct_answers = student_answers.filter(is_correct=True).count()
     num_incorrect_answers = student_answers.filter(is_correct=False).count()
     context = {
+        "course_pk" : course_pk,
         "quiz": quiz,
         "total_questions": total_questions,
         "num_correct_answers": num_correct_answers,
