@@ -37,7 +37,7 @@ const bannerSwiper = new Swiper(".banner", {
 //  해시 
 const hashSwiper = new Swiper('.hash-curation', {
   slidesPerView: 5,
-  spaceBetween: 10,
+  spaceBetween: 1,
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev',
@@ -50,15 +50,15 @@ const hashSwiper = new Swiper('.hash-curation', {
     },
     768: {
       slidesPerView: 6,
-      spaceBetween: 3,
+      spaceBetween: 2,
     },
     1024: {
-      slidesPerView: 7,
-      spaceBetween: 5,
+      slidesPerView: 8,
+      spaceBetween: 3,
     },
     1200: {
-      slidesPerView: 8,
-      spaceBetween: 8,
+      slidesPerView: 10,
+      spaceBetween: 4,
     },
   },
 });

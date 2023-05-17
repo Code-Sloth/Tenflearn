@@ -1,5 +1,5 @@
 .container {
-  margin-top: 30px;
+  /* margin-top: 30px; */
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -19,10 +19,6 @@
   margin: 10px 0;
 }
 
-.comment_content {
-  width: 1000px;
-}
-
 .comment-create-button {
   display: flex;
   justify-content: end;
@@ -40,7 +36,7 @@
   border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
-  border: solid 1px #000000;
+  border: solid 1px rgb(200 200 200);
   margin-right: 5px;
 }
 
@@ -77,4 +73,14 @@
   text-decoration: none;
   cursor: pointer;
   border: #ffffff;
+}
+
+.comment-create-container {
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.comment-create-container form {
+  width: 100%;
 }

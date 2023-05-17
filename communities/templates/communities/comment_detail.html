@@ -37,14 +37,14 @@
             </button>
           
             <div class='comment-detail-left-section-count'>
-              <span>{{ comment.like_users.count }}</span>
+              <span>{{ comment.like }}</span>
             </div>
 
             <button name='like_value' value='unlike' type='submit'>
-              {% if request.user in comment.like_users.all %}
-                <i class='fas fa-thumbs-up comment-unlike-icon like_green'></i>
+              {% if request.user in comment.unlike_users.all %}
+                <i class='fas fa-thumbs-down comment-unlike-icon like_green'></i>
               {% else %}
-                <i class='fas fa-thumbs-up comment-unlike-icon like_gray'></i>
+                <i class='fas fa-thumbs-down comment-unlike-icon like_gray'></i>
               {% endif %}
             </button>
 
@@ -76,7 +76,7 @@
                 <button class='comment-delete' type='submit'>삭제</button>
               </form>
 
-              <form action="{% url 'communities:comment_update' comment.pk %}" method="POST">
+              <form action="{% url 'communities:comment_update' comment.pk %}" method="GET">
                 {% csrf_token %}
                 <button class='comment-delete' type='submit'>수정</button>
               </form>
@@ -119,7 +119,7 @@
           <button class='recomment-header-btn'>
             <div class='recomment-header-img'>
               {% if request.user.image %}
-                <img class='w-100 rounded-circle' src="{{ request.user.image. }}" alt="{{ request.user.username }}">
+                <img class='w-100 rounded-circle' src="{{ request.user.image.url }}" alt="{{ request.user.username }}">
               {% else %}
                 <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
               {% endif %}
@@ -159,11 +159,11 @@
                 </button>
               
                 <div class='recomment-detail-left-section-count'>
-                  <span>{{ comment.like_users.count }}</span>
+                  <span>{{ recomment.like }}</span>
                 </div>
     
                 <button value='unlike' type='submit'>
-                  {% if request.user in recomment.like_users.all %}
+                  {% if request.user in recomment.unlike_users.all %}
                     <i class='fas fa-thumbs-down recomment-unlike-icon like_green'></i>
                   {% else %}
                     <i class='fas fa-thumbs-down recomment-unlike-icon like_gray'></i>

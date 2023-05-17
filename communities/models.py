@@ -38,7 +38,7 @@ class Comment(models.Model):
             time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
             return str(time.days) + '일 전'
         else:
-            return self.strftime('%Y-%m-%d')
+            return self.created_at.strftime('%Y-%m-%d')
 
 class Recomment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -63,4 +63,4 @@ class Recomment(models.Model):
             time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
             return str(time.days) + '일 전'
         else:
-            return self.strftime('%Y-%m-%d')
+            return self.created_at.strftime('%Y-%m-%d')

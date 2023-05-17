@@ -418,6 +418,7 @@
   background-color: rgb(248 249 250);
   border-radius: 10px;
   margin-top: 15px;
+  min-width: 308px;
 }
 
 .comment-detail-right-footer h1 {

@@ -11,7 +11,7 @@
 <div class="container-signup">
   <h2>회원가입</h2>
   <div class="form-signup">
-    <form action="{% url 'accounts:signup' %}" method="POST">
+    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
       <input class="signup-button" type="submit" value="가입하기">

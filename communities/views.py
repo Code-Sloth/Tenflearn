@@ -181,14 +181,13 @@ def recomment_delete(request, comment_pk, recomment_pk):
 def review(request):
     reviews = Review.objects.order_by('-id')
     page = request.GET.get('page', '1')
-    per_page = 5
+    per_page = 10
     paginator = Paginator(reviews, per_page)
     page_obj = paginator.get_page(page)
     last = paginator.num_pages
     reviews_count = reviews.count()
     context = {
         'reviews_count': reviews_count,
-        # 'reviews': page_obj,
         'page_obj': page_obj,
         'last': last,
     }

@@ -77,7 +77,12 @@ class CustomUserCreationForm(UserCreationForm):
     )
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('username', 'last_name', 'first_name',  'password1', 'password2',)
+        fields = ('username', 'last_name', 'first_name',  'password1', 'password2', 'image',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['image'].widget.attrs['class'] = 'form-control'
 
 class CustomUserChangeForm(UserChangeForm):
     last_name = forms.CharField(
@@ -103,6 +108,11 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
         fields = ('last_name', 'first_name', 'image')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['image'].widget.attrs['class'] = 'form-control'
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
