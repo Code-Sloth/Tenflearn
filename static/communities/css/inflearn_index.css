@@ -65,10 +65,11 @@
 .community-body__left__content {
   align-self: start;
   color: rgb(0, 196, 113);
-  padding: 20px 20px;
-  font-size: 20px;
+  padding: 5px 15px;
+  font-size: 16px;
   width: 171px;
   margin-top: 0;
+  font-weight: bold;
 }
 
 .community-body__right {
@@ -92,11 +93,6 @@
   width: auto;
   padding: 0 15px;
 
-}
-
-.review-left__star {
-  /* font-size: 24px; */
-  /* color: #ffcc00; */
 }
 
 .review-left__content {
@@ -153,4 +149,11 @@
     background-color: #1dc078;
     color: white;
     border-color: #1dc078;
+}
+
+.community-body__left__after {
+  font-size: 12px;
+  color: rgb(173 181 189);
+  margin-bottom: 20px;
+  padding-top: 20px;
 }

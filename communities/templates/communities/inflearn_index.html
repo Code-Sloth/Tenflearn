@@ -21,18 +21,20 @@
 <div class="community-body">
 
     <div class='community-body__left'>
-        <div class="community-body__left__content">수강평</div>
+      <div class='community-body__left__after'>후기</div>
+      <div class="community-body__left__content">수강평</div>
     </div>
 
     <div class="community-body__right">
       {% for review in page_obj %}
+      </a>
       <div class="community-body__review">
         <div class="review-left">
           <div class="review-left__star"><div class='banner-star-box'>
             <div class='banner-star-gray'>
               <img src="{% static 'courses/image/graystars.png' %}" alt="graystar">
             </div>
-            <div class='banner-star-yellow' style='width: {{ 3|divide_by_five }}%;'>
+            <div class='banner-star-yellow' style='width: {{ review.star|divide_by_five }}%;'>
               <img src="{% static 'courses/image/yellowstars.png' %}" alt="yellowstar">
             </div>
           </div>
@@ -41,7 +43,9 @@
           <div class="review-left__info">글쓴이: {{ review.user}} {{ review.created_at }} 강의명: {{ review.course.title }}</div>
         </div>
           <div class="review-right__img">
-            <img class="lecture-img"src="{{ review.course.image.url }}" alt="강의 사진">
+            <a href="{% url 'courses:detail' review.course.pk %}">
+              <img class="lecture-img"src="{{ review.course.image.url }}" alt="강의 사진">
+            </a>
           </div>
       </div>
       {% endfor %} 

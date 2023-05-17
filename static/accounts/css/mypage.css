@@ -1,5 +1,6 @@
 .mypage-body {
   display: flex;
+  
   padding: 32px;
   margin: auto;
   max-width: 1200px;
@@ -12,13 +13,16 @@
   justify-content: start;
 }
 
+.mypage-body__right {
+  
+  
+}
 @media(max-width: 1200px) {
   .mypage-body__left {
     max-width: 1200px;
     display: none;
   }
   }
-
 
 .mypage-body__left__content {
   align-self: start;
@@ -41,6 +45,7 @@
   margin-bottom: 10px;
   color: rgb(0, 196, 113);
   width: 500px;
+  
   border-radius: 3%;
   border: 2px solid rgb(0, 196, 113);
   text-align: start;
@@ -62,22 +67,107 @@
   border: 1px solid rgb(0, 196, 113);
 }
 
+.profile-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+  height: 360px;
+  width: 800px;
+}
+
+
 .content-info {
   width: 650px ;
 }
+
 .btn {
   background-color: rgb(0, 196, 113);
   border: solid white 1px;
   color: white;
-  text-align: end;
+  text-align: center;
   text-decoration-line: none;
   font-size: 14px;
   border-radius: 3px;
   cursor: pointer;
+  width: 45%;
 }
 
 .info {
   margin-left: 20px;
   text-align: end;
   width: 100%;
+}
+
+.info-list-a {
+  text-decoration: none;
+  min-width: 380px;
+}
+
+.info-list-content {
+  font-size: 23px;
+  color: rgb(90 90 90);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 20px;
+}
+
+
+.info-list-div {
+  border-bottom: 1px solid rgb(230 230 230);
+  padding: 30px;
+  min-width: 400px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px ) {
+  .card-box {
+    width: 100%;
+  }
+}
+
+@media(min-width: 768px) and (max-width: 1199px) {
+  .card-box {
+    width: 50%;
+    }
+  }
+
+
+@media (min-width: 1200px) {
+    .card-box {
+      width: 33%;
+    }
+}
+
+/* 달력 */
+
+.calendar-btn {
+  background-color: rgb(0, 196, 113);
+  border: solid white 1px;
+  color: white;
+  text-align: center;
+  text-decoration-line: none;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 23%;
+}
+
+.del-data {
+  background-color: rgb(0, 196, 113);
+  border: solid white 1px;
+  color: white;
+  text-align: center;
+  text-decoration-line: none;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 10%;
+}
+
+.calendar-body {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
 }

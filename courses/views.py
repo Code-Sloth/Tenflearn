@@ -47,13 +47,14 @@ def detail(request, course_pk):
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
     urls = Url.objects.filter(course_id=course_pk)
+    other_courses = Course.objects.filter(user=course.user)
 
-    if Course.objects.count() > 4:
+    if other_courses.count() > 4:
         other_courses = random.sample(
-            list(Course.objects.all().exclude(pk=course.pk)), 4
+            list(other_courses.exclude(pk=course.pk)), 4
         )
     else:
-        other_courses = Course.objects.all().exclude(pk=course.pk)
+        other_courses = other_courses.exclude(pk=course.pk)
 
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(
         pk=course.pk
@@ -182,6 +183,7 @@ def courses(request):
         tags = Tag.objects.all()
         
     selected_slugs = request.GET.get('tags') 
+
     if selected_slugs:
         selected_tags = selected_slugs.split(",")
         courses = courses.filter(tags__slug__in=selected_tags).distinct()
@@ -259,11 +261,11 @@ def video(request, course_pk):
     )
     urls = Url.objects.filter(course_id=course_pk)
     context = {
-        'course': course,
-        'all_quizzes_completed': all_quizzes_completed,
-        'urls': urls,
+        "course": course,
+        "all_quizzes_completed": all_quizzes_completed,
+        "urls": urls,
     }
-    return render(request, 'courses/course_video.html', context)
+    return render(request, "courses/course_video.html", context)
 
 
 @login_required
@@ -333,23 +335,29 @@ def quiz_result(request, course_pk, quiz_pk):
     return render(request, "courses/course_quiz_result.html", context)
 
 
+@login_required
 def enrolment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
-
-    if course.enrolment_users.filter(pk=request.user.pk).exists():
-        course.enrolment_users.remove(request.user)
+    if request.method == "POST":
+        if course.enrolment_users.filter(pk=request.user.pk).exists():
+            course.enrolment_users.remove(request.user)
+        else:
+            course.enrolment_users.add(request.user)
     else:
-        course.enrolment_users.add(request.user)
+        pass
     return redirect("/accounts/mypage/?q=cart")
 
-
-from django.urls import reverse
-
+@login_required
 
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
-
-    if course.cart_users.filter(pk=request.user.pk).exists():
-        course.cart_users.remove(request.user)
+    if request.method == "POST":
+        if course.cart_users.filter(pk=request.user.pk).exists():
+            course.cart_users.remove(request.user)
+        else:
+            course.cart_users.add(request.user)
     else:
-        course.cart_users.add(request.user)
+        return redirect("/accounts/mypage/?q=cart")
+    return redirect("courses:detail", course_pk)
+
+
