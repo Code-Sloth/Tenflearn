@@ -1,6 +1,6 @@
 .mypage-body {
   display: flex;
-  
+  min-height: 600px;
   padding: 32px;
   margin: auto;
   max-width: 1200px;

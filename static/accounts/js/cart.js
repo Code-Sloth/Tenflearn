@@ -34,7 +34,9 @@ cartBtns.forEach((btn) => {
     cartForm.setAttribute('action', `/${coursePk.value}/kakaopay/`)
 
     const cancelForm = document.querySelector('.cart-body-cancel')
+    const cancelBtn = cancelForm.querySelector('button')
 
     cancelForm.setAttribute('action', `/course/${coursePk.value}/cart/`)
+    cancelBtn.value = 1
   })
 })
