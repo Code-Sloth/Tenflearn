@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}결제완료{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/kakao.css' %}">
+
+<div class='container'>
+  <div class='complete-title'>
+    결제가 완료되었습니다!
+  </div>
+
+  <div class='complete-box'>
+    <div class='complete-user'>
+      주문자 정보
+    </div>
+
+    <div class='complete-flex'>
+      <h5>주문번호</h5>
+      <p>{{ result.partner_order_id }}</p>
+    </div>
+
+    <div class='complete-flex'>
+      <h5>주문자명</h5>
+      <p>{{ result.partner_user_id }}</p>
+    </div>
+
+    <div class='complete-flex'>
+      <h5>강의명</h5>
+      <p>{{ result.item_name }}</p>
+    </div>
+
+    <div class='complete-flex'>
+      <h5>결제금액</h5>
+      <p>{{ result.amount.total|intcomma }}원</p>
+    </div>
+
+    <div class='complete-flex'>
+      <h5>결제승인시각</h5>
+      <p>{{ result.approved_at }}</p>
+    </div>
+
+    <div class='kakao-main w-100 mt-5'>
+      <a href="{% url 'courses:detail' result.partner_order_id %}">강의 들으러가기</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

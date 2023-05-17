@@ -7,47 +7,52 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_video.css' %}">
 
-<div class="course">
+<div class="course p-5">
   <div class="course-video">
   </div>
 
   <div class="course-descriptions">
     <div>
-      <h4>{{ course.title }}</h4>
+      <h3>{{ course.title }}</h3>
     </div>
     <div class="course-descriptions-quiz">
-      <span>강사 - {{ course.user }}</span>
-      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <span>강사 - {{ course.user.last_name }}{{ course.user.first_name }}</span>
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
         퀴즈 풀기
       </button>
     </div>
-    <div class="course-complete">
-      {% if all_quizzes_completed %}
-        <span>수강을 완료하셨습니다!</span>
-      {% endif %}
-    </div>
-    <div class="course-video-list">
+    <div class="course-video-list p-2">
+      <select class="form-select" id="video-select" aria-label="동영상 선택">
+        {% for url in urls %}
+          <option value="{{ forloop.counter0 }}">{{ course.title }} - {{ forloop.counter }}번째 강의</option>
+        {% endfor %}
+      </select>
       {% for url in urls %}
-        <button class="btn course_video-btn" data-index="{{ forloop.counter0 }}">{{ course.title }} - {{ forloop.counter }}</button>
         <iframe src={{ url.url }}
         class="course-video-url"
-        title="파이썬 코딩 무료 강의 (기본편) - 6시간 뒤면 여러분도 개발자가 될 수 있어요 [나도코딩]" 
+        title="{{ course.title }}" 
         frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
         allowfullscreen></iframe>
       {% endfor %}
     </div>
     <hr>
-    <div class="course-btn">
+    <div class="course-btn pb-3">
       <button class="btn descriptions-btn">강의 설명 보기</button>
       <button class="btn textarea-btn">메모 작성</button>
     </div>
     <div class="course-descriptions-content">
-      {{ course.content|linebreaksbr }}
+      <div style="width:90%;">
+        <div>{{ course.content }}</div>
+      </div>
     </div>
     <div class="course-descriptions-file">
-      <textarea class="course-descriptions-file-memo" id="memo" placeholder="저장할 내용을 입력해주세요."></textarea>
-      <button class="btn btn-outline-secondary" onclick="Download()">다운로드</button>
+      <div class="course-descriptions-file-memo">
+        <textarea class="course-descriptions-file-memo-text" id="memo" placeholder="저장할 내용을 입력해주세요."></textarea>
+      </div>
+      <div class="course-descriptions-file-download p-3">
+        <button class="btn btn-outline-secondary" onclick="Download()">다운로드</button>
+      </div>
     </div>
   </div>
 </div>
@@ -76,6 +81,30 @@
   </div>
 </div>
 
+<div id="myModal" class="modal2">
+  <div class="modal-content">
+    <span class="pb-3">이미 완료한 강의입니다</span>
+    <span class="pb-3">남은 기간 동안 다시보기가 가능합니다</span>
+    <button class="btn btn-success btn-lg" onclick="closeModal()">창 닫기</button>
+  </div>
+</div>
+
 <script src="{% static 'courses/js/course_video.js' %}"></script>
+<script>
+  {% if all_quizzes_completed %}
+  var modal = document.getElementById("myModal");
+  modal.style.display = "block";
+  {% endif %}
+
+  function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
 
 {% endblock content %}

@@ -1,15 +1,22 @@
 .cart-body {
   display: flex;
-  min-height: 500px;
+  min-height: 600px;
 }
 
 .cart-body-left {
   width: 600px;
 }
+ 
+.cart-body-header div {
+  color: rgb(80 80 80);
+  padding-bottom: 30px;
+  margin-bottom: 0;
+  font-weight: bold;
+  font-size: 28px;
+}
 
 .cart-body-right {
   width: 300px;
-  margin-left: 20px;
 }
 
 
@@ -38,9 +45,8 @@
 
 .cart-body-content {
   display: flex;
-  padding: 8px 16px;
+  padding: 20px 16px;
   height: auto;
-  margin: 0 5px;
   border-bottom: 1px solid #dbdada;
   width: 600px;
 }
@@ -70,15 +76,11 @@
   width: 150px;
   text-align: right;
   border-left: solid #dbdada 1px;
+  padding-left: 20px;
   margin-left: 5px;
 }
 
 /* 결제창 */
-
-.payment {
-  margin-top: 50px;
-  width: 300px;
-}
 
 .price-box-sort {
   display: flex;
@@ -89,8 +91,151 @@
   background-color: #00c471;
   color: white;
   width: 100%;
-  height: 40px;
+  height: 50px;
   border: none;
   border-radius: 5px;
+  margin-top: 10px;
+}
+
+.pay-button:hover {
+  background-color: #04995b;
+}
+
+
+/* css update */
+
+.selector {
+  border: 0;
+  padding: 0;
+  background-color: white;
+  transition: transform 0.3s ease;
+}
+
+.selector:hover {
+  transform: scale(1.02);
+}
+
+.cart-right__content {
+  font-size: 15px;
+  text-align: start;
+  color: rgb(50 50 50);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cart-right__info {
+  font-size: 13px;
+  text-align: start;
+  color: rgb(112 112 112);
+  margin-top: 10px;
+}
+
+.price div {
+  font-size: 14px;
+  color: rgb(80 80 80);
+}
+
+.payment-price div {
+  font-size: 16px;
+  color: rgb(50 50 50);
   margin-top: 5px;
+}
+
+.payment-price form {
+  margin-top: 20px;
+}
+
+.payment h5 {
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.cart-body-right {
+  padding: 20px;
+  border: 1px solid rgb(240 240 240);
+  border-radius: 10px;
+  height: 300px;
+}
+
+.cart-body-right-header {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid rgb(240 240 240);
+  border-radius: 10px;
+}
+
+.cart-body-right-header header {
+  font-size: 15px;
+  color: rgb(50 50 50);
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.cart-body-right-header div {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+.cart-body-right-header div h1 {
+  font-size: 14px;
+  color: rgb(171 176 181);
+}
+
+.cart-body-right-header div h2 {
+  font-size: 14px;
+  color: rgb(133 138 141);
+}
+
+.cart-gray {
+  background-color: rgb(235 235 235);
+}
+
+.payment-price .seleted-price div {
+  font-size: 13px;
+  color: rgb(133 138 141);
+}
+
+.payment-price .discounted-price div {
+  font-size: 13px;
+  color: rgb(229 80 60);
+}
+
+.payment-price .total-payment-amount {
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(40 40 40);
+}
+
+.cart-body-right-box {
+  margin-left: 50px;
+}
+
+
+.cart-body-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #dbdada;
+}
+
+.cart-body-cancel {
+  padding-top: 30px;
+}
+
+.cart-body-cancel button {
+  background-color: white;
+  border: 1px solid rgb(213 219 226);
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: 5px;
+}
+
+.cart-body-cancel button:hover {
+  background-color: rgb(240 240 240);
+}
+
+.cart-body-cancel button img {
+  padding-bottom: 3px;
 }

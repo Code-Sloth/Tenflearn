@@ -2,20 +2,36 @@
 <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/course.css' %}">
 
 <div class = 'container-my_course'>
-    <h3>수강 중 강의</h3>
+    <h3 class='course-header-title'>수강중인 강의</h3>
     <div class="cards">
       {% if user.enrolment_courses.all %}
           {% for course in user.enrolment_courses.all %}
             <div class="card-box">
-              <img class="card-img" src="{{ course.image.url }}" alt="Image">
+              <a class='card-box-a' href="{% url 'courses:detail' course.pk %}">
+                <img class="w-100" src="{{ course.image.url }}" alt="Image">
+              </a>
               <div class="card-body">
-                <h5 class="card-title"><strong>{{ course.title }}</strong></h5>
-                <p class="card-text">기한: {{ course.expired_date }}</p>
+                <h5 class="card-title">{{ course.title }}</h5>
+                <a class='card-body-img' href="{% url 'courses:video' course.pk %}">
+                  <img src="{% static 'accounts/image/play.svg' %}" alt="playbutton">
+                </a>
               </div>
-            </div>
+              <div class='card-expired'>
+                <form action="{% url 'courses:enrolment' course.pk %}" method="POST">
+                  {% csrf_token %}
+                  <button name='enrol' value='1' type="submit">수강취소</button>
+                </form>
+
+                <div>
+                  기한: {{ course.expired_unlimited }}
+                </div>
+              </div>
+            </div> 
           {% endfor %}
       </div>
     {% else %} 
-        <p>수강하는 강의가 없습니다.</p>
+      <div style='min-height: 600px;'>
+        <h5 class='pt-5 ps-5 text-secondary'>수강중인 강의가 없습니다. 😥</h5>
+      </div>
     {% endif %}
 </div>

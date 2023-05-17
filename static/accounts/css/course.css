@@ -9,18 +9,12 @@
 }
 
 .card-box {
-  flex: 1;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  padding: 16px;
   margin: 8px 8px;
-  min-width: 300px;
-  height: 290px;
+  width: 300px;
+  height: 300px;
   text-align: center;
-}
-
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.24);
+  overflow: hidden;
 }
 
 .card-img {
@@ -30,6 +24,7 @@
 }
 
 .card-body {
+  display: flex;
   padding: 5px;
   margin-top: 8px;
 }
@@ -37,10 +32,76 @@
 .card-title {
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 5px;
+  color: rgb(50 50 50);
+  margin: 5px;
+  height: 40px;
+  text-align: start;
+  width: 80%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-left: 10px;
 }
 
 .card-text {
   font-size: 14px;
 }
 
+.course-header-title {
+  color: rgb(80 80 80);
+  padding-bottom: 40px;
+  border-bottom: 1px solid #dbdada;
+  margin-bottom: 0;
+  font-weight: bold;
+  min-width: 950px;
+}
+
+.card-body-img {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.card-body-img:hover {
+  transform: scale(1.07);
+}
+
+.card-expired {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-expired div {
+  font-size: 12px;
+  color: rgb(120 120 120);
+  text-align: end;
+  margin-right: 10px;
+  padding-top: 5px;
+}
+
+.card-box-a {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.card-box-a:hover {
+  transform: scale(1.05);
+}
+
+.card-expired form {
+  margin-left: 10px;
+}
+
+.card-expired form button {
+  background-color: white;
+  border: 0;
+  font-size: 12px;
+  padding: 0;
+  line-height: 20px;
+  color: rgb(120 120 120);
+}
+
+.card-expired form button:hover {
+  color: rgba(144, 9, 9, 0.826);
+  font-weight: bold;
+}

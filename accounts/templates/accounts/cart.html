@@ -6,144 +6,113 @@
 
 <div class="cart-body">
   <div class="cart-body-left">
-    <h3>수강바구니</h3>
-    <div class="price-box-sort">
-        <label>
-            <input type="checkbox" id="select-all" onclick="toggleCheckboxes()">
-            전체 선택
-        </label>
-        <button class="delete-button" id="delete-all">선택삭제</button>
+    <div class='cart-body-header'>
+      <div>수강바구니</div>
+
+      <form class='cart-body-cancel mb-2' action="" method="POST">
+        {% csrf_token %}
+        <button name="cart" type="submit">선택삭제 <span><img src="{% static 'accounts/image/cancel.svg' %}" alt="cancel"></span></button>
+      </form>
     </div>
+
     <div class="course">
       {% for course in request.user.cart_courses.all %}
-              
-        <div class="selector">
-          <input type="checkbox" name="course" value="{{ course.id }}">
-          <label for="{{ course.id }}"></label>
+        {% if request.user not in course.enrolment_users.all %}
         
-          <div class="cart-body-content">
-            <div class="cart-body-content-img">
-                <img class="lecture-img"src="{{ course.image.url }}" alt="강의 사진">
+          <button class="selector">
+            <input type="hidden" class='selector-price' value='{{ course.price }}'>
+            <input type="hidden" class='selector-discount_rate' value='{{ course.discount_rate }}'>
+            <input type="hidden" class='selector-discounted_price' value='{{ course.discounted_price }}'>
+            <input type="hidden" class='selector-course_pk' value='{{ course.pk }}'>
+            
+            <div class="cart-body-content">
+              <div class="cart-body-content-img">
+                <img class="lecture-img" src="{{ course.image.url }}" alt="강의 사진">
+              </div>
+              
+              <div class="cart-body-content-title">
+                <div class="cart-right__content"> {{ course.title }} </div>
+                <div class="cart-right__info"> {{ course.user.last_name }}{{ course.user.first_name }} </div>
+              </div>
+
+              <div class="price">
+                <div class="original-price d-flex justify-content-between" >
+                  <div>가격</div>
+                  <div>{{ course.price|intcomma }}원</div>
+                </div>
+                <div class="discount-rate d-flex justify-content-between my-1" >
+                  <div>할인율</div>
+                  <div>{{ course.discount_rate }}%</div>
+                </div>
+                <div class="discounted-price d-flex justify-content-between">
+                  <div>결제금액</div>
+                  <div>{{ course.discounted_price|intcomma }}원</div>
+                </div>
+              </div>
             </div>
-            <div class="cart-body-content-title">
-                <div class="cart-right__content"> 강의명 : {{ course.title }} </div>
-                <div class="cart-right__info"> 작성자 | 수강기간 </div>
-            </div>
-            <div class="delete-button">
-                <a href="{% url 'courses:cart' course.pk %}" class="delete-button">X</a>
-            </div>
-            <div class="price">
-                <div class="original-price" >가격: {{ course.price|intcomma }}원</div>
-                <div class="
-                discount-rate" >할인율: {{ course.discount_rate }}%</div>
-                <div class="
-                discounted-price">결제금액: {{ course.discounted_price|intcomma }}원</div>
-            </div>
-          </div>
-        </div>
+          </button>
+        {% endif %}
       {% empty %}
-          <div class="cart-body-content">
-              <p>장바구니가 비어있습니다.</p>
-          </div>
+        <div style='min-height: 600px;'>
+          <h5 class='pt-5 ps-5 text-secondary'>장바구니가 비었어요. 😥</h5>
+        </div>
       {% endfor %}
     </div>
   </div>
-  <div class="cart-body-right">
-    <div class="payment">
-      <h5>결제창</h5>
-      <div class="payment-price">
-        <div class="seleted-price price-box-sort">
-          <div>
-            선택 상품 금액
-          </div>
-          <div>
-            10000원
-          </div>
-        </div>
-        <div class="discounted-price price-box-sort">
-          <div>
-            할인금액
-          </div>
-          <div>
-            10000원
-          </div>
-        </div>
-        <div class="total-payment-amount price-box-sort">
-          <div>
-            총 결제금액
-          </div>
-          <div id="total-payment-amount">
-            10000원
-          </div>
-        </div>
+  <div class='cart-body-right-box'>
+
+    <div class='cart-body-right-header'>
+      <header>구매자정보</header>
+      <section>
         <div>
-          <input class="pay-button" type="submit" value="결제하기">
+          <h1>아이디</h1>
+          <h2>{{ request.user.username }}</h2>
+        </div>
+
+        <div>
+          <h1>이름</h1>
+          <h2>{{ request.user.last_name }}{{ request.user.first_name }}</h2>
+        </div>
+      </section>
+    </div>
+    <div class="cart-body-right">
+      <div class="payment">
+        <h5>결제창</h5>
+        <div class="payment-price">
+          <div class="seleted-price price-box-sort">
+            <div>
+              선택 상품 금액
+            </div>
+            <div class='cart-price'>
+              -
+            </div>
+          </div>
+          <div class="discounted-price price-box-sort">
+            <div>
+              할인율
+            </div>
+            <div class='cart-discount_rate'>
+              -
+            </div>
+          </div>
+          <div class="total-payment-amount price-box-sort">
+            <div>
+              결제금액
+            </div>
+            <div class="cart-discounted_price">
+              -
+            </div>
+          </div>
+  
+          <form class='cart-form' method="POST">
+            {% csrf_token %}
+            <button class="pay-button" type="submit" name='kakao-price' value='10000'>결제하기</button>
+          </form>
+  
         </div>
       </div>
     </div>
   </div>
 </div>
 
-
-
-
-
-
-
-<script>
-  // 전체 선택 관련
-    function toggleCheckboxes() {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        var selectAllCheckbox = document.getElementById('select-all');
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = selectAllCheckbox.checked;
-        }
-    }
-
-    document.getElementById("delete-all").onclick = function() {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-      
-        for (var i = 0; i < checkboxes.length; i++) {
-          checkboxes[i].parentNode.remove();
-        }
-      };
-
-  
-  // 결제창 관련
-{% comment %} 
-  // div 셀렉터에서 선택한 값 가져오기
-var selectedValue = $('.selector :checked').val();
-
-// 코스 가격 가져오기
-var coursePrice = $('#course').data('price');
-
-// 총 결제 금액에 선택한 값과 코스 가격 표시
-$('#total-payment-amount').text(selectedValue + coursePrice); {% endcomment %}
-
-
-
-  {% comment %} // Find the course prices in the left side of the cart page.
-  var coursePrices = document.querySelectorAll('.original-price .discount-rate .discounted-price');
-
-  // Copy the course prices.
-  var coursePricesText = [];
-  for (var i = 0; i < coursePrices.length; i++) {
-    coursePricesText.push(coursePrices[i].textContent);
-  }
-
-  // Go to the payment box on the right side of the cart page.
-  var paymentBox = document.getElementById('payment-box');
-
-  // Paste the course prices in the payment box.
-  var paymentPrices = document.querySelectorAll('.original-price .discount-rate .discounted-price');
-  for (var i = 0; i < coursePricesText.length; i++) {
-    paymentPrices[i].textContent = coursePricesText[i];
-  }
-
-  // Format the course prices as currency.
-  for (var i = 0; i < paymentPrices.length; i++) {
-    paymentPrices[i].textContent = Intl.NumberFormat('ko-KR').format(paymentPrices[i].textContent);
-  } {% endcomment %}
-
-</script>
+<script src="{% static 'accounts/js/cart.js' %}"></script>

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}결제취소{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/kakao.css' %}">
+
+<div class='kakao-container'>
+  <h3>결제가 취소되었습니다.</h3>
+  <div class='kakao-main'>
+    <a href="{% url 'courses:index' %}">메인으로 이동</a>
+  </div>
+</div>
+{% endblock content %}

@@ -27,6 +27,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 KAKAO_KEY = os.getenv('KAKAO_KEY')
+REST_KEY = os.getenv('REST_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
+    
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -167,7 +169,7 @@ LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_PROVIDERS = {
     'kakao': {
         'APP': {
-            'client_id': 'b885caa0c710d5441e5a228ab4ac84dc',
+            'client_id': REST_KEY,
             'secret': '',
             'key': '',
         },

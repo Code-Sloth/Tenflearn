@@ -17,7 +17,7 @@
       </a>
       <a class="{% if q == 'review' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=review">내 수강평
       </a>
-      <a class="{% if q == 'cart' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=cart">수강 바구니</a>
+      <a class="{% if q == 'cart' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=cart">수강바구니</a>
   </div>
 
   
@@ -26,37 +26,47 @@
   {% if not q %}{% with q='course' %}{% endwith %}
     {% if request.user.is_authenticated %}
     <div class="profile-container">
-        {% comment %} <div class="content-info">
-          <h3>자세한 정보</h3>
-        </div> {% endcomment %}
         
-        <div class="header">
-            <div class="title">
-              <h4>Welcome to Tenflearn {{ user }}!</h4>
+      <div class="header">
+        <div class="content">
+          <div class='mypage-img'>
+            {% if request.user.image %}
+                <img class='w-100 rounded-circle' src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image" class="profile-image">
+            {% else %}
+                <img class='w-100 rounded-circle' src="{% static 'courses/image/noimage.png' %}" alt="noimage">
+            {% endif %}
+          </div>
+          <div class="info">
+            <section>
+              <div>아이디</div>
+              <div>{{ user.username }}</div>
+            </section>
+            <section>
+              <div>이름</div>
+              <div>{{ user.last_name }}{{ user.first_name }}</div>
+            </section>
+            <section>
+              <div>수강평</div>
+              <div>{{ user.review_set.all.count }}개</div>
+            </section>
+            <section>
+              <div>커뮤니티</div>
+              <div>{{ user.comment_set.all.count }}개</div>
+            </section>
+            <section>
+              <div>수강중인 강의</div>
+              <div>{{ user.enrolment_courses.all.count }}개</div>
+            </section>
+            <div class='mt-3'>
+              <a href="{% url 'accounts:update' %}">회원정보수정</a>
+              <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
             </div>
-            <div class="content">
-                {% if user.image %}
-                    <img src="{{ user.image.url }}" alt="{{ user.username }}'s Profile Image" class="profile-image">
-                {% else %}
-                    <p>No image</p>
-                {% endif %}
-                <div class="info">
-                  <p><strong>아이디:</strong> {{ user.username }}</p>
-                  <p><strong>이름:</strong> {{ user.last_name }}{{ user.first_name }}</p>
-                  <p><strong>수강평 : {{ user.review_set.all.count }}개</p>
-                  <p><strong>커뮤니티 : {{ user.comment_set.all.count }}개</p>
-                  <p><strong>수강중인 강의 : {{ user.enrolment_courses.all.count }}개</p>
-                  <p>
-                    <a class="btn" href="{% url 'accounts:update' %}">회원정보수정</a>
-                    <a class="btn" href="{% url 'accounts:logout' %}">로그아웃</a>
-                  </p> 
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
 
-      <div >
+      <div class="mypage-calendar">
         <div class='mypage-body__right'>
-
           <body>
             <div>
               <div>
@@ -65,8 +75,8 @@
                     <div></div>
                     <div></div>
                   </div>
-                  <div class="todo-wrap">
-                    <div class="todo-title">Todo List</div>
+                  <div class="todo-wrap mb-5">
+                    <div class="todo-title mb-1">Todo List</div>
                     <div class="input-wrap">
                       <input type="text" placeholder="오늘 할 일은 무엇인가요?" id="input-box" class="input-box">
                       <button type="button" id="input-data" class="calendar-btn input-data">INPUT</button>
@@ -110,41 +120,42 @@
       </div>
     </div>
 
-        <div>
-          <div>
-            <div class='info-list-div'>
-            <h2 class='info-list-content'>수강평</h2>
-            {% for review in request.user.review_set.all %}
-            <ul>
-              <p>{{ review.content }}</p>
-              <p>{{ review.created_at }}</p>
-            </ul>
-            {% endfor %}
-            </div>
-            <div class='info-list-div'>
-            <h2 class='info-list-content'>커뮤니티</h2>
-            {% for comment in request.user.comment_set.all %}
-            <ul>
-              <p>{{ comment.title }}</p>
-              <p>{{ comment.content|safe }}</p>
-              <p>{{ comment.created_at }}</p>
-            </ul>
-            {% endfor %}
-            </div>
+    <div class=''>
+      <h2 class='info-list-content'>내가 쓴 글</h2>
+      {% for comment in request.user.comment_set.all %}
+        <a class='mypage-comment-box' href="{% url 'communities:comment_detail' comment.pk %}">
+          <div class='mypage-comment-left'>
+            <h1>
+              {{ comment.title }}
+            </h1>
+
+            <h2>
+              {{ comment.content|safe }}
+            </h2>
           </div>
+
+          <div class='mypage-comment-img'>
+            <img class='w-100' src="{{ comment.course.image.url }}" alt="{{ comment.course.title }}">
+          </div>
+        </a>
+      {% empty %}
+        <div style='min-height: 100px;'>
+          <h5 class='pt-5 ps-5 text-secondary'>작성한 글이 없습니다. 😥</h5>
         </div>
-      </div>
+      {% endfor %}
+    </div>
+
     {% endif %}
   {% endif %}
 
   
-    {% if q == 'course' %}
-      {% include 'accounts/course.html' %}
-    {% elif q == 'review' %}
-      {% include 'accounts/review.html' %}
-    {% elif q == 'cart' %}
-    {% include 'accounts/cart.html' %}
-    {% endif %}
+  {% if q == 'course' %}
+    {% include 'accounts/course.html' %}
+  {% elif q == 'review' %}
+    {% include 'accounts/review.html' %}
+  {% elif q == 'cart' %}
+  {% include 'accounts/cart.html' %}
+  {% endif %}
   </div>
 </div>
 

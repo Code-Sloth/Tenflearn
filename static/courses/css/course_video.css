@@ -2,11 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 10px;
 }
 
 .course-video {
-  width: 90%;
+  width: 70%;
 }
 
 .course-btn {
@@ -39,7 +38,18 @@
 }
 
 .course-descriptions-file-memo {
-  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.course-descriptions-file-memo-text {
+  width: 90%;
+  height: 30vh;
+}
+
+.course-descriptions-file-download {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .course-descriptions {
@@ -72,3 +82,31 @@
   display: block;
 }
 
+.show2 {
+  display: flex;
+  justify-content: center;
+}
+
+.modal2 {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 450px;
+}
+
+.modal-content > span {
+  font-size: 25px;
+}
