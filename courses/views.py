@@ -8,6 +8,9 @@ from django.core.paginator import Paginator
 import random
 from django.db.models import Count
 from django.db.models import Q
+import requests
+import os
+KAKAO_KEY = os.getenv('KAKAO_KEY')
 
 # Create your views here.
 
@@ -328,3 +331,67 @@ def cart(request, course_pk):
 
     return redirect("courses:detail", course_pk)
 
+@login_required
+def kakaopay(request):
+    # kakao_price = request.POST.get('kakao-price')
+    # course = Course.objects.get(pk=course_pk)
+    # print(course, kakao_price)
+    admin_key = KAKAO_KEY
+
+    url = f'https://kapi.kakao.com/v1/payment/ready'
+    headers = {
+        'Authorization': f'KakaoAK {admin_key}',
+    }
+    data = {
+        'cid': 'TC0ONETIME',
+        'partner_order_id': 'partner_order_id', #주문 번호
+        'partner_user_id': 'partner_user_id', #유저 이름
+        'item_name': '초코파이', #제품명
+        'quantity': '1', #수량
+        'total_amount': '500', #가격
+        'tax_free_amount':'0',
+        
+        'approval_url':'http://127.0.0.1:8000/pay_success/', 
+        'fail_url':'http://127.0.0.1:8000/pay_fail',
+        'cancel_url':'http://127.0.0.1:8000/pay_cancel'
+    }
+    res = requests.post(url, data=data, headers=headers)
+    result = res.json()
+    request.session['tid'] = result['tid']
+    return redirect(result['next_redirect_pc_url'])
+
+@login_required
+def pay_success(request):
+    # course = Course.objects.get(pk=course_pk)
+    url = 'https://kapi.kakao.com/v1/payment/approve'
+    admin_key = KAKAO_KEY
+    
+    headers = {
+        'Authorization': f'KakaoAK {admin_key}'
+    }
+    data = {
+        'cid':'TC0ONETIME',
+        'tid': request.session['tid'], #결제 고유 번호
+        'partner_order_id': 'partner_order_id', #주문 번호
+        'partner_user_id': 'partner_user_id', #유저 아이디
+        'pg_token': request.GET['pg_token'] 
+    }
+    res = requests.post(url, data=data, headers=headers)
+    result = res.json()
+    context = {
+        'res':res,
+        'result':result,
+    }
+    if result.get('msg'): #msg = 오류 코드
+        return redirect('courses:pay_fail')
+    else:
+        # course.enrolment_users.add(request.user)
+        return render(request, 'courses/pay_success.html', context)
+
+@login_required
+def pay_fail(request):
+    return render(request, 'courses/pay_fail.html')
+
+@login_required
+def pay_cancel(request):
+    return render(request, 'courses/pay_cancel.html')

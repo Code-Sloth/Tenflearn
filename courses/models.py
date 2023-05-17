@@ -91,7 +91,7 @@ class Review(models.Model):
             time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
             return str(time.days) + '일 전'
         else:
-            return self.strftime('%Y-%m-%d')
+            return self.created_at.strftime('%Y-%m-%d')
 
     def save(self, *args, **kwargs):                  
         self.course.star = (self.course.star * self.course.reviews.count() + self.star) / (self.course.reviews.count() + 1)

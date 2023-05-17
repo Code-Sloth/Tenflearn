@@ -19,4 +19,10 @@ urlpatterns = [
     path('course/<int:course_pk>/quiz/<int:quiz_pk>/result/', views.quiz_result, name='quiz_result'),
     path('course/<int:course_pk>/enrolment/', views.enrolment, name='enrolment'),
     path('course/<int:course_pk>/cart/', views.cart, name="cart"),
+
+    # 카카오페이
+    path('kakaopay/', views.kakaopay, name='kakaopay'),
+    path('pay_success/', views.pay_success, name='pay_success'),
+    path('pay_fail/', views.pay_fail, name='pay_fail'),
+    path('pay_cancel/', views.pay_cancel, name='pay_cancel'),
 ]
