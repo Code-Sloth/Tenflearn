@@ -19,7 +19,7 @@
       <a href="{% url 'courses:courses' %}">
         <div class="sidebar-item">전체 강의</div>
       </a>
-      {% for category in categories  %}
+      {% for category in category_list  %}
           <div data-category="{{ category }}" class="sidebar-item">{{ category }}</div>
       {% endfor %}
     
@@ -33,7 +33,7 @@
             전체 강의
           {% endif %}</h1>
         <form class="d-flex search-course">
-          <input class="form-control search-course-input" type="search" 
+          <input class="form-control search-course-input" type="search" name="search-q"
           placeholder="전체 강의 검색" aria-label="Search">
           <button class=" search-course-btn" type="submit">검색</button>
         </form>
@@ -54,14 +54,14 @@
         </div>
         <div class="courseInfo-tags-container">
           <div class="d-flex">
-            <button class="courseInfo-tag">무료</button>
-            <button class="courseInfo-tag">유료</button>
+            <button class="courseInfo-tag" data-option="무료">무료</button>
+            <button class="courseInfo-tag" data-option="유료" >유료</button>
             <div class="courseInfo-separator"></div>
-            <button class="courseInfo-tag none-margin">할인중</button>
+            <button class="courseInfo-tag none-margin" data-option="할인중" >할인중</button>
             <div class="courseInfo-separator"></div>
-            <button class="courseInfo-tag">입문</button>
-            <button class="courseInfo-tag">초급</button>
-            <button class="courseInfo-tag">중급이상</button>
+            <button class="courseInfo-tag" data-option="입문" >입문</button>
+            <button class="courseInfo-tag" data-option="초급" >초급</button>
+            <button class="courseInfo-tag" data-option="중급이상" >중급이상</button>
           </div>
           <button class="filter-reset-btn">
             <a href="{% url 'courses:courses' %}" class ="bi bi-arrow-repeat">
@@ -159,5 +159,6 @@
 <script type="module" src="{% static 'courses/js/coursesBtnActive.js' %}"></script>
 <script type="module" src="{% static 'courses/js/cardHover.js' %}"></script>
 <script type="module" src="{% static 'courses/js/courses_tag_filter.js' %}"></script>
+<script type="module" src="{% static 'courses/js/search.js' %}"></script>
 
 {% endblock content %}

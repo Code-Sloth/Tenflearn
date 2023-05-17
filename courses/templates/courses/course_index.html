@@ -10,12 +10,7 @@
   type="text/css"
   href="{% static 'courses/css/course_index.css' %}"
 />
-{% comment %} <link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'courses/css/course_card.css' %}"
-/> {% endcomment %}
-{% comment %} Link Swiper's CSS {% endcomment %}
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
 {% comment %} 상단 배너 {% endcomment %}
@@ -25,12 +20,9 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide banner-slide">
           <div class="banner-slide-img">
-            <img src="{% static 'courses/image/banner1.png' %}" alt="메인베너1" />
+            <img src="{% static 'courses/image/banner2.jpg' %}" alt="메인베너1" />
             <div class="banner-slide-title"></div>
           </div>
-        </div>
-        <div class="swiper-slide">
-          <img src="{% static 'courses/image/banner2.png' %}" alt="메인베너2" />
         </div>
       </div>
       <div class="swiper-scrollbar"></div>
@@ -44,7 +36,7 @@
     <div class="swiper hash-curation">
       <div class="swiper-wrapper">
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=javascript">
+          <a href="{% url 'courses:courses' %}?category=&tags=javascript">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/js.svg' %}"
@@ -56,7 +48,7 @@
         </div>
 
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=typescript">
+          <a href="{% url 'courses:courses' %}?category=&tags=typescript">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/ts.svg' %}"
@@ -67,7 +59,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=python">
+          <a href="{% url 'courses:courses' %}?category=&tags=python">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/python.svg' %}"
@@ -78,7 +70,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=html">
+          <a href="{% url 'courses:courses' %}?category=&tags=html">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/html.svg' %}"
@@ -89,7 +81,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=css">
+          <a href="{% url 'courses:courses' %}?category=&tags=css">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/css.svg' %}"
@@ -100,7 +92,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=django">
+          <a href="{% url 'courses:courses' %}?category=&tags=django">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/django.svg' %}"
@@ -111,7 +103,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=react">
+          <a href="{% url 'courses:courses' %}?category=&tags=react">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/react.svg' %}"
@@ -122,7 +114,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=angular">
+          <a href="{% url 'courses:courses' %}?category=&tags=angular">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/angular.svg' %}"
@@ -133,7 +125,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=java">
+          <a href="{% url 'courses:courses' %}?category=&tags=java">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/java.svg' %}"
@@ -144,7 +136,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=mysql">
+          <a href="{% url 'courses:courses' %}?category=&tags=mysql">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/mysql.svg' %}"
@@ -155,7 +147,7 @@
           </a>
         </div>
         <div class="swiper-slide hash-slide">
-          <a href="{% url 'courses:courses' %}?tag=spring">
+          <a href="{% url 'courses:courses' %}?category=&tags=spring">
             <div class="hash-curation-img">
               <img
                 src="{% static 'courses/image/hashlogo/spring.svg' %}"
