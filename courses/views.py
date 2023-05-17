@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Course, Review, Quiz, StudentAnswer
+from .models import Course, Review, Quiz, StudentAnswer, Url
 from .forms import CoursesForm, ReviewForm, QuizForm, QnAForm, QnAFormSet
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
@@ -44,6 +44,7 @@ def detail(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
+    urls = Url.objects.filter(course_id=course_pk)
 
     if Course.objects.count() > 4:
         other_courses = random.sample(
@@ -70,6 +71,7 @@ def detail(request, course_pk):
     context = {
         "course": course,
         "reviews": reviews,
+        "urls": urls,
         "review_form": review_form,
         "other_courses": other_courses,
         "similar_courses": similar_courses,
@@ -149,22 +151,34 @@ def comment(request, course_pk):
 
 
 def courses(request):
-    tags = Tag.objects.all()
+    categories = Course.objects.values_list("category", flat=True).distinct()
+    selected_category = request.GET.get("category")
+
     # 선택한 태그들 가져옴
+    tag_list = []
+    if selected_category:
+        tags = Tag.objects.filter(course__category=selected_category).distinct()
+        for tag in tags:
+            tag_list.append(tag.slug)
+        courses = Course.objects.filter(tags__slug__in=tag_list).distinct()
+
+    else:
+        tags = Tag.objects.all()
+        courses = Course.objects.all()
+
     selected_slugs = request.GET.get("tags")
     if selected_slugs:
         selected_tags = selected_slugs.split(",")
         courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
-
-    else:
-        courses = Course.objects.all()
 
     # 정렬
     order = request.GET.get("sort")
     if order == "rating":
         courses = courses.order_by("-star")
     elif order == "enrollment":
-        courses = courses.order_by("-enrolment_users")
+        courses = courses.annotate(
+            num_enrolment_users=Count("enrolment_users")
+        ).order_by("-num_enrolment_users")
     per_page = 2
     paginator = Paginator(courses, per_page)
     courses_paginated = paginator.get_page(request.GET.get("page", "1"))
@@ -174,6 +188,8 @@ def courses(request):
         "courses_paginated": courses_paginated,
         "num_page": num_page,
         "tags": tags,
+        "categories": categories,
+        "selected_category": selected_category,
     }
     return render(request, "courses/course_courses.html", context)
 
@@ -205,8 +221,17 @@ def review_delete(request, course_pk, review_pk):
 
 def video(request, course_pk):
     course = Course.objects.get(pk=course_pk)
+    user = request.user
+    quizzes = Quiz.objects.filter(course=course)
+    all_quizzes_completed = all(
+        StudentAnswer.objects.filter(qna__quiz=quiz, student=user).exists()
+        for quiz in quizzes
+    )
+    urls = Url.objects.filter(course_id=course_pk)
     context = {
         "course": course,
+        "all_quizzes_completed": all_quizzes_completed,
+        "urls": urls,
     }
     return render(request, "courses/course_video.html", context)
 
@@ -278,15 +303,19 @@ def quiz_result(request, course_pk, quiz_pk):
     return render(request, "courses/course_quiz_result.html", context)
 
 
+@login_required
 def enrolment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
-
-    if course.enrolment_users.filter(pk=request.user.pk).exists():
-        course.enrolment_users.remove(request.user)
+    if request.method == "POST":
+        if course.enrolment_users.filter(pk=request.user.pk).exists():
+            course.enrolment_users.remove(request.user)
+        else:
+            course.enrolment_users.add(request.user)
     else:
-        course.enrolment_users.add(request.user)
+        pass
     return redirect("/accounts/mypage/?q=cart")
 
+@login_required
 
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
@@ -295,4 +324,7 @@ def cart(request, course_pk):
         course.cart_users.remove(request.user)
     else:
         course.cart_users.add(request.user)
-    return redirect("/accounts/mypage/?q=cart")
+
+    return redirect("courses:detail", course_pk)
+
+

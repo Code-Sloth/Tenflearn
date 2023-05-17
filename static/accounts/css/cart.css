@@ -1,5 +1,15 @@
 .cart-body {
-  width: 1000px;
+  display: flex;
+  min-height: 500px;
+}
+
+.cart-body-left {
+  width: 600px;
+}
+
+.cart-body-right {
+  width: 300px;
+  margin-left: 20px;
 }
 
 
@@ -26,25 +36,24 @@
   background-color: #00c471;
 }
 
-.cart-body-left {
-
+.cart-body-content {
   display: flex;
   padding: 8px 16px;
   height: auto;
   margin: 0 5px;
   border-bottom: 1px solid #dbdada;
-  width: 900px;
+  width: 600px;
 }
 
 
-.cart-body-right {
+.cart-body-content-title {
   flex: 1;
   height: auto;
   width: auto;
   padding: 0 15px;
 }
 
-.cart-body__img {
+.cart-body-content-img {
   display: flex;
   align-items: end;
   width: 120px;
@@ -58,8 +67,30 @@
 }
 
 .price {
-  width: 200px;
+  width: 150px;
   text-align: right;
-  border-left: solid gray 1px;
+  border-left: solid #dbdada 1px;
   margin-left: 5px;
+}
+
+/* 결제창 */
+
+.payment {
+  margin-top: 50px;
+  width: 300px;
+}
+
+.price-box-sort {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pay-button {
+  background-color: #00c471;
+  color: white;
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 5px;
 }
