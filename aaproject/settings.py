@@ -32,7 +32,7 @@ REST_KEY = os.getenv('REST_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['port-0-tenflearn-29i2dlhrurhbt.sel4.cloudtype.app', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['port-0-tenflearn-29i2dlhrurhbt.sel4.cloudtype.app', '127.0.0.1', 'localhost', 'tenflearn.kro.kr']
 
 
 # Application definition
