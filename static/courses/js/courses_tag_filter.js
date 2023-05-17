@@ -1,19 +1,16 @@
-import { cardHover } from "./cardHover.js";
-import { tagBtnActive } from "./coursesBtnActive.js";
-
-
+import { cardHover } from './cardHover.js';
+import { tagBtnActive } from './coursesBtnActive.js';
 
 const coursesContainer = document.querySelector('.courses-content-container');
 const tagsContainer = document.querySelector('.skill-tags-container');
 const categoryLinks = document.querySelectorAll('.sidebar-item');
-const titleH1 = document.querySelector('.title')
-const searchInput = document.querySelector(".search-course-input");
+const titleH1 = document.querySelector('.title');
+const searchInput = document.querySelector('.search-course-input');
 
-let selectedCategory = ""
+let selectedCategory = '';
 
-categoryLinks.forEach(link => {
+categoryLinks.forEach((link) => {
   link.addEventListener('click', async (event) => {
-    
     selectedCategory = link.dataset.category;
 
     try {
@@ -23,32 +20,43 @@ categoryLinks.forEach(link => {
       }
       const html = await response.text();
       const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html') 
-      const courses = doc.querySelector('.courses-content-container')
+      const doc = parser.parseFromString(html, 'text/html');
+      const courses = doc.querySelector('.courses-content-container');
       coursesContainer.innerHTML = courses.innerHTML;
-      const tagContainer = doc.querySelector('.skill-tags-container'); 
+      const tagContainer = doc.querySelector('.skill-tags-container');
       tagsContainer.innerHTML = tagContainer.innerHTML;
 
       const tags = tagsContainer.querySelectorAll('.skill-tags-btn');
-      tagBtnActive()
-  
-      tags.forEach(tag => {
+      tagBtnActive();
+      // 태그 비동기
+      tags.forEach((tag) => {
         tag.addEventListener('click', async (event) => {
-          const selectedTags = tagsContainer.querySelectorAll('.skill-tags-btn-active');
+          const selectedTags = tagsContainer.querySelectorAll(
+            '.skill-tags-btn-active'
+          );
           // 선택한 태그들 array로 저장
-          const tagSlugs = Array.from(selectedTags).map(tag => tag.dataset.slug).join(',');
-          console.log(tagSlugs)
-          
+          const tagSlugs = Array.from(selectedTags)
+            .map((tag) => tag.dataset.slug)
+            .join(',');
+          const optionBtnTags = document.querySelectorAll(
+            '.courseInfo-btn-active'
+          );
+          const optionTags = Array.from(optionBtnTags)
+            .map((option) => option.dataset.option)
+            .join(',');
+
           try {
-            const response = await fetch(`/courses/?category=${selectedCategory}&tags=${tagSlugs}`);
-            console.log(response)
+            const response = await fetch(
+              `/courses/?category=${selectedCategory}&tags=${tagSlugs}&option=${optionTags}`
+            );
+            console.log(response);
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
             const html = await response.text();
             const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html') 
-            const courses = doc.querySelector('.courses-content-container')
+            const doc = parser.parseFromString(html, 'text/html');
+            const courses = doc.querySelector('.courses-content-container');
             coursesContainer.innerHTML = courses.innerHTML;
             cardHover();
           } catch (error) {
@@ -57,10 +65,9 @@ categoryLinks.forEach(link => {
         });
       });
 
-
-      titleH1.textContent = selectedCategory
+      titleH1.textContent = selectedCategory;
       const context = link.textContent.trim();
-      searchInput.placeholder = context + "  검색";
+      searchInput.placeholder = context + '  검색';
       cardHover();
     } catch (error) {
       console.error(error);
@@ -68,49 +75,97 @@ categoryLinks.forEach(link => {
   });
 });
 
+// 태그 비동기
+const tags = document.querySelectorAll('.skill-tags-btn');
 
-  const tags = document.querySelectorAll('.skill-tags-btn');
-  
-  tags.forEach(tag => {
-    tag.addEventListener('click', async (event) => {
-      const selectedTags = document.querySelectorAll('.skill-tags-btn-active');
-      // 선택한 태그들 array로 저장
-      const tagSlugs = Array.from(selectedTags).map(tag => tag.dataset.slug).join(',');
-      
-      try {
-        const response = await fetch(`/courses/?category=${selectedCategory}&tags=${tagSlugs}`);
-        console.log(response)
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html') 
-        const courses = doc.querySelector('.courses-content-container')
-        coursesContainer.innerHTML = courses.innerHTML;
-        cardHover();
-      } catch (error) {
-        console.error(error);
+tags.forEach((tag) => {
+  tag.addEventListener('click', async (event) => {
+    const selectedTags = document.querySelectorAll('.skill-tags-btn-active');
+    // 선택한 태그들 array로 저장
+    const tagSlugs = Array.from(selectedTags)
+      .map((tag) => tag.dataset.slug)
+      .join(',');
+    const optionBtnTags = document.querySelectorAll('.courseInfo-btn-active');
+    const optionTags = Array.from(optionBtnTags)
+      .map((option) => option.dataset.option)
+      .join(',');
+
+    try {
+      const response = await fetch(
+        `/courses/?category=${selectedCategory}&tags=${tagSlugs}&option=${optionTags}`
+      );
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    });
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const courses = doc.querySelector('.courses-content-container');
+      coursesContainer.innerHTML = courses.innerHTML;
+      cardHover();
+    } catch (error) {
+      console.error(error);
+    }
   });
+});
 
-  
-const sortSelect = document.querySelector('.form-select')
+const optionButtons = document.querySelectorAll('.courseInfo-tag');
+optionButtons.forEach((optionBtn) => {
+  optionBtn.addEventListener('click', async (event) => {
+    const selectedTags = document.querySelectorAll('.skill-tags-btn-active');
+    const tagSlugs = Array.from(selectedTags)
+      .map((tag) => tag.dataset.slug)
+      .join(',');
+    const sortOption = sortSelect.value;
+    const optionBtnTags = document.querySelectorAll('.courseInfo-btn-active');
+    const optionTags = Array.from(optionBtnTags)
+      .map((option) => option.dataset.option)
+      .join(',');
+
+    try {
+      const response = await fetch(
+        `/courses/?category=${selectedCategory}&tags=${tagSlugs}&option=${optionTags}`
+      );
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const courses = doc.querySelector('.courses-content-container');
+      coursesContainer.innerHTML = courses.innerHTML;
+      cardHover();
+    } catch (error) {
+      console.error(error);
+    }
+  });
+});
+
+const sortSelect = document.querySelector('.form-select');
 sortSelect.addEventListener('change', async (event) => {
   const selectedTags = document.querySelectorAll('.skill-tags-btn-active');
-  const tagSlugs = Array.from(selectedTags).map(tag => tag.dataset.slug).join(',');
+  const tagSlugs = Array.from(selectedTags)
+    .map((tag) => tag.dataset.slug)
+    .join(',');
   const sortOption = event.target.value;
+  const optionBtnTags = document.querySelectorAll('.courseInfo-btn-active');
+  const optionTags = Array.from(optionBtnTags)
+    .map((option) => option.dataset.option)
+    .join(',');
   try {
-    const response = await fetch(`/courses/?category=${selectedCategory}&tags=${tagSlugs}&sort=${sortOption}`);
-    console.log(response)
+    const response = await fetch(
+      `/courses/?category=${selectedCategory}&tags=${tagSlugs}&option=${optionTags}&sort=${sortOption}`
+    );
+    console.log(response);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const html = await response.text();
     const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html') 
-    const courses = doc.querySelector('.courses-content-container')
+    const doc = parser.parseFromString(html, 'text/html');
+    const courses = doc.querySelector('.courses-content-container');
     coursesContainer.innerHTML = courses.innerHTML;
     cardHover();
   } catch (error) {

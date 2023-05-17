@@ -15,13 +15,16 @@ export function tagBtnActive() {
   
 }
 
-const targetInfoBtns = document.querySelectorAll('.courseInfo-tag');
-  targetInfoBtns.forEach((targetBtn) => {
-    targetBtn.addEventListener('click', () => {
-    if (targetBtn.classList.contains('courseInfo-btn-active')) {
-      targetBtn.classList.remove('bi-check-lg', 'courseInfo-btn-active');
-    } else {
-      targetBtn.classList.add('bi-check-lg', 'courseInfo-btn-active');
-    }
-  });
-})
+optionBtnActive()
+export function optionBtnActive() {
+  const targetInfoBtns = document.querySelectorAll('.courseInfo-tag');
+    targetInfoBtns.forEach((targetBtn) => {
+      targetBtn.addEventListener('click', () => {
+      if (targetBtn.classList.contains('courseInfo-btn-active')) {
+        targetBtn.classList.remove('bi-check-lg', 'courseInfo-btn-active');
+      } else {
+        targetBtn.classList.add('bi-check-lg', 'courseInfo-btn-active');
+      }
+    });
+  })
+}

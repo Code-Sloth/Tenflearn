@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% load static %}
 {% load humanize %}
 {% block title %}
@@ -7,23 +8,24 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'accounts\css\mypage.css' %}">
+
 {% comment %} 수정 {% endcomment %}
 <div class="mypage-body">
+  <div class='mypage-body__left'>
+      <a class="mypage-body__left__content {% if not q %}change-green{% else %} pass {% endif %}" href="{% url 'accounts:mypage' %}">내 정보
+      <a class="{% if q == 'course' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=course">내 학습
+      </a>
+      <a class="{% if q == 'review' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=review">내 수강평
+      </a>
+      <a class="{% if q == 'cart' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=cart">수강 바구니</a>
+  </div>
 
-    <div class='mypage-body__left'>
-        <a class="mypage-body__left__content {% if not q %}change-green{% else %} pass {% endif %}" href="{% url 'accounts:mypage' %}">내 정보
-        <a class="{% if q == 'course' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=course">내 학습
-        </a>
-        <a class="{% if q == 'review' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=review">내 수강평
-        </a>
-        <a class="{% if q == 'cart' %}change-green{% endif %} mypage-body__left__content" href="{% url 'accounts:mypage' %}?q=cart">수강 바구니</a>
-    </div>
-
-
-<div>
+  
+{% comment %} 프로필 카드 {% endcomment %}
+  <div>
   {% if not q %}{% with q='course' %}{% endwith %}
     {% if request.user.is_authenticated %}
-    <div class="container d-flex">
+    <div class="profile-container">
         {% comment %} <div class="content-info">
           <h3>자세한 정보</h3>
         </div> {% endcomment %}
@@ -41,30 +43,112 @@
                 <div class="info">
                   <p><strong>아이디:</strong> {{ user.username }}</p>
                   <p><strong>이름:</strong> {{ user.last_name }}{{ user.first_name }}</p>
-                  <p><strong>팔로잉 수: {{ user.followings|length }}</p>
+                  <p><strong>수강평 : {{ user.review_set.all.count }}개</p>
+                  <p><strong>커뮤니티 : {{ user.comment_set.all.count }}개</p>
+                  <p><strong>수강중인 강의 : {{ user.enrolment_courses.all.count }}개</p>
                   <p>
                     <a class="btn" href="{% url 'accounts:update' %}">회원정보수정</a>
+                    <a class="btn" href="{% url 'accounts:logout' %}">로그아웃</a>
                   </p> 
                 </div>
             </div>
         </div>
 
+      <div >
+        <div class='mypage-body__right'>
 
+          <body>
+            <div>
+              <div>
+                <div>
+                  <div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                  <div class="todo-wrap">
+                    <div class="todo-title">Todo List</div>
+                    <div class="input-wrap">
+                      <input type="text" placeholder="오늘 할 일은 무엇인가요?" id="input-box" class="input-box">
+                      <button type="button" id="input-data" class="calendar-btn input-data">INPUT</button>
+                      <div id="input-list" class="input-list"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="content-right">
+                  <table id="calendar" align="center">
+                    <thead>
+                      <tr class="btn-wrap clearfix">
+                        <td>
+                          <label id="prev">
+                              &#60;
+                          </label>
+                        </td>
+                        <td align="center" id="current-year-month" colspan="5"></td>
+                        <td>
+                          <label id="next">
+                              &#62;
+                          </label>
+                        </td>
+                      </tr>
+                      <tr>
+                          <td class = "sun" align="center">Sun</td>
+                          <td align="center">Mon</td>
+                          <td align="center">Tue</td>
+                          <td align="center">Wed</td>
+                          <td align="center">Thu</td>
+                          <td align="center">Fri</td>
+                          <td class= "sat" align="center">Sat</td>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body" class="calendar-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </body>
+        </div>
+      </div>
     </div>
+
+        <div>
+          <div>
+            <div class='info-list-div'>
+            <h2 class='info-list-content'>수강평</h2>
+            {% for review in request.user.review_set.all %}
+            <ul>
+              <p>{{ review.content }}</p>
+              <p>{{ review.created_at }}</p>
+            </ul>
+            {% endfor %}
+            </div>
+            <div class='info-list-div'>
+            <h2 class='info-list-content'>커뮤니티</h2>
+            {% for comment in request.user.comment_set.all %}
+            <ul>
+              <p>{{ comment.title }}</p>
+              <p>{{ comment.content|safe }}</p>
+              <p>{{ comment.created_at }}</p>
+            </ul>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
     {% endif %}
   {% endif %}
 
   
-  {% if q == 'course' %}
-    {% include 'accounts/course.html' %}
-  {% elif q == 'review' %}
-    {% include 'accounts/review.html' %}
-  {% elif q == 'cart' %}
-  {% include 'accounts/cart.html' %}
-  {% endif %}
+    {% if q == 'course' %}
+      {% include 'accounts/course.html' %}
+    {% elif q == 'review' %}
+      {% include 'accounts/review.html' %}
+    {% elif q == 'cart' %}
+    {% include 'accounts/cart.html' %}
+    {% endif %}
+  </div>
 </div>
 
 
 
-
+<script src="{% static 'accounts/js/mypage.js' %}"></script>
 {% endblock content %} 

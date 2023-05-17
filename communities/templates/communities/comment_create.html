@@ -1,15 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
-
+커뮤니티 - 글쓰기
 {% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'communities/css/comment_create.css' %}">
+<div class="comment-create-container">
+  
+  <form action="{% url 'communities:comment_create' %}" method="POST">
+    {% csrf_token %}
+      {{ comment_form.media }}
+    <div class="comment_category">
+      {{ comment_form.category }}
+    </div>
+    <div class="comment_title">
+      {{ comment_form.title }}
+    </div>
+    <div class="comment_content">
+      {{ comment_form.content|safe }}
+    </div>
+    <div class="comment-create-button">
+      <a href="{% url 'communities:comment_index' %}" class="comment-create-button-cancel">취소</a>
+      <button class="comment-create-button-save" name='course_pk' value='{{ course_pk }}' type="submit">등록</button>
+    </div>
+  </form>
 
-<form action="{% url 'communities:comment_create' %}" method="POST">
-  {% csrf_token %}
-  {{ comment_form.media }}
-  {{ comment_form.as_p }}
-  <button name='course_pk' value='{{ course_pk }}' type="submit">제출</button>
-</form>
+
+  </div>
 
 {% endblock content %}

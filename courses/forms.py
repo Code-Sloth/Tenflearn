@@ -7,7 +7,7 @@ class CoursesForm(forms.ModelForm):
     tags = TagField()
     class Meta:
         model = Course
-        fields = ('title', 'content', 'price', 'discount_rate', 'image', 'expired_date', 'certificates', 'level', 'tags',)
+        fields = ('title', 'content', 'price', 'discount_rate', 'image', 'expired_date', 'certificates', 'level', 'category', 'tags',)
         labels = {
                 'title': '제목',
                 'content': '내용',
@@ -20,6 +20,7 @@ class CoursesForm(forms.ModelForm):
                 'level': '난이도',
                 'certificates': '수료증',
                 'created_at': '생성일',
+                'category': '카테고리',
                 'tags': '태그',
             }
         widgets = {'title': forms.TextInput(

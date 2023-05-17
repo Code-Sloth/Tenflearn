@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 import random
 from django.db.models import Count
 from django.db.models import Q
+from functools import reduce
 import requests
 import os
 KAKAO_KEY = os.getenv('KAKAO_KEY')
@@ -34,6 +35,7 @@ def index(request):
             similar_courses = None
     else:
         similar_courses = None
+
     context = {
         "courses": courses,
         "sorted_star_courses": sorted_star_courses,
@@ -48,13 +50,14 @@ def detail(request, course_pk):
     reviews = Review.objects.filter(course_id=course_pk)
     review_form = ReviewForm()
     urls = Url.objects.filter(course_id=course_pk)
+    other_courses = Course.objects.filter(user=course.user)
 
-    if Course.objects.count() > 4:
+    if other_courses.count() > 4:
         other_courses = random.sample(
-            list(Course.objects.all().exclude(pk=course.pk)), 4
+            list(other_courses.exclude(pk=course.pk)), 4
         )
     else:
-        other_courses = Course.objects.all().exclude(pk=course.pk)
+        other_courses = other_courses.exclude(pk=course.pk)
 
     similar_courses = Course.objects.filter(tags__in=course.tags.all()).exclude(
         pk=course.pk
@@ -154,45 +157,74 @@ def comment(request, course_pk):
 
 
 def courses(request):
-    categories = Course.objects.values_list("category", flat=True).distinct()
-    selected_category = request.GET.get("category")
+    courses = Course.objects.all().order_by('-pk')
 
+    # 검색
+    search_q = request.GET.get('search-q','')
+    if search_q:
+        courses = courses.filter(
+            Q(title__icontains=search_q)|
+            Q(content__icontains=search_q)
+        )
+        print('====================================')
+        print(courses)
+
+
+    categories = courses.values_list('category', flat=True).distinct()
+    category_list = set(','.join(list(categories)).split(','))
+    selected_category = request.GET.get('category')
+        
     # 선택한 태그들 가져옴
     tag_list = []
     if selected_category:
         tags = Tag.objects.filter(course__category=selected_category).distinct()
         for tag in tags:
             tag_list.append(tag.slug)
-        courses = Course.objects.filter(tags__slug__in=tag_list).distinct()
+        courses = courses.filter(tags__slug__in=tag_list).distinct()
 
     else:
         tags = Tag.objects.all()
-        courses = Course.objects.all()
+        
+    selected_slugs = request.GET.get('tags') 
 
-    selected_slugs = request.GET.get("tags")
     if selected_slugs:
         selected_tags = selected_slugs.split(",")
-        courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
+        courses = courses.filter(tags__slug__in=selected_tags).distinct()
+
+    # 옵션
+    options = request.GET.get('option', '').split(',')
+    if options:
+        price_condition = Q()
+        level_condition = Q()
+        discount_condition = Q()
+        for option in options:
+            if option == '무료':
+                price_condition |= Q(price=0)  
+            elif option == '유료':
+                price_condition |= ~Q(price=0) 
+            elif option == '할인중':
+                discount_condition |= ~Q(discount_rate=0)  
+            elif option == '입문':
+                level_condition |= Q(level='level1')  
+            elif option == '초급':
+                level_condition |= Q(level='level2')  
+            elif option == '중급이상':
+                level_condition |= Q(level='level3')  
+                
+        courses = courses.filter(price_condition & discount_condition & level_condition)
 
     # 정렬
-    order = request.GET.get("sort")
-    if order == "rating":
-        courses = courses.order_by("-star")
-    elif order == "enrollment":
-        courses = courses.annotate(
-            num_enrolment_users=Count("enrolment_users")
-        ).order_by("-num_enrolment_users")
-    per_page = 2
-    paginator = Paginator(courses, per_page)
-    courses_paginated = paginator.get_page(request.GET.get("page", "1"))
-    num_page = paginator.num_pages
+    order = request.GET.get('sort')
+    if order == 'rating':
+        courses = courses.order_by('-star')
+    elif order == 'enrollment':
+        courses = courses.annotate(num_enrolment_users=Count('enrolment_users')).order_by('-num_enrolment_users')
+
     context = {
-        "courses": courses,
-        "courses_paginated": courses_paginated,
-        "num_page": num_page,
-        "tags": tags,
-        "categories": categories,
-        "selected_category": selected_category,
+        'courses': courses,
+        'tags': tags,
+        'category_list': category_list,
+        'selected_category': selected_category,
     }
     return render(request, "courses/course_courses.html", context)
 
@@ -318,80 +350,16 @@ def enrolment(request, course_pk):
         pass
     return redirect("/accounts/mypage/?q=cart")
 
-
 @login_required
+
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
-
-    if course.cart_users.filter(pk=request.user.pk).exists():
-        course.cart_users.remove(request.user)
+    if request.method == "POST":
+        if course.cart_users.filter(pk=request.user.pk).exists():
+            course.cart_users.remove(request.user)
+        else:
+            course.cart_users.add(request.user)
     else:
-        course.cart_users.add(request.user)
-
-
+        return redirect("/accounts/mypage/?q=cart")
     return redirect("courses:detail", course_pk)
 
-@login_required
-def kakaopay(request):
-    # kakao_price = request.POST.get('kakao-price')
-    # course = Course.objects.get(pk=course_pk)
-    # print(course, kakao_price)
-    admin_key = KAKAO_KEY
-
-    url = f'https://kapi.kakao.com/v1/payment/ready'
-    headers = {
-        'Authorization': f'KakaoAK {admin_key}',
-    }
-    data = {
-        'cid': 'TC0ONETIME',
-        'partner_order_id': 'partner_order_id', #주문 번호
-        'partner_user_id': 'partner_user_id', #유저 이름
-        'item_name': '초코파이', #제품명
-        'quantity': '1', #수량
-        'total_amount': '500', #가격
-        'tax_free_amount':'0',
-        
-        'approval_url':'http://127.0.0.1:8000/pay_success/', 
-        'fail_url':'http://127.0.0.1:8000/pay_fail',
-        'cancel_url':'http://127.0.0.1:8000/pay_cancel'
-    }
-    res = requests.post(url, data=data, headers=headers)
-    result = res.json()
-    request.session['tid'] = result['tid']
-    return redirect(result['next_redirect_pc_url'])
-
-@login_required
-def pay_success(request):
-    # course = Course.objects.get(pk=course_pk)
-    url = 'https://kapi.kakao.com/v1/payment/approve'
-    admin_key = KAKAO_KEY
-    
-    headers = {
-        'Authorization': f'KakaoAK {admin_key}'
-    }
-    data = {
-        'cid':'TC0ONETIME',
-        'tid': request.session['tid'], #결제 고유 번호
-        'partner_order_id': 'partner_order_id', #주문 번호
-        'partner_user_id': 'partner_user_id', #유저 아이디
-        'pg_token': request.GET['pg_token'] 
-    }
-    res = requests.post(url, data=data, headers=headers)
-    result = res.json()
-    context = {
-        'res':res,
-        'result':result,
-    }
-    if result.get('msg'): #msg = 오류 코드
-        return redirect('courses:pay_fail')
-    else:
-        # course.enrolment_users.add(request.user)
-        return render(request, 'courses/pay_success.html', context)
-
-@login_required
-def pay_fail(request):
-    return render(request, 'courses/pay_fail.html')
-
-@login_required
-def pay_cancel(request):
-    return render(request, 'courses/pay_cancel.html')
