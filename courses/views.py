@@ -226,6 +226,7 @@ def courses(request):
     return render(request, "courses/course_courses.html", context)
 
 
+@login_required
 def review_create(request, course_pk):
     if request.method == "POST":
         review_form = ReviewForm(request.POST)
@@ -244,6 +245,7 @@ def review_create(request, course_pk):
     return render(request, "communities/comment_create.html", context)
 
 
+@login_required
 def review_delete(request, course_pk, review_pk):
     review = Review.objects.get(pk=review_pk)
     if request.user == review.user:
@@ -251,21 +253,25 @@ def review_delete(request, course_pk, review_pk):
         return redirect("courses:detail", course_pk)
 
 
+@login_required
 def video(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     user = request.user
-    quizzes = Quiz.objects.filter(course=course)
-    all_quizzes_completed = all(
-        StudentAnswer.objects.filter(qna__quiz=quiz, student=user).exists()
-        for quiz in quizzes
-    )
-    urls = Url.objects.filter(course_id=course_pk)
-    context = {
-        "course": course,
-        "all_quizzes_completed": all_quizzes_completed,
-        "urls": urls,
-    }
-    return render(request, "courses/course_video.html", context)
+    if user in course.enrolment_users.all():
+        quizzes = Quiz.objects.filter(course=course)
+        all_quizzes_completed = all(
+            StudentAnswer.objects.filter(qna__quiz=quiz, student=user).exists()
+            for quiz in quizzes
+        )
+        urls = Url.objects.filter(course_id=course_pk)
+        context = {
+            "course": course,
+            "all_quizzes_completed": all_quizzes_completed,
+            "urls": urls,
+        }
+        return render(request, "courses/course_video.html", context)
+    else:
+        return redirect("courses:index")
 
 
 @login_required
@@ -296,6 +302,7 @@ def quiz_create(request, course_pk):
     return render(request, "courses/course_quiz_create.html", context)
 
 
+@login_required
 def quiz(request, course_pk, quiz_pk):
     quiz = Quiz.objects.get(pk=quiz_pk)
     questions = quiz.questions.all()
