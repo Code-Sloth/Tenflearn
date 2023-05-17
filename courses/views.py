@@ -345,6 +345,8 @@ def quiz_result(request, course_pk, quiz_pk):
 @login_required
 def enrolment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
+    enrol = request.POST.get('enrol')
+
     if request.method == "POST":
         if course.enrolment_users.filter(pk=request.user.pk).exists():
             course.enrolment_users.remove(request.user)
@@ -352,13 +354,18 @@ def enrolment(request, course_pk):
             course.enrolment_users.add(request.user)
     else:
         pass
-    return redirect("/accounts/mypage/?q=cart")
+
+    if enrol:
+        return redirect('/accounts/mypage/?q=course')
+    else:
+        return redirect("/accounts/mypage/?q=cart")
 
 
 @login_required
 def cart(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     cart = request.POST.get("cart")
+    print(cart, type(cart))
 
     if course.cart_users.filter(pk=request.user.pk).exists():
         course.cart_users.remove(request.user)

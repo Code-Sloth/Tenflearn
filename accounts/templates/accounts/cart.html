@@ -11,7 +11,7 @@
 
       <form class='cart-body-cancel mb-2' action="" method="POST">
         {% csrf_token %}
-        <button type="submit">선택삭제 <span><img src="{% static 'accounts/image/cancel.svg' %}" alt="cancel"></span></button>
+        <button name="cart" type="submit">선택삭제 <span><img src="{% static 'accounts/image/cancel.svg' %}" alt="cancel"></span></button>
       </form>
     </div>
 
@@ -53,9 +53,9 @@
           </button>
         {% endif %}
       {% empty %}
-          <div class="cart-body-content">
-              <p>장바구니가 비어있습니다.</p>
-          </div>
+        <div style='min-height: 600px;'>
+          <h5 class='pt-5 ps-5 text-secondary'>장바구니가 비었어요. 😥</h5>
+        </div>
       {% endfor %}
     </div>
   </div>

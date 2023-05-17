@@ -19,7 +19,7 @@
               <div class='card-expired'>
                 <form action="{% url 'courses:enrolment' course.pk %}" method="POST">
                   {% csrf_token %}
-                  <button type="submit">수강취소</button>
+                  <button name='enrol' value='1' type="submit">수강취소</button>
                 </form>
 
                 <div>
