@@ -229,17 +229,14 @@
               <button type='submit'>이어 학습하기</button>
             </form>
             {% else %}
-            <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+            <form class='right-sidebar-enrolment' name='cart' value='1' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
               {% csrf_token %}
               <button type='submit'>수강신청 하기</button>
             </form>
             {% if request.user in course.cart_users.all %}
-              <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="GET">
-                {% csrf_token %}
-                <button type='submit'>수강 바구니로 이동</button>
-              </form>
+              <a href="{% url 'courses:cart' course_pk=course.pk %}" class='right-sidebar-cart'>수강 바구니로 이동</a>
             {% else %}
-              <form class='right-sidebar-cart' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
+              <form class='right-sidebar-cart' name='cart' value='2' action="{% url 'courses:cart' course_pk=course.pk %}" method="POST">
                 {% csrf_token %}
                 <button type="submit">바구니에 담기</button>
               </form>
