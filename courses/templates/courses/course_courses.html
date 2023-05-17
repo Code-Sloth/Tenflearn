@@ -54,14 +54,14 @@
         </div>
         <div class="courseInfo-tags-container">
           <div class="d-flex">
-            <button class="courseInfo-tag">무료</button>
-            <button class="courseInfo-tag">유료</button>
+            <button class="courseInfo-tag" data-option="무료">무료</button>
+            <button class="courseInfo-tag" data-option="유료" >유료</button>
             <div class="courseInfo-separator"></div>
-            <button class="courseInfo-tag none-margin">할인중</button>
+            <button class="courseInfo-tag none-margin" data-option="할인중" >할인중</button>
             <div class="courseInfo-separator"></div>
-            <button class="courseInfo-tag">입문</button>
-            <button class="courseInfo-tag">초급</button>
-            <button class="courseInfo-tag">중급이상</button>
+            <button class="courseInfo-tag" data-option="입문" >입문</button>
+            <button class="courseInfo-tag" data-option="초급" >초급</button>
+            <button class="courseInfo-tag" data-option="중급이상" >중급이상</button>
           </div>
           <button class="filter-reset-btn">
             <a href="{% url 'courses:courses' %}" class ="bi bi-arrow-repeat">

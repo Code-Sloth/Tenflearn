@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 import random
 from django.db.models import Count
 from django.db.models import Q
+from functools import reduce
 
 # Create your views here.
 
@@ -173,20 +174,42 @@ def courses(request):
         selected_tags = selected_slugs.split(",")
         courses = Course.objects.filter(tags__slug__in=selected_tags).distinct()
 
+    # 옵션
+    options = request.GET.get('option', '').split(',')
+    if options:
+        price_condition = Q()
+        level_condition = Q()
+        discount_condition = Q()
+        for option in options:
+            if option == '무료':
+                price_condition |= Q(price=0)  
+            elif option == '유료':
+                price_condition |= ~Q(price=0) 
+            elif option == '할인중':
+                discount_condition |= ~Q(discount_rate=0)  
+            elif option == '입문':
+                level_condition |= Q(level='level1')  
+            elif option == '초급':
+                level_condition |= Q(level='level2')  
+            elif option == '중급이상':
+                level_condition |= Q(level='level3')  
+                
+        courses = courses.filter(price_condition & discount_condition & level_condition)
+
+
+                    
+
+    
+        
     # 정렬
     order = request.GET.get('sort')
     if order == 'rating':
         courses = courses.order_by('-star')
     elif order == 'enrollment':
         courses = courses.annotate(num_enrolment_users=Count('enrolment_users')).order_by('-num_enrolment_users')
-    per_page = 2
-    paginator = Paginator(courses, per_page)
-    courses_paginated = paginator.get_page(request.GET.get("page", "1"))
-    num_page = paginator.num_pages
+
     context = {
         'courses': courses,
-        'courses_paginated': courses_paginated,
-        'num_page': num_page,
         'tags': tags,
         'category_list': category_list,
         'selected_category': selected_category,
