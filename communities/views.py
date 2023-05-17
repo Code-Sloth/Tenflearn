@@ -193,7 +193,7 @@ def review(request):
         'last': last,
     }
 
-    return render(request, 'communities\inflearn_index.html', context)
+    return render(request, 'communities/inflearn_index.html', context)
 
 def comment_like(request, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
