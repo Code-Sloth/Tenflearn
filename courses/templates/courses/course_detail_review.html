@@ -80,31 +80,37 @@
 
 
   <div class="review-add">
-    <form action="{% url 'courses:review_create' course.pk %}" method="post">
-      {% csrf_token %}
-      <div class="review-add-star">
-        <div class="starpoint_wrap">
-          <div class="starpoint_box">
-            <label for="starpoint_1" class="label_star" title="1"><span class="blind">1</span></label>
-            <label for="starpoint_2" class="label_star" title="2"><span class="blind">2</span></label>
-            <label for="starpoint_3" class="label_star" title="3"><span class="blind">3</span></label>
-            <label for="starpoint_4" class="label_star" title="4"><span class="blind">4</span></label>
-            <label for="starpoint_5" class="label_star" title="5"><span class="blind">5</span></label>
-            <input type="radio" name="starpoint" id="starpoint_1" value="1" class="star_radio">
-            <input type="radio" name="starpoint" id="starpoint_2" value="2" class="star_radio">
-            <input type="radio" name="starpoint" id="starpoint_3" value="3" class="star_radio">
-            <input type="radio" name="starpoint" id="starpoint_4" value="4" class="star_radio">
-            <input type="radio" name="starpoint" id="starpoint_5" value="5" class="star_radio">
-            <span class="starpoint_bg"></span>
+
+    {% if request.user in course.enrolment_users.all %}
+
+      <form action="{% url 'courses:review_create' course.pk %}" method="post">
+        {% csrf_token %}
+        <div class="review-add-star">
+          <div class="starpoint_wrap">
+            <div class="starpoint_box">
+              <label for="starpoint_1" class="label_star" title="1"><span class="blind">1</span></label>
+              <label for="starpoint_2" class="label_star" title="2"><span class="blind">2</span></label>
+              <label for="starpoint_3" class="label_star" title="3"><span class="blind">3</span></label>
+              <label for="starpoint_4" class="label_star" title="4"><span class="blind">4</span></label>
+              <label for="starpoint_5" class="label_star" title="5"><span class="blind">5</span></label>
+              <input type="radio" name="starpoint" id="starpoint_1" value="1" class="star_radio">
+              <input type="radio" name="starpoint" id="starpoint_2" value="2" class="star_radio">
+              <input type="radio" name="starpoint" id="starpoint_3" value="3" class="star_radio">
+              <input type="radio" name="starpoint" id="starpoint_4" value="4" class="star_radio">
+              <input type="radio" name="starpoint" id="starpoint_5" value="5" class="star_radio">
+              <span class="starpoint_bg"></span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="review-add-comment">
-        <div class="review-add-comment-write">{{ review_form.content }}</div>
-        <div class="review-add-comment-btn"><input type="submit" class="comment-btn" value="등록"></div>
-        <div hidden>{{ review_form.star }}</div>
-      </div> 
-    </form>
+        <div class="review-add-comment">
+          <div class="review-add-comment-write">{{ review_form.content }}</div>
+          <div class="review-add-comment-btn"><input type="submit" class="comment-btn" value="등록"></div>
+          <div hidden>{{ review_form.star }}</div>
+        </div> 
+      </form>
+    
+    {% endif %}
+
   </div>
 
   <div class='review-list'>
@@ -149,7 +155,7 @@
             {% if request.user == review.user %}
               <form action="{% url 'courses:review_delete' course.pk review.pk %}" method="POST">
                 {% csrf_token %}
-                <button class='review-list-submit' type="submit">댓글삭제</button>
+                <button class='review-list-submit' type="submit">수강평삭제</button>
               </form>
             {% endif %}
           </div>

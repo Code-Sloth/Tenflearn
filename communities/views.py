@@ -113,7 +113,10 @@ def comment_create(request):
             comment = comment_form.save(commit=False)
             if course_pk != "0":
                 course = Course.objects.get(pk=course_pk)
-                comment.course = course
+                if request.user not in course.enrolment_users.all():
+                    return redirect('courses:detail', course.pk)
+                else:
+                    comment.course = course
             comment.user = request.user
             comment.save()
 

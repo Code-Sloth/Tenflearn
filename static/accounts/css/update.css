@@ -12,7 +12,7 @@
 }
 
 .update-button {
-  border-color: #00c471;
+  border: 0;
   font-weight: 700;
   background-color: #00c471;
   color: #fff;
@@ -22,10 +22,10 @@
   text-align: center;
   line-height: 3rem;
   margin-bottom: 10px;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
 }
 
 .change_password-button  {
-  border-color: #00c471;
   font-weight: 700;
   background-color: #00c471;
   color: #fff;
@@ -36,4 +36,9 @@
   line-height: 3rem;
   margin-bottom: 10px;
   text-decoration: none;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+}
+
+.update-button:hover, .change_password-button:hover {
+  background-color: #03985a;
 }

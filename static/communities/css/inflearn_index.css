@@ -17,6 +17,14 @@
 
 }
 
+.review-right-a {
+  transition: transform 0.3s ease;
+}
+
+.review-right-a:hover {
+  transform: scale(1.05);
+}
+
 @media(max-width: 1200px) {
   .community-header {
     background-color: #212529;

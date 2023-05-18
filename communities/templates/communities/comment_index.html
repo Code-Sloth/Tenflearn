@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}
-  커뮤니티
+  커뮤니티 |
+  {{ request.GET.category|category_kr }}
 {% endblock title %}
 
 {% block content %}

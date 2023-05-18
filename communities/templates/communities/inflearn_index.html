@@ -6,6 +6,7 @@
 
 
 {% block title %}
+  수강평
 {% endblock title %}
 
 {% block content %}
@@ -43,7 +44,7 @@
           <div class="review-left__info">글쓴이: {{ review.user}} {{ review.created_at }} 강의명: {{ review.course.title }}</div>
         </div>
           <div class="review-right__img">
-            <a href="{% url 'courses:detail' review.course.pk %}">
+            <a class='review-right-a' href="{% url 'courses:detail' review.course.pk %}">
               <img class="lecture-img"src="{{ review.course.image.url }}" alt="강의 사진">
             </a>
           </div>

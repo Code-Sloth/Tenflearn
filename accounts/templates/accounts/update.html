@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/update.css' %}">
 
 <div class="container-update">
-  <h2>회원정보수정</h2>
+  <h2 class='mb-5'>회원정보수정</h2>
   {% if request.user.is_authenticated %}
   <div class="form-update">
     <form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">

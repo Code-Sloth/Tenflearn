@@ -4,20 +4,32 @@
 {{ course.title }}
 {% endblock title %}
 
+{% block navbar %}{% endblock navbar %}
+
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'courses/css/course_video.css' %}">
 
-<div class="course p-5">
+<header class='video-header d-flex justify-content-between'>
+  <div>
+    {{course.title}} - {{ course.user.last_name }}{{ course.user.first_name }}
+  </div>
+
+  <a class='video-header-back' href="{% url 'courses:detail' course.pk %}">
+    강의 대시보드
+  </a>
+</header>
+
+<div class="course py-5">
   <div class="course-video">
   </div>
 
   <div class="course-descriptions">
     <div>
-      <h3>{{ course.title }}</h3>
+      <h3 class='video-title'>{{ course.title }}</h3>
     </div>
-    <div class="course-descriptions-quiz">
-      <span>강사 - {{ course.user.last_name }}{{ course.user.first_name }}</span>
-      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <div class="course-descriptions-quiz mb-2">
+      <span class='ms-2'>강사 - {{ course.user.last_name }}{{ course.user.first_name }}</span>
+      <button type="button" class="video-quiz-btn me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
         퀴즈 풀기
       </button>
     </div>
@@ -43,7 +55,7 @@
     </div>
     <div class="course-descriptions-content">
       <div style="width:90%;">
-        <div>{{ course.content }}</div>
+        <div class='video-course-content'>{{ course.content }}</div>
       </div>
     </div>
     <div class="course-descriptions-file">
@@ -66,9 +78,9 @@
       </div>
       <div class="modal-body">
         {% for quiz in course.quizzes.all %}
-          <div>
+          <div class='text-center'>
             <h3>{{ quiz.quiz_title }}</h3>
-            <a href="{% url 'courses:quiz' course.pk quiz.pk %}"><button type="button" class="btn btn-outline-success">
+            <a href="{% url 'courses:quiz' course.pk quiz.pk %}"><button type="button" class="btn btn-outline-success mt-4 mb-2">
               퀴즈 풀러 가기
             </button></a>
           </div>
@@ -89,6 +101,10 @@
   </div>
 </div>
 
+<footer class='video-footer'>
+
+</footer>
+
 <script src="{% static 'courses/js/course_video.js' %}"></script>
 <script>
   {% if all_quizzes_completed %}
@@ -108,3 +124,5 @@
 </script>
 
 {% endblock content %}
+
+{% block footer %}{% endblock footer %}
