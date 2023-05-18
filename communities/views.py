@@ -55,7 +55,14 @@ def comment(request):
         comments = comments.filter(course__tags__name__icontains=tag_q)
 
     if order:
-        comments = comment_order(comments, order)
+        if order == "recent":
+            comments = comments.order_by("-pk")
+        elif order == "comment":
+            comments = comments.annotate(count_recomments=Count("recomments")).order_by(
+                "-count_recomments"
+            )
+        elif order == "like":
+            comments = comments.annotate(likes=Count("like_users")).order_by("-likes")
 
     context = {
         "comments": comments,
@@ -67,16 +74,16 @@ def comment(request):
     return render(request, "communities/comment_index.html", context)
 
 
-@login_required
-def comment_order(queryset, o):
-    if o == "recent":
-        return queryset.order_by("-pk")
-    elif o == "comment":
-        return queryset.annotate(count_recomments=Count("recomments")).order_by(
-            "-count_recomments"
-        )
-    elif o == "like":
-        return queryset.annotate(likes=Count("like_users")).order_by("-likes")
+# @login_required
+# def comment_order(queryset, o):
+#     if o == "recent":
+#         return queryset.order_by("-pk")
+#     elif o == "comment":
+#         return queryset.annotate(count_recomments=Count("recomments")).order_by(
+#             "-count_recomments"
+#         )
+#     elif o == "like":
+#         return queryset.annotate(likes=Count("like_users")).order_by("-likes")
 
 
 def comment_detail(request, comment_pk):
