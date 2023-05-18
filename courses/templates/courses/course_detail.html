@@ -214,10 +214,14 @@
           <div class='right-sidebar-price'>
             {% if request.user in course.enrolment_users.all %}
               <h2>학습중</h2>
-            {% elif course.discount_rate %}
-              <h1>{{ course.discount_rate }}%</h1>
-              <h2>{{ course.discounted_price|intcomma }}원</h2>
-              <h3>{{ course.price|intcomma }}원</h3>
+            {% elif course.discounted_price %}
+              {% if course.discount_rate %}
+                <h1>{{ course.discount_rate }}%</h1>
+                <h2>{{ course.discounted_price|intcomma }}원</h2>
+                <h3>{{ course.price|intcomma }}원</h3>
+              {% else %}
+                <h2>{{ course.discounted_price|intcomma }}원</h2>
+              {% endif %}
             {% else %}
               <h2>무료</h2>
             {% endif %}
