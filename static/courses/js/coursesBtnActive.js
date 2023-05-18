@@ -25,6 +25,17 @@ export function optionBtnActive() {
       } else {
         targetBtn.classList.add('bi-check-lg', 'courseInfo-btn-active');
       }
+      
+      const freeButton = document.querySelector('.courseInfo-tag[data-option="무료"]');
+      const isActive = freeButton.classList.contains('courseInfo-btn-active');
+
+
+      const discountButton = document.querySelector('.courseInfo-tag[data-option="할인중"]');
+      if (isActive) {
+        discountButton.disabled = true;
+      } else{
+        discountButton.disabled = false;
+      }
     });
   })
 }

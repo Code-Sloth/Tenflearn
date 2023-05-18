@@ -16,7 +16,7 @@
         <div class='off-search'>
 
           <form action="">
-            <input name='q' type="search" placeholder="강의/강사명을 입력해주세요">
+            <input name='search-q' type="search" placeholder="강의/강사명을 입력해주세요">
           </form>
 
           <div class='off-search-icon'>
@@ -36,7 +36,7 @@
             </a>
     
             <a class='off-item' href="{% url 'communities:inflearn_index' %}">
-              인프런
+              텐프런
             </a>
           </div>
 
@@ -45,19 +45,19 @@
               전체
             </a>
 
-            <a class="off-item off-course d-none" href="">
+            <a class="off-item off-course d-none" href="{% url 'courses:courses' %}?category=웹 개발">
               웹 개발
             </a>
 
-            <a class="off-item off-course d-none" href="">
+            <a class="off-item off-course d-none" href="{% url 'courses:courses' %}?category=프론트엔드">
               프론트엔드
             </a>
 
-            <a class="off-item off-course d-none" href="">
+            <a class="off-item off-course d-none" href="{% url 'courses:courses' %}?category=백엔드">
               백엔드
             </a>
 
-            <a class="off-item off-course d-none" href="">
+            <a class="off-item off-course d-none" href="{% url 'courses:courses' %}?category=풀스택">
               풀스택
             </a>
 
@@ -103,7 +103,7 @@
       </a>
   
       <a class="nav-bar-left-item" href="{% url 'communities:inflearn_index' %}">
-        인프런
+        텐프런
       </a>
 
     </div>
@@ -113,13 +113,12 @@
 
         <div class='nav-bar-right-search'>
 
-          <form action="">
-            <input name='q' type="search">
+          <form class="search">
+            <input type="search" name="search-q">
+            <div class='right-search-icon' type="submit">
+              <i class='fas fa-search'></i>
+            </div>
           </form>
-
-          <div class='right-search-icon'>
-            <i class='fas fa-search'></i>
-          </div>
 
         </div>
 
@@ -153,5 +152,4 @@
     </div>
   </div>
 </div>
-
 <script src="{% static 'base/js/navbar.js' %}"></script>
