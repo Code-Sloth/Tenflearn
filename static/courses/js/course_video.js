@@ -27,7 +27,7 @@ textareaBtn.addEventListener('click', function() {
 // 메모 저장
 function Download(){
   let memo = document.querySelector("#memo");
-  let file_name = document.querySelector('.course-descriptions h4').textContent;
+  let file_name = document.querySelector('.course-descriptions h3').textContent;
   const blob = new Blob([memo.value], {type:'text/plain'});
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');

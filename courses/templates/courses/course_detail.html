@@ -228,6 +228,12 @@
               {% csrf_token %}
               <button type='submit'>이어 학습하기</button>
             </form>
+          {% elif not course.discounted_price %}
+            <form class='right-sidebar-enrolment' action="{% url 'courses:enrolment' course_pk=course.pk %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="enrol" value="2">
+              <button type='submit'>바로 수강신청 하기</button>
+            </form>
           {% else %}
               {% if request.user in course.cart_users.all %}
                 <a href="{% url 'accounts:mypage' %}?q=cart" class='green-button'>수강 바구니로 이동</a>

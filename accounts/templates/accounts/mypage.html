@@ -2,8 +2,14 @@
 
 {% load static %}
 {% load humanize %}
+{% load custom_filters %}
 {% block title %}
-
+  마이페이지 |
+  {% if not q %}
+    내 정보
+  {% else %}
+    {{ q|mypage_kr }}
+  {% endif %}
 {% endblock title %}
 
 {% block content %}
@@ -130,7 +136,7 @@
             </h1>
 
             <h2>
-              {{ comment.content|safe }}
+              {{ comment.content|striptags }}
             </h2>
           </div>
 

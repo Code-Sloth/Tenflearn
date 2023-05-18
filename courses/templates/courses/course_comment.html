@@ -26,13 +26,17 @@
           <img src="{% static 'courses/image/search.svg' %}" alt="search">
         </button>
     </form>
-  
-    <div class='course-comment-flex'>
-      <a class='middle-section-write' href="{% url 'communities:comment_create' %}?course_pk={{ course.pk }}">
-        <img class='me-1' src="{% static 'communities/image/write.svg' %}" alt="write">
-        글쓰기
-      </a>
-    </div>
+    
+    {% if request.user in course.enrolment_users.all %}
+    
+      <div class='course-comment-flex'>
+        <a class='middle-section-write' href="{% url 'communities:comment_create' %}?course_pk={{ course.pk }}">
+          <img class='me-1' src="{% static 'communities/image/write.svg' %}" alt="write">
+          글쓰기
+        </a>
+      </div>
+      
+    {% endif %}
   </div>
 
   {% if course_comments %}

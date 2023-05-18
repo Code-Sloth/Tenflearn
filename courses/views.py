@@ -228,11 +228,12 @@ def courses(request):
 
 @login_required
 def review_create(request, course_pk):
+    course = Course.objects.get(pk=course_pk)
+
     if request.method == "POST":
         review_form = ReviewForm(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
-            course = Course.objects.get(pk=course_pk)
             review.course = course
             review.user = request.user
             review.save()
@@ -348,7 +349,7 @@ def quiz_result(request, course_pk, quiz_pk):
 def enrolment(request, course_pk):
     course = Course.objects.get(pk=course_pk)
     enrol = request.POST.get('enrol')
-
+    print(enrol)
     if request.method == "POST":
         if course.enrolment_users.filter(pk=request.user.pk).exists():
             course.enrolment_users.remove(request.user)
@@ -358,7 +359,10 @@ def enrolment(request, course_pk):
         pass
 
     if enrol:
-        return redirect('/accounts/mypage/?q=course')
+        if enrol == '2':
+            return redirect('courses:detail', course.pk)
+        else:
+            return redirect('/accounts/mypage/?q=course')
     else:
         return redirect("/accounts/mypage/?q=cart")
 
@@ -411,7 +415,6 @@ def kakaopay(request, course_pk):
 
 
 @login_required
-
 def pay_success(request, course_pk):
     course = Course.objects.get(pk=course_pk)
 
