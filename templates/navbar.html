@@ -15,13 +15,12 @@
 
         <div class='off-search'>
 
-          <form action="">
-            <input name='search-q' type="search" placeholder="강의/강사명을 입력해주세요">
+          <form class="search-course">
+            <input class = "search-course-input" name='search-q' type="search" placeholder="강의/강사명을 입력해주세요">
+            <div class='off-search-icon' type="submit">
+              <i class='fas fa-search'></i>
+            </div>
           </form>
-
-          <div class='off-search-icon'>
-            <i class='fas fa-search'></i>
-          </div>
 
         </div>
 
@@ -113,8 +112,8 @@
 
         <div class='nav-bar-right-search'>
 
-          <form class="search">
-            <input type="search" name="search-q">
+          <form class="search-course">
+            <input type="search" class="search-course-input" name="search-q">
             <div class='right-search-icon' type="submit">
               <i class='fas fa-search'></i>
             </div>
@@ -153,3 +152,4 @@
   </div>
 </div>
 <script src="{% static 'base/js/navbar.js' %}"></script>
+<script type="module" src="{% static 'courses/js/search.js' %}"></script>
