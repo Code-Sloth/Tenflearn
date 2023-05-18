@@ -89,10 +89,12 @@ a {
 
 /* TODO: 버튼 위치 조정 */
 /* .swiper-button-next{
+  position: absolute;
   right: -22px  !important;
 }
 
 .swiper-button-prev {
+  position: absolute; 
   left: -22px !important;
 } */
 
