@@ -1,4 +1,5 @@
 import { cardHover } from './cardHover.js';
+import { toggleBtn } from './course_courses.js';
 import { tagBtnActive } from './coursesBtnActive.js';
 
 const coursesContainer = document.querySelector('.courses-content-container');
@@ -59,6 +60,7 @@ categoryLinks.forEach((link) => {
             const courses = doc.querySelector('.courses-content-container');
             coursesContainer.innerHTML = courses.innerHTML;
             cardHover();
+            toggleBtn();
           } catch (error) {
             console.error(error);
           }
@@ -69,6 +71,7 @@ categoryLinks.forEach((link) => {
       const context = link.textContent.trim();
       searchInput.placeholder = context + '  검색';
       cardHover();
+      toggleBtn();
     } catch (error) {
       console.error(error);
     }
@@ -104,6 +107,7 @@ tags.forEach((tag) => {
       const courses = doc.querySelector('.courses-content-container');
       coursesContainer.innerHTML = courses.innerHTML;
       cardHover();
+      toggleBtn();
     } catch (error) {
       console.error(error);
     }
@@ -137,6 +141,7 @@ optionButtons.forEach((optionBtn) => {
       const courses = doc.querySelector('.courses-content-container');
       coursesContainer.innerHTML = courses.innerHTML;
       cardHover();
+      toggleBtn();
     } catch (error) {
       console.error(error);
     }
@@ -168,6 +173,7 @@ sortSelect.addEventListener('change', async (event) => {
     const courses = doc.querySelector('.courses-content-container');
     coursesContainer.innerHTML = courses.innerHTML;
     cardHover();
+    toggleBtn();
   } catch (error) {
     console.error(error);
   }
